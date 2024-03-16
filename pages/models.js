@@ -1,13 +1,14 @@
 import React from 'react'
 import { useRouter as UseRouter } from "next/router";
+// import { useState as UseState,useEffect as UseEffect,useCallback as UseCallback } from 'react';
 import Filter from '@/components/Filter';
 import { Input } from '@/components/ui/input';
 import ModelCard from '@/components/ModelCard';
 import Navbar from '@/components/Navbar';
 import Sort from '@/components/Sort';
 import PaginationElement from '@/components/PaginationElement';
-import { useState,useEffect,useCallback } from 'react';
-import useDebounce from '@/utils/UseDebounce';
+
+import UseDebounce from '@/utils/UseDebounce';
 // const Models = Array.from({ length: 50 }, (_, index) => ({
 //     id: index + 1,
 //     text: `Item ${index + 1}`,
@@ -30,8 +31,8 @@ export default function models() {
     page=(!page||page<1)?1:page;
     let perPage=1;
 
-    const [models,setModels]=useState({items:[],count:0});    
-    const [searchTerm, setSearchTerm] = useState(null);    
+    const [models,setModels]=UseState({items:[],count:0});    
+    const [searchTerm, setSearchTerm] = React.useState(null);    
     async function fetchModels(){
       let params = new URLSearchParams(router.query).toString(); 
       // if(params){
@@ -44,7 +45,7 @@ export default function models() {
     }
     const pathname=router.pathname;
     const searchParams=router.query;
-    const createQueryString = useCallback(
+    const createQueryString = React.useCallback(
       (name, value) => {
         const params = new URLSearchParams(searchParams)
         // for (const [name1, value] of params.entries()) {
@@ -65,31 +66,31 @@ export default function models() {
     //   setFilteredDocuments(data);
       
     // }
-    const removeQueryParam = useCallback(
-      (name) => {
-          const params = new URLSearchParams(searchParams);
-          if(params.has(name)){
-            params.delete(name);
-          }
+    // const removeQueryParam = React.useCallback(
+    //   (name) => {
+    //       const params = new URLSearchParams(searchParams);
+    //       if(params.has(name)){
+    //         params.delete(name);
+    //       }
           
-          return params.toString();
-      },
-      []
-    );
-    useEffect(()=>{ 
+    //       return params.toString();
+    //   },
+    //   []
+    // );
+    UseEffect(()=>{ 
         
         // console.log(params); 
         // console.log(router.query);
         fetchModels();        
     },[router.query])
-    // useEffect(()=>{ 
+    // UseEffect(()=>{ 
     //   if(searchTerm===null){
     //     console.log(removeQueryParam('seacrh'));
     //   }
     //   console.log(searchTerm);
       
     // },[searchTerm])
-    useDebounce(() => {
+    UseDebounce(() => {
       if(searchTerm===null){
         // router.push(pathname + '?' + removeQueryParam('seacrh'));
         
