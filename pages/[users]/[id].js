@@ -67,7 +67,7 @@ export default function modelView({model}) {
             <div className=''>
                 <div className='flex flex-wrap items-center gap-2 p-2 px-4'>
                     {model?.tags?.map((category)=>(
-                      <button className={`p-2 rounded-md bg-slate-900 text-white text-xs md:text-sm `}>{category}</button>
+                      <button key={model._id} className={`p-2 rounded-md bg-slate-900 text-white text-xs md:text-sm `}>{category}</button>
                     ))}
                     
             </div>
