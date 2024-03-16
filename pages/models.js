@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRouter } from "next/router";
+import { useRouter as UseRouter } from "next/router";
 import Filter from '@/components/Filter';
 import { Input } from '@/components/ui/input';
 import ModelCard from '@/components/ModelCard';
@@ -25,7 +25,7 @@ import useDebounce from '@/utils/UseDebounce';
 //     }
 // }
 export default function models() {
-    const router = useRouter();
+    const router = UseRouter();
     let page=parseInt(router.query.page,10);
     page=(!page||page<1)?1:page;
     let perPage=1;

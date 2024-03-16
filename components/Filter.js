@@ -1,9 +1,10 @@
 
 import { Input } from "@/components/ui/input"
-import { useState, useEffect,useCallback} from "react";
+import { useRouter as UseRouter } from "next/router";
+import { useState as UseState,useEffect as UseEffect,useCallback as UseCallback } from 'react';
 import CategoryButton from "./CategoryButton";
-import { useRouter } from "next/router";
-import useDebounce from "@/utils/UseDebounce";
+
+import UseDebounce from "@/utils/UseDebounce";
 // import { useState,useEffect } from "react";
 const Cateogories = Array.from({ length: 50 }, (_, index) => ({
   id: index + 1,
@@ -11,18 +12,18 @@ const Cateogories = Array.from({ length: 50 }, (_, index) => ({
 }));
 
 export default function Filter() {
-    const router=useRouter();
-    const searchParams=useRouter.query; 
-    const [currentFilter,setCurrentFilter]=useState("tasks");
-    const [tags,setTags]=useState([]);
-    const [filteredSearch, setFilteredSearch] = useState(tags);
+    const router=UseRouter();
+    const searchParams=UseRouter.query; 
+    const [currentFilter,setCurrentFilter]=UseState("tasks");
+    const [tags,setTags]=UseState([]);
+    const [filteredSearch, setFilteredSearch] = UseState(tags);
     async function fetchTags(){
         const res=await fetch(`/api/categories?tag=${currentFilter}`);
         const data=await res.json();
         setTags(data);
         setFilteredSearch(data);
     }
-    useEffect(()=>{
+    UseEffect(()=>{
         
         fetchTags();
         
@@ -30,8 +31,8 @@ export default function Filter() {
     },[currentFilter])
 
     const pathname=router.pathname;
-    const [select,setSelect]=useState(null);
-    const createQueryString = useCallback(
+    const [select,setSelect]=UseState(null);
+    const createQueryString = UseCallback(
       (name, value) => {
         const params = new URLSearchParams(searchParams)
         params.set(name, value)
@@ -40,7 +41,7 @@ export default function Filter() {
       },
       []
     )
-    const removeQueryParam = useCallback(
+    const removeQueryParam = UseCallback(
         (name) => {
             const params = new URLSearchParams(searchParams);
             if(params.has(name)){
@@ -50,8 +51,8 @@ export default function Filter() {
         },
         []
     );
-    const [searchTerm, setSearchTerm] = useState('');    
-    useDebounce(() => {
+    const [searchTerm, setSearchTerm] = UseState('');    
+    UseDebounce(() => {
       
       if(!searchTerm && tags.length > 0){
         setFilteredSearch(tags);
@@ -72,7 +73,7 @@ export default function Filter() {
     const handleChange = (event) => {      
       setSearchTerm(event.target.value);
     }
-    useEffect(()=>{  
+    UseEffect(()=>{  
         if(select===null){
           router.push(pathname + '?' + createQueryString("tag", ''));
           // router.push(pathname + '?' + removeQueryParam(select));

@@ -1,6 +1,7 @@
 
 
-import { useEffect, useState } from "react"
+import { useRouter as UseRouter } from "next/router";
+import { useState as UseState,useEffect as UseEffect,useCallback as UseCallback } from 'react';
 import { Check, ChevronsUpDown } from "lucide-react"
 import {Link} from "next/link";
 import { cn } from "@/lib/utils"
@@ -19,39 +20,18 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Input } from "./ui/input"
-import useDebounce from "@/utils/UseDebounce"
-import { useRouter } from "next/router";
+import UseDebounce from "@/utils/UseDebounce"
 
-const frameworks = [
-    {
-      value: "next.js",
-      label: "Next.js",
-    },
-    {
-      value: "sveltekit",
-      label: "SvelteKit",
-    },
-    {
-      value: "nuxt.js",
-      label: "Nuxt.js",
-    },
-    {
-      value: "remix",
-      label: "Remix",
-    },
-    {
-      value: "astro",
-      label: "Astro",
-    },
-  ]
+
+
 
 export default function SearchBox() {
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState("")
-  const [filteredDocuments, setFilteredDocuments] = useState({items:[]});
-  const router=useRouter();
+  const [open, setOpen] = UseState(false)
+  const [value, setValue] = UseState("")
+  const [filteredDocuments, setFilteredDocuments] = UseState({items:[]});
+  const router=UseRouter();
   const pathname = router.pathname
-  const [searchTerm, setSearchTerm] = useState('');   
+  const [searchTerm, setSearchTerm] = UseState('');   
   const handleChange = (event) => {      
     setSearchTerm(event.target.value);
   }
@@ -61,7 +41,7 @@ export default function SearchBox() {
         setFilteredDocuments(data);
     }
     
-    useDebounce(() => {
+    UseDebounce(() => {
         if(!searchTerm){
             setFilteredDocuments({items: []});
             return;
@@ -72,7 +52,7 @@ export default function SearchBox() {
              
       }, [searchTerm], 800
     );
-  useEffect(()=>{
+  UseEffect(()=>{
     // console.log(pathname);
     if(!value) return;
     router.push(`/${value}`);
@@ -100,7 +80,7 @@ export default function SearchBox() {
           <CommandGroup>
             {filteredDocuments?.items?.map((data) => (
                 
-                <CommandList>
+                <CommandList key={data._id}>
                     
                     <CommandItem
                         key={data._id}
