@@ -15,14 +15,14 @@ import {
     const searchParams=router.query;
     const [select,setSelect]=useState();
     const createQueryString = useCallback(
-        (name, value) => {
-          const params = new URLSearchParams(searchParams)
-          params.set(name, value)
-          
-          return params.toString()
-        },
-        [searchParams]
-      )
+      (name, value) => {
+        const params = new URLSearchParams(searchParams)
+        params.set(name, value)
+        
+        return params.toString()
+      },
+      [searchParams]
+    )
     useEffect(()=>{  
         if(!select)return;  
         router.push(pathname + '?' + createQueryString('sort', select))

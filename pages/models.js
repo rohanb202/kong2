@@ -43,13 +43,13 @@ export default function models() {
   return (
     <>
     <Navbar/>
-    <div className="flex bg-red-400">
+    <div className="flex ">
         
-        <div className="w-[30%] lg:block hidden pt-6 p-4 bg-green-600 ">
+        <div className="w-[30%] lg:block hidden pt-6 p-4  ">
             <Filter/>
         </div>
         <div className="h-screen border-l border-gray-400 border-1"></div>
-        <div className="lg:w-[70%] w-full p-4 bg-blue-500 flex-col flex justify-center px-10 pt-6">
+        <div className="lg:w-[70%] w-full p-4 flex-col flex px-10 pt-6  backdrop-blur-xl">
             <div className="flex items-center justify-between ">
               <div className="flex items-center space-x-3">
                 <h2>Models</h2>
