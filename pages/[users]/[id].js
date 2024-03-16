@@ -31,7 +31,7 @@ const MarkComponent = ({value,language}) => {
 //   id: index + 1,
 //   text: `Item ${index + 1}`,
 // }));
-export default function modelView({model}) {
+export default function ModelView({model}) {
   // const router = useRouter();
   // const [model,setModel]=useState({});
   //   async function fetchModel(){

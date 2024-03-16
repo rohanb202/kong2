@@ -25,7 +25,7 @@ import UseDebounce from '@/utils/UseDebounce';
 //       }
 //     }
 // }
-export default function models() {
+export default function Models() {
     const router = UseRouter();
     let page=parseInt(router.query.page,10);
     page=(!page||page<1)?1:page;
