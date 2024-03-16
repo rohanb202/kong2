@@ -27,10 +27,10 @@ const MarkComponent = ({value,language}) => {
       {value ?? ''}
     </SyntaxHighlighter>
 )};
-const Cateogories = Array.from({ length: 5 }, (_, index) => ({
-  id: index + 1,
-  text: `Item ${index + 1}`,
-}));
+// const Cateogories = Array.from({ length: 5 }, (_, index) => ({
+//   id: index + 1,
+//   text: `Item ${index + 1}`,
+// }));
 export default function modelView({model}) {
   // const router = useRouter();
   // const [model,setModel]=useState({});
@@ -52,10 +52,10 @@ export default function modelView({model}) {
       <Navbar/>
         <div className=''>
             <div className="flex items-center gap-2 px-5 pt-4">
-                <div className='text-2xl'>
+                <div className='text-xl md:text-2xl'>
                     {model?.author}/<span className='font-semibold'>{model?.title} </span> 
                 </div>
-                <div className='flex items-center gap-1 p-1 border-2 rounded-md'>
+                <div className='flex items-center gap-1 p-1 text-sm border-2 rounded-md'>
                     <div className='flex items-center pr-1 space-x-1 border-r border-1'>
                         <HeartIcon className='w-4'/>
                         <h3>Like</h3>
@@ -64,30 +64,31 @@ export default function modelView({model}) {
                 </div>
                 
             </div>
-            <div>
-                <div className='flex flex-wrap p-2 px-4'>
-                    {Cateogories.map((category)=>(
-                      <CategoryButton key={category.id} text={category.text} />
+            <div className=''>
+                <div className='flex flex-wrap items-center gap-2 p-2 px-4'>
+                    {model?.tags?.map((category)=>(
+                      <button className={`p-2 rounded-md bg-slate-900 text-white text-xs md:text-sm `}>{category}</button>
                     ))}
+                    
             </div>
-             <div className="w-full border-2 border-b border-slate-700"></div>
+             <div className="w-screen border-2 border-b border-slate-700"></div>
              
             </div>
 
             
 
         </div>
-        <div className='flex flex-co lg:justify-center lg:flex-row-reverse '>
+        <div className='flex flex-col justify-center '>
             
             {/* <div className="h-full border-2 border-b border-gray-500"></div> */}
-            <div className='w-[80%]  p-20 bg-white border-b-2 border-l-2 border-r-2 border-slate-700'>
-                <div className='flex justify-end w-full'>
+            <div className='md:w-[80%] w-full md:mx-auto p-1  md:p-20 bg-white md:border-b-2 md:border-l-2 md:border-r-2 border-slate-700'>
+                {/* <div className='flex justify-end w-full'> */}
                     {/* <button onClick={()=>{setEdit(!edit)}} className='p-1 border-b border-l rounded-bl-md border-cyan-600'>{edit?"Save":"Edit"} model card</button> */}
-                </div>
-                <span className='prose prose-lg '>
+                {/* </div> */}
+                <span className='prose-sm prose md:prose-lg'>
                     {/* {!edit && <Markdown className='p-5 ' remarkPlugins={[gfm]}>{input}</Markdown>} 
                     {edit && <textarea className='w-full h-screen bg-red-100' value={input} onChange={(e)=>setInput(e.target.value)}/>} */}
-                    { <Markdown className="p-5 " components={MarkComponent} remarkPlugins={[gfm]} >{model?.mark_down}</Markdown>}
+                    { <Markdown className="mx-auto" components={MarkComponent} remarkPlugins={[gfm]} >{model?.mark_down}</Markdown>}
                 </span>
                 
                 

@@ -18,7 +18,7 @@ import {
       (name, value) => {
         const params = new URLSearchParams(searchParams)
         params.set(name, value)
-        
+        params.set('page',1);
         return params.toString()
       },
       [searchParams]
@@ -26,7 +26,7 @@ import {
     useEffect(()=>{  
         if(!select)return;  
         router.push(pathname + '?' + createQueryString('sort', select))
-        console.log(select);
+        // console.log(select);
     },[select])
     return(
     <Select onValueChange={(value)=>setSelect(value)}>

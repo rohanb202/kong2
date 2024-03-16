@@ -19,7 +19,7 @@ export default function PaginationElement({page,totalDoc,perPage}) {
   useEffect(()=>{    
     if(!select)return;
     router.push(pathname + '?' + createQueryString('page', select))
-    console.log(select);
+    // console.log(select);
   },[select])
     // Get a new searchParams string by merging the current
   // searchParams with a provided key/value pair
@@ -36,7 +36,8 @@ export default function PaginationElement({page,totalDoc,perPage}) {
 
 
   let prevPage=page-1>0?page-1:1;  
-  const totalPages=Math.ceil(totalDoc/perPage);
+  let totalPages=Math.ceil(totalDoc/perPage);
+  totalPages=!totalPages?1:totalPages;
   let nextPage=totalPages<=page+1?totalPages:page+1;
   // console.log(page);
   const generatePageNumbers = () => {
@@ -49,6 +50,7 @@ export default function PaginationElement({page,totalDoc,perPage}) {
     
     return pageNumbers;
   };
+  // console.log(totalPages);
     return (
       <Pagination>
         <PaginationContent className="cursor-pointer">
@@ -63,7 +65,7 @@ export default function PaginationElement({page,totalDoc,perPage}) {
             <PaginationEllipsis />
           </PaginationItem>:null}
           {
-            generatePageNumbers().map((pageNumber)=>(
+            generatePageNumbers()?.map((pageNumber)=>(
               
               <PaginationItem  key={pageNumber}>
                   <PaginationLink className={`${page==pageNumber?"bg-neutral-100 rounded-md":""}`} onClick={()=>{setSelect(pageNumber)}} >

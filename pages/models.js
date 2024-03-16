@@ -6,7 +6,8 @@ import ModelCard from '@/components/ModelCard';
 import Navbar from '@/components/Navbar';
 import Sort from '@/components/Sort';
 import PaginationElement from '@/components/PaginationElement';
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useCallback } from 'react';
+import useDebounce from '@/utils/UseDebounce';
 // const Models = Array.from({ length: 50 }, (_, index) => ({
 //     id: index + 1,
 //     text: `Item ${index + 1}`,
@@ -29,17 +30,80 @@ export default function models() {
     page=(!page||page<1)?1:page;
     let perPage=1;
 
-    const [models,setModels]=useState({items:[],count:0});
+    const [models,setModels]=useState({items:[],count:0});    
+    const [searchTerm, setSearchTerm] = useState(null);    
     async function fetchModels(){
-        const res=await fetch(`/api/models?page=${page}`);
-        const data=await res.json();
-        setModels(data);
+      let params = new URLSearchParams(router.query).toString(); 
+      // if(params){
+      //   params=params+'&';
+      // }
+      console.log(`/api/models?${params}`);
+      const res=await fetch(`/api/models?${params}`);
+      const data=await res.json();
+      setModels(data);
     }
-    useEffect(()=>{
-        console.log(router.query);
-        fetchModels();
-        console.log(models);
+    const pathname=router.pathname;
+    const searchParams=router.query;
+    const createQueryString = useCallback(
+      (name, value) => {
+        const params = new URLSearchParams(searchParams)
+        // for (const [name1, value] of params.entries()) {
+        //   if (value === '') {
+        //     params.delete(name1);
+        //   }
+        // }
+        params.set(name, value)
+        params.set('page',1);
+        return params.toString()
+      },
+      [searchTerm]
+    )
+    
+    // async function GlobalSearch(){
+    //   const res=await fetch(`/api/models?search=${searchTerm}`);
+    //   const data=await res.json();
+    //   setFilteredDocuments(data);
+      
+    // }
+    const removeQueryParam = useCallback(
+      (name) => {
+          const params = new URLSearchParams(searchParams);
+          if(params.has(name)){
+            params.delete(name);
+          }
+          
+          return params.toString();
+      },
+      []
+    );
+    useEffect(()=>{ 
+        
+        // console.log(params); 
+        // console.log(router.query);
+        fetchModels();        
     },[router.query])
+    // useEffect(()=>{ 
+    //   if(searchTerm===null){
+    //     console.log(removeQueryParam('seacrh'));
+    //   }
+    //   console.log(searchTerm);
+      
+    // },[searchTerm])
+    useDebounce(() => {
+      if(searchTerm===null){
+        // router.push(pathname + '?' + removeQueryParam('seacrh'));
+        
+        return;
+      }
+      // GlobalSearch();
+      router.push(pathname + '?' + createQueryString('search', searchTerm));
+      
+      }, [searchTerm], 800
+    );
+    const handleChange = (event) => {      
+      setSearchTerm(event.target.value);
+    }
+    
   return (
     <>
     <Navbar/>
@@ -49,27 +113,31 @@ export default function models() {
             <Filter/>
         </div>
         <div className="h-screen border-l border-gray-400 border-1"></div>
-        <div className="lg:w-[70%] w-full p-4 flex-col flex px-10 pt-6  backdrop-blur-xl">
-            <div className="flex items-center justify-between ">
-              <div className="flex items-center space-x-3">
-                <h2>Models</h2>
-                <h2>548,548</h2>
+        <div className="lg:w-[70%] items-center w-full p-4 flex-col  flex px-10 pt-6 ">
+            <div className="flex flex-col items-center justify-between w-full space-x-10 space-y-5 md:space-y-0 md:flex-row ">
+              <div className="flex flex-col items-start justify-between w-full space-y-5 md:items-center md:space-y-0 md:flex-row">
+                <div className='flex items-center justify-center gap-2'>
+                  <h2 className='font-semibold'>Models</h2>
+                  <h2 className='font-bold text-black/60'>{models?.count}</h2>
+                </div>
                 
-                <Input className="bg-slate-100" type="text" placeholder="Filter by name" />
-              </div>  
-             
-              <div >            
+                
+                <Input value={searchTerm} onChange={handleChange} className="w-80 bg-slate-100" type="text" placeholder="Filter by name" />
                 <Sort/>
-              </div> 
+              </div>  
+              
+              
             </div>
-            <div className="flex flex-wrap items-center pt-6 ">
-            {models?.items?.map((data)=>(
-                
-              <ModelCard key={data._id} ModelData={data}/>
-            ))}
+            <div className="flex flex-wrap items-center w-full pt-6 md:flex-start ">
+              { models?.items?.map((data)=>(
+                  
+                <ModelCard key={data._id} ModelData={data}/>
+              ))}
+              
+            
             <div className="flex justify-center w-full p-8">
                 
-              <PaginationElement  page={page} totalDoc={50} perPage={perPage}/>
+              <PaginationElement  page={page} totalDoc={models?.count} perPage={perPage}/>
             </div>
             </div>
         </div>
