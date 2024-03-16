@@ -1,6 +1,6 @@
 import React from 'react'
-import { useRouter as UseRouter } from "next/router";
-// import { useState as UseState,useEffect as UseEffect,useCallback as UseCallback } from 'react';
+import { useRouter  } from "next/router";
+import { useState,useEffect,useCallback} from 'react';
 import Filter from '@/components/Filter';
 import { Input } from '@/components/ui/input';
 import ModelCard from '@/components/ModelCard';
@@ -8,7 +8,7 @@ import Navbar from '@/components/Navbar';
 import Sort from '@/components/Sort';
 import PaginationElement from '@/components/PaginationElement';
 
-import UseDebounce from '@/utils/UseDebounce';
+import useDebounce from '@/utils/UseDebounce';
 // const Models = Array.from({ length: 50 }, (_, index) => ({
 //     id: index + 1,
 //     text: `Item ${index + 1}`,
@@ -26,13 +26,13 @@ import UseDebounce from '@/utils/UseDebounce';
 //     }
 // }
 export default function Models() {
-    const router = UseRouter();
+    const router = useRouter();
     let page=parseInt(router.query.page,10);
     page=(!page||page<1)?1:page;
     let perPage=1;
 
-    const [models,setModels]=UseState({items:[],count:0});    
-    const [searchTerm, setSearchTerm] = React.useState(null);    
+    const [models,setModels]=useState({items:[],count:0});    
+    const [searchTerm, setSearchTerm] = useState(null);    
     async function fetchModels(){
       let params = new URLSearchParams(router.query).toString(); 
       // if(params){
@@ -45,7 +45,7 @@ export default function Models() {
     }
     const pathname=router.pathname;
     const searchParams=router.query;
-    const createQueryString = React.useCallback(
+    const createQueryString = useCallback(
       (name, value) => {
         const params = new URLSearchParams(searchParams)
         // for (const [name1, value] of params.entries()) {
@@ -77,20 +77,20 @@ export default function Models() {
     //   },
     //   []
     // );
-    UseEffect(()=>{ 
+    useEffect(()=>{ 
         
         // console.log(params); 
         // console.log(router.query);
         fetchModels();        
     },[router.query])
-    // UseEffect(()=>{ 
+    // useEffect(()=>{ 
     //   if(searchTerm===null){
     //     console.log(removeQueryParam('seacrh'));
     //   }
     //   console.log(searchTerm);
       
     // },[searchTerm])
-    UseDebounce(() => {
+    useDebounce(() => {
       if(searchTerm===null){
         // router.push(pathname + '?' + removeQueryParam('seacrh'));
         
