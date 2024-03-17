@@ -46,23 +46,23 @@ export default function Carousel() {
             <div>
                 <h3 data-aos="zoom-out-right" data-aos-duration="500" className='mx-5 text-3xl font-bold md:text-5xl'>Our Open Source</h3>
             </div>
-            <div className='flex justify-center w-screen my-10 space-x-10 '>
+            <div className='flex justify-center w-screen my-10 space-x-10 text-white '>
                 
-                <div className='w-96 shrink-0 rounded-3xl h-60 bg-slate-300 panel'></div>
-                <SlideCard img={smile} color={`bg-amber-200`} title={`Transformers`} desc={`State-of-the-art ML for
+                <div className='w-96 shrink-0 rounded-3xl h-60 backdrop-blur-sm bg-gradient-to-l from-slate-700 to-slate-900 panel'></div>
+                <SlideCard img={smile} color={`backdrop-blur-sm bg-gradient-to-l from-amber-700 to-amber-900 `} title={`Transformers`} desc={`State-of-the-art ML for
 Pytorch, TensorFlow, and
 JAX.`}/>
 
-                <SlideCard color={`bg-sky-200`} img={smile} title={`Diffusers`} desc={`State-of-the-art diffusion
+                <SlideCard color={`backdrop-blur-sm bg-gradient-to-l from-sky-700 to-sky-900`} img={smile} title={`Diffusers`} desc={`State-of-the-art diffusion
 models for image and audio
 generation in PyTorch.`}/>
-                <SlideCard rot={1} img={smile} color={`bg-fuchsia-200`} title={`Timm`} desc={`State-of-the-art computer
+                <SlideCard rot={1} img={smile} color={` backdrop-blur-sm bg-gradient-to-l from-fuchsia-700 to-fuchsia-900`} title={`Timm`} desc={`State-of-the-art computer
 vision models, layers,
 optimizers,
 training/evaluation, and
 utilities.`}/>
 
-                <SlideCard color={`bg-green-200`} img={smile} title={`PEFT`} desc={`Parameter efficient
+                <SlideCard color={`backdrop-blur-sm bg-gradient-to-l from-green-700 to-green-900`} img={smile} title={`PEFT`} desc={`Parameter efficient
 finetuning methods for large
 models.`}/>
             </div>

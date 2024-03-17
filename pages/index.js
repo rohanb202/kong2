@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Carousel from "@/components/Carousel";
 import InnerSec from "@/components/InnerSec";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,6 +15,7 @@ export default function Home() {
       <Hero/>
       <Carousel/>
       <InnerSec/>
+      <Footer/>
 
     </div>
   );
