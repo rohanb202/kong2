@@ -18,13 +18,13 @@ export default function InnerSec() {
                 <div className='px-5 py-10 bg-white rounded-t-xl'>
                     <span className='text-xl font-bold xl:text-2xl'>About</span>
                     <h1 className='text-lg xl:text-xl '>
-                    a showcase of the finest, most esteemed AI models within our community. As AI enthusiasts, researchers, and practitioners, we understand the value of recognizing excellence. That's why we've curated this collection, highlighting models that have garnered admiration, acclaim, and trust from our discerning users.
+                   {` a showcase of the finest, most esteemed AI models within our community. As AI enthusiasts, researchers, and practitioners, we understand the value of recognizing excellence. That's why we've curated this collection, highlighting models that have garnered admiration, acclaim, and trust from our discerning users.`}
                     </h1>
                 </div>
                 <div className='px-5 py-10 rounded-b-xl bg-orange-50'>
                     <span className='text-xl font-bold md:text-2xl'>Product</span>
                     <h1 className='text-lg xl:text-xl'>                    
-                    Join us in celebrating excellence, fostering inspiration, and recognizing the remarkable achievements of the AI models that have captured our collective admiration. Welcome to "Most Loved Models" – where brilliance shines brightly, and the future of AI is showcased for all to see.
+                        {`Join us in celebrating excellence, fostering inspiration, and recognizing the remarkable achievements of the AI models that have captured our collective admiration. Welcome to "Most Loved Models" – where brilliance shines brightly, and the future of AI is showcased for all to see.`}
                     </h1>
                 </div>
             </div>
@@ -33,27 +33,27 @@ export default function InnerSec() {
                 <div className='px-5 py-10 bg-white rounded-xl'>
                     <span className='text-xl font-bold'>About</span>
                     <h1 className='text-lg '>
-                    At ahead our goal is to make self-
+                    {`At ahead our goal is to make self-
                     improvement fun and lasting. We know there's
                     a way how to make it work. And that's what
-                    aHead is all about!
+                    aHead is all about!`}
                     </h1>
                 </div>
                 <div className='px-5 py-10 bg-white rounded-xl'>
                     <span className='text-xl font-bold'>Product</span>
                     <h1 className='text-lg'>                    
-                        Sure, you could spend ages reading books or
+                        {`Sure, you could spend ages reading books or
                         sitting in seminars on how to become a better
-                        spouse, parent, or manager - like we did...
+                        spouse, parent, or manager - like we did...`}
                     </h1>
                 </div>
                 <div className='px-5 py-10 bg-white rounded-xl'>
                     <span className='text-xl font-bold'>About</span>
                     <h1 className='text-lg '>
-                    At ahead our goal is to make self-
+                {    `At ahead our goal is to make self-
                     improvement fun and lasting. We know there's
                     a way how to make it work. And that's what
-                    aHead is all about!
+                    aHead is all about!`}
                     </h1>
                 </div>
                 <div className='px-5 py-10 bg-white rounded-xl'>
