@@ -11,7 +11,7 @@ import Navbar from '@/components/Navbar';
 
 export async function getServerSideProps(context){
   
-  const res=await fetch(`https://kong2.vercel.app/api/models/${context.query.id}`);
+  const res=await fetch(`${process.env.local?process.env.local:"https://kong2.vercel.app"}/api/models/${context.query.id}`);
   const data=await res.json();
   return {
     props:{
