@@ -60,25 +60,7 @@ export default function InnerSec() {
                         </div>
                     </Link>
                 ))}
-                {models?.map((ModelData)=>(
-                    <Link key={ModelData._id} href={`/${ModelData.author}/${ModelData._id}`}>
-                        <div className='px-5 py-10 bg-white rounded-xl'>
-                            <span className='text-xl font-bold'>{ModelData.author}/{ModelData.title}</span>
-                            <div  className='flex items-center justify-start space-x-1 text-xs md:space-x-3'>
-                                <h3>{ModelData?.tags[0]}</h3>
-                                <h3>Updated-5 hours ago</h3>
-                                <div className='flex'>
-                                    <ArrowDownTrayIcon className='w-3'/>
-                                    <h3 className=''>{ModelData.stars}</h3>
-                                </div>
-                                <div className='flex'>
-                                    <HeartIcon className='w-3'/>
-                                    <h3>{ModelData.likes}</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </Link>
-                ))}
+                
                 {/* <div className='px-5 py-10 bg-white rounded-xl'>
                     <span className='text-xl font-bold'>About</span>
                     <h1 className='text-lg '>

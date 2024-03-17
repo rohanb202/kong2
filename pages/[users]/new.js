@@ -56,10 +56,25 @@ export default function New() {
         watch,
         formState: { errors },
       } = useForm()
-      async function onSubmit(data){
-        console.log(data);
-        console.log(selectedTags);
-      }
+    async function onSubmit(data){
+        //to post a task
+        const response = await fetch(`/api/models/new`, {
+        method: "POST",
+        body: JSON.stringify({
+          author: "JohnDoe",
+          title: data.title,
+          mark_down: data.mark_down,
+          tags: selectedTags,          
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        //   Authorization: `Bearer ${user.token}`,
+        },
+      });
+      console.log(await response);
+  
+    }
+    
     useEffect(()=>{
         // console.log(selectedTags);
     },[selectedTags])
