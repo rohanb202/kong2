@@ -20,10 +20,10 @@ export default function Navbar() {
     <>
     <div className="flex items-center justify-between p-4 space-x-2 border-b-2 ">
         <div className="flex items-center content-center justify-center space-x-10">
-            <div className="text-xl">
-            <Link href="/">
-                Kong
-            </Link>
+            <div className="text-xl font-bold">
+                <Link href="/">
+                    Kong
+                </Link>
             </div>            
             <div className="hidden w-full max-w-sm md:block">                
                 <SearchBox/>

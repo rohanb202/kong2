@@ -1,6 +1,18 @@
 import React from 'react'
-import {HeartIcon } from '@heroicons/react/24/solid'
+import { useState,useEffect } from 'react'
+import {HeartIcon,ArrowDownTrayIcon } from '@heroicons/react/24/solid'
+import Link from 'next/link';
 export default function InnerSec() {
+    const [models,setModels]=useState([]); 
+    async function fetchModels(){        
+        const res=await fetch(`/api/models/mostLoved`);
+        const data=await res.json();
+        setModels(data);
+      }
+    useEffect(()=>{      
+        
+        fetchModels();        
+    },[setModels]);
   return (
     <section className='mx-5 my-6 md:mx-10 rounded-3xl backdrop-blur-sm bg-gradient-to-l from-cyan-700 to-slate-900'>
         <div className='flex items-center justify-between p-8 text-2xl font-bold md:p-20 md:text-6xl'>
@@ -29,8 +41,45 @@ export default function InnerSec() {
                 </div>
             </div>
             <div className='flex flex-col md:w-2/4 space-y-10 overflow-y-auto h-[30rem] mt-10 md:mt-0 md:p-10 mb-10 secScroll'>
-                
-                <div className='px-5 py-10 bg-white rounded-xl'>
+                {models?.map((ModelData)=>(
+                    <Link key={ModelData._id} href={`/${ModelData.author}/${ModelData._id}`}>
+                        <div className='px-5 py-10 bg-white rounded-xl'>
+                            <span className='text-xl font-bold'>{ModelData.author}/{ModelData.title}</span>
+                            <div  className='flex items-center justify-start space-x-1 text-xs md:space-x-3'>
+                                <h3>{ModelData?.tags[0]}</h3>
+                                <h3>Updated-5 hours ago</h3>
+                                <div className='flex'>
+                                    <ArrowDownTrayIcon className='w-3'/>
+                                    <h3 className=''>{ModelData.stars}</h3>
+                                </div>
+                                <div className='flex'>
+                                    <HeartIcon className='w-3'/>
+                                    <h3>{ModelData.likes}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </Link>
+                ))}
+                {models?.map((ModelData)=>(
+                    <Link key={ModelData._id} href={`/${ModelData.author}/${ModelData._id}`}>
+                        <div className='px-5 py-10 bg-white rounded-xl'>
+                            <span className='text-xl font-bold'>{ModelData.author}/{ModelData.title}</span>
+                            <div  className='flex items-center justify-start space-x-1 text-xs md:space-x-3'>
+                                <h3>{ModelData?.tags[0]}</h3>
+                                <h3>Updated-5 hours ago</h3>
+                                <div className='flex'>
+                                    <ArrowDownTrayIcon className='w-3'/>
+                                    <h3 className=''>{ModelData.stars}</h3>
+                                </div>
+                                <div className='flex'>
+                                    <HeartIcon className='w-3'/>
+                                    <h3>{ModelData.likes}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </Link>
+                ))}
+                {/* <div className='px-5 py-10 bg-white rounded-xl'>
                     <span className='text-xl font-bold'>About</span>
                     <h1 className='text-lg '>
                     {`At ahead our goal is to make self-
@@ -63,7 +112,7 @@ export default function InnerSec() {
                         sitting in seminars on how to become a better
                         spouse, parent, or manager - like we did...`}
                     </h1>
-                </div>
+                </div> */}
             </div>
             
         </div>
