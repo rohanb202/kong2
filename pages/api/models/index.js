@@ -29,7 +29,7 @@ export default async function handler(req, res) {
               // Execute the query
             // const items = await db.collection("models").find(query).toArray();
             const items=await db.collection("models").find(query).sort({[sort]:sortOrder}).skip(perPage*(page-1)).limit(perPage).toArray();
-            const count=await db.collection("models").find(query).count();
+            const count=await db.collection("models").countDocuments(query);
             res.status(200).json({items,count});
         }catch(err){
             res.status(400).json({ error: err.message });

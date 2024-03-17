@@ -7,7 +7,18 @@ export default async function handler(req, res) {
     }
     // console.log(tag);
     const { body, method } = req;
-    if(method==="GET"){
+    if(method==="GET" && tag==="all"){
+        try{
+            const client=await connectToDatabase();
+            const db=client.db("kong_face");
+            const items=await db.collection("categories").find({}).toArray();
+            // const count=await db.collection("models").countDocuments();
+            res.status(200).json(items);
+        }catch(err){
+            res.status(400).json({ error: err.message });
+        }
+    }
+    else if(method==="GET"){
         try{
             const client=await connectToDatabase();
             const db=client.db("kong_face");

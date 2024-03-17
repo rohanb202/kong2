@@ -41,16 +41,7 @@ export default function Filter() {
       },
       []
     )
-    const removeQueryParam = UseCallback(
-        (name) => {
-            const params = new URLSearchParams(searchParams);
-            if(params.has(name)){
-              params.delete(name);
-            }
-            return params.toString();
-        },
-        []
-    );
+    
     const [searchTerm, setSearchTerm] = UseState('');    
     UseDebounce(() => {
       
