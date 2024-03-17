@@ -7,8 +7,19 @@ import ModelCard from '@/components/ModelCard';
 import Navbar from '@/components/Navbar';
 import Sort from '@/components/Sort';
 import PaginationElement from '@/components/PaginationElement';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 import useDebounce from '@/utils/UseDebounce';
+import { Button } from '@/components/ui/button';
 // const Models = Array.from({ length: 50 }, (_, index) => ({
 //     id: index + 1,
 //     text: `Item ${index + 1}`,
@@ -113,6 +124,7 @@ export default function Models() {
         <div className="w-[30%] lg:block hidden pt-6 p-4  ">
             <Filter/>
         </div>
+        
         <div className="h-screen border-l border-gray-400 border-1"></div>
         <div className="lg:w-[70%] items-center w-full p-4 flex-col  flex px-10 pt-6 ">
             <div className="flex flex-col items-center justify-between w-full space-x-10 space-y-5 md:space-y-0 md:flex-row ">
@@ -125,9 +137,19 @@ export default function Models() {
                 
                 <Input value={searchTerm} onChange={handleChange} className="w-80 bg-slate-100" type="text" placeholder="Filter by name" />
                 <Sort/>
+                <div className=' lg:hidden'>
+                  <Dialog className="">
+                    <DialogTrigger asChild>          
+                      <Button variant="outline">Filter</Button>
+                    </DialogTrigger>
+                    <DialogContent className="rounded-lg ">
+                      <Filter/>
+                      </DialogContent>            
+                  </Dialog>
+              </div>
               </div>  
               
-              
+            
             </div>
             <div className="flex flex-wrap items-center w-full pt-6 md:flex-start ">
               { models?.items?.map((data)=>(
