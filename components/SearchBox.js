@@ -1,7 +1,7 @@
 
 
-import { useRouter as UseRouter } from "next/router";
-import { useState as UseState,useEffect as UseEffect,useCallback as UseCallback } from 'react';
+import { useRouter } from "next/router";
+import { useState ,useEffect ,useCallback} from 'react';
 import { Check, ChevronsUpDown } from "lucide-react"
 import {Link} from "next/link";
 import { cn } from "@/lib/utils"
@@ -13,6 +13,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+  
 } from "@/components/ui/command"
 import {
   Popover,
@@ -20,39 +21,53 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Input } from "./ui/input"
-import UseDebounce from "@/utils/UseDebounce"
+import useDebounce from "@/utils/UseDebounce"
+import ClipLoader from "react-spinners/ClipLoader";
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 
 
 
 export default function SearchBox() {
-  const [open, setOpen] = UseState(false)
-  const [value, setValue] = UseState("")
-  const [filteredDocuments, setFilteredDocuments] = UseState({items:[]});
-  const router=UseRouter();
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState("")
+  const [filteredDocuments, setFilteredDocuments] = useState({items:[]});
+  const [loading,setLoading]=useState(false);
+  const router=useRouter();
   const pathname = router.pathname
-  const [searchTerm, setSearchTerm] = UseState('');   
-  const handleChange = (event) => {      
+  const [searchTerm, setSearchTerm] = useState('');   
+  const handleChange = (event) => {  
+    setLoading(true);    
     setSearchTerm(event.target.value);
   }
     async function GlobalSearch(){
-        const res=await fetch(`/api/models?search=${searchTerm}`);
+      try{
+        
+        const res=await fetch(`/api/models?search=${searchTerm}&doc=all`);
         const data=await res.json();
         setFilteredDocuments(data);
+
+      }catch(e){
+
+      }finally{
+        setLoading(false);
+      }
+        
     }
     
-    UseDebounce(() => {
+    useDebounce(() => {
         if(!searchTerm){
             setFilteredDocuments({items: []});
             return;
         }
+
         GlobalSearch(); 
         // console.log(searchTerm);
         // console.log(filteredDocuments);
              
       }, [searchTerm], 800
     );
-  UseEffect(()=>{
+  useEffect(()=>{
     // console.log(pathname);
     if(!value) return;
     router.push(`/${value}`);
@@ -74,9 +89,18 @@ export default function SearchBox() {
       <PopoverContent className="p-0 md:w-80">
         <Command>
          
-          <Input className="border-0 ring-0" value={searchTerm} onChange={handleChange}   placeholder="Search Models..."/>
+          <Input className="border-0 ring-0" value={searchTerm} onChange={handleChange}   placeholder="..."/>
           
-          {searchTerm && <CommandEmpty>No models found.</CommandEmpty>}
+          {searchTerm && !loading && <CommandEmpty>No models found.</CommandEmpty>}
+          {searchTerm && loading && <CommandEmpty><ClipLoader
+                    
+                    loading={loading}
+                    
+                    size={40}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                  /> </CommandEmpty> }
+        <ScrollArea className="h-60">
           <CommandGroup>
             {filteredDocuments?.items?.map((data) => (
                 
@@ -104,7 +128,9 @@ export default function SearchBox() {
               </CommandList>
               
             ))}
+            
           </CommandGroup>
+          </ScrollArea>
         </Command>
       </PopoverContent>
     </Popover>

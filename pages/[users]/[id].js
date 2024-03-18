@@ -87,10 +87,10 @@ export default function ModelView({model}) {
         
   //   },[router.query]);
   //   useEffect(()=>{
-  //     console.log(metadataParser((model?.mark_down?model?.mark_down:"")));
+      // console.log(metadataParser((model?.mark_down?model?.mark_down:"")));
       
   //   },[model])
-  // console.log(metadata);
+  console.log(metadataParser((model?.mark_down?model?.mark_down:"")).metadata);
   return (
     <div>
       <Navbar/>
