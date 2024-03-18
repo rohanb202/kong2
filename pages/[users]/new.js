@@ -2,11 +2,12 @@ import Navbar from "@/components/Navbar";
 import { useForm } from "react-hook-form"
 import Markdown from 'react-markdown'
 import gfm from 'remark-gfm';
-import SyntaxHighlighter from 'react-syntax-highlighter';
+// import SyntaxHighlighter from 'react-syntax-highlighter';
 import { useState,useEffect } from 'react';
 import { useRecoilState } from "recoil";
 import { userState } from "@/atoms/userAtom";
 import { useRouter } from "next/router"; 
+
 
 // const MarkComponent = ({value,language}) => {
   
@@ -145,12 +146,12 @@ export default function New() {
                             {selectedTags.map((tag, index) => (
                             <div key={index} className="flex items-center p-1 text-white rounded-md bg-slate-800">
                                 <span className="mr-2">{tag}</span>
-                                <button type="button" onClick={() => removeTag(tag)}>&times;</button>
+                                <button type="button" onClick={(e) => {e.preventDefault(); removeTag(tag)}}>&times;</button>
                             </div>
                             ))}
                     </div>
                     <button
-                        onClick={toggleDropdown}
+                        onClick={(e)=>{e.preventDefault(); toggleDropdown()}}
                         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         type="button"
                     >
@@ -178,7 +179,8 @@ export default function New() {
                         {tags?.map((tag) => (
                         <li key={tag._id}>
                             <button
-                            onClick={() => addTag(tag.title)}
+                            type="button"
+                            onClick={(e) => {e.preventDefault(); addTag(tag.title)}}
                             className="block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                             >
                             {tag.title}
@@ -195,7 +197,7 @@ export default function New() {
                         <div className="flex items-center justify-between py-5">
                             <h1 for="text" className="block text-base font-medium text-gray-900 dark:text-white">Markdown</h1>
                             
-                            <button onClick={()=>{setEdit(!edit)}} className='w-20 p-1 text-white bg-black rounded-md'>{edit?"Save":"Edit"}</button>
+                            <button onClick={(e)=>{e.preventDefault();setEdit(!edit)}} className='w-20 p-1 text-white bg-black rounded-md'>{edit?"Save":"Edit"}</button>
                         
                         </div>
                         <span className="prose ">

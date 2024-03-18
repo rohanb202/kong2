@@ -8,18 +8,53 @@ import CategoryButton from '@/components/CategoryButton';
 import { useState,useEffect } from 'react';
 import { useRouter } from "next/router";
 import Navbar from '@/components/Navbar';
+import metadataParser from 'markdown-yaml-metadata-parser';
+// export async function getServerSideProps(context){
 
 export async function getServerSideProps(context){
-  
-  const res=await fetch(`${process.env.local?process.env.local:"https://kong2.vercel.app"}/api/models/${context.query.id}`);
-  const data=await res.json();
-  return {
-    props:{
-      model:data,
+  try{
+    const res=await fetch(`${process.env.local?process.env.local:"https://kong2.vercel.app"}/api/models/${context.query.id}`);
+    const data=await res.json();
+    return {
+      props:{
+        model:data,
+      }
+    }
+  }catch(e){
+    console.error("Error fetching data:", error);
+    return {
+      props:{
+        model:null,
+      }
     }
   }
+  
+  
 }
+// function extractMetaData(text) {
+//   const metaData = {};
+//   if(!text){
+//     return {content:null, metadata:null};
+//   }
+//   const metaRegExp = /^---[\r\n](((?!---).|[\r\n])*)[\r\n]---$/m;
+//   // get metadata
+//   const rawMetaData = metaRegExp.exec(text);
 
+//   let keyValues;
+
+//   if (rawMetaData) {
+//     // rawMeta[1] are the stuff between "---"
+//     keyValues = rawMetaData[1].split("\n");
+
+//     // which returns a list of key values: ["key1: value", "key2: value"]
+//     keyValues.forEach((keyValue) => {
+//       // split each keyValue to keys and values
+//       const [key, value] = keyValue.split(":");
+//       metaData[key] = value?.trim();
+//     });
+//   }
+//   return {content:rawMetaData, metaData};
+// }
 const MarkComponent = ({value,language}) => {
   
   return (
@@ -39,14 +74,23 @@ export default function ModelView({model}) {
   //       const data=await res.json();
   //       setModel(data);
   //   }
+    
   //   useEffect(()=>{
   //       if(!router.query.id)return;
   //       console.log(router.query);
   //       console.log(`/api/models/${router.query.id}`);
   //       fetchModel();
+        
+  //       // metadataParser((model?.mark_down?model?.mark_down:"")).content
+  //       // console.log(extractMetaData(model?.mark_down));
   //       // console.log(model);
         
   //   },[router.query]);
+  //   useEffect(()=>{
+  //     console.log(metadataParser((model?.mark_down?model?.mark_down:"")));
+      
+  //   },[model])
+  // console.log(metadata);
   return (
     <div>
       <Navbar/>
@@ -88,7 +132,7 @@ export default function ModelView({model}) {
                 <span className='prose-sm prose md:prose-lg'>
                     {/* {!edit && <Markdown className='p-5 ' remarkPlugins={[gfm]}>{input}</Markdown>} 
                     {edit && <textarea className='w-full h-screen bg-red-100' value={input} onChange={(e)=>setInput(e.target.value)}/>} */}
-                    { <Markdown className="mx-auto" components={MarkComponent} remarkPlugins={[gfm]} >{model?.mark_down}</Markdown>}
+                    { <Markdown className="mx-auto" components={MarkComponent} remarkPlugins={[gfm]} >{metadataParser((model?.mark_down?model?.mark_down:"")).content}</Markdown>}
                 </span>
                 
                 

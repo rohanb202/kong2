@@ -2,12 +2,23 @@ import React from 'react'
 import { useState,useEffect } from 'react'
 import {HeartIcon,ArrowDownTrayIcon } from '@heroicons/react/24/solid'
 import Link from 'next/link';
+import ClipLoader from "react-spinners/ClipLoader";
 export default function InnerSec() {
     const [models,setModels]=useState([]); 
-    async function fetchModels(){        
-        const res=await fetch(`/api/models/mostLoved`);
-        const data=await res.json();
-        setModels(data);
+    const [loading,setLoading]=useState(false); 
+
+    async function fetchModels(){    
+        setLoading(true);
+        try{
+            const res=await fetch(`/api/models/mostLoved`);
+            const data=await res.json();
+            setModels(data);
+        }catch(err){
+
+        }finally{
+            setLoading(false);
+        }  
+        
       }
     useEffect(()=>{      
         
@@ -15,7 +26,7 @@ export default function InnerSec() {
     },[setModels]);
   return (
     <section className='mx-5 my-6 md:mx-10 rounded-3xl backdrop-blur-sm bg-gradient-to-l from-cyan-700 to-slate-900'>
-        <div className='flex items-center justify-between p-8 text-2xl font-bold md:p-20 md:text-6xl'>
+        <div className='flex items-center justify-center p-8 text-2xl font-bold md:justify-between md:p-20 md:text-6xl'>
             <div data-aos="zoom-out-right" data-aos-duration="500" className='flex items-center text-white' >
                 <h1>Most Loved</h1>
                 <HeartIcon className='w-16 md:w-24'/>
@@ -41,7 +52,18 @@ export default function InnerSec() {
                 </div>
             </div>
             <div className='flex flex-col md:w-2/4 space-y-10 overflow-y-auto h-[30rem] mt-10 md:mt-0 md:p-10 mb-10 secScroll'>
-                {models?.map((ModelData)=>(
+                { loading &&  <div className='flex justify-center w-full p-10'>
+                <ClipLoader
+                        
+                        loading={loading}
+                        
+                        size={100}
+                        aria-label="Loading Spinner"
+                        data-testid="loader"
+                    />
+                    
+                </div>}
+                {!loading && models?.map((ModelData)=>(
                     <Link key={ModelData._id} href={`/${ModelData.author}/${ModelData._id}`}>
                         <div className='px-5 py-10 bg-white rounded-xl'>
                             <span className='text-xl font-bold'>{ModelData.author}/{ModelData.title}</span>
