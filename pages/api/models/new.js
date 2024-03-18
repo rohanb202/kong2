@@ -1,5 +1,6 @@
 import { connectToDatabase } from "@/utils/connectDB";
-export default async function handler(req, res) {
+import { protect } from "@/middleware/authMiddleware";
+ async function handler(req, res) {
     const { method, body } = req;
     if (method === "POST") {
         try {
@@ -28,4 +29,4 @@ export default async function handler(req, res) {
         }
       }
 }
-
+export default protect(handler);

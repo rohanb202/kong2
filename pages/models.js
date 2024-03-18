@@ -10,14 +10,11 @@ import PaginationElement from '@/components/PaginationElement';
 import {
   Dialog,
   DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+  DialogContent, 
   DialogTrigger,
 } from "@/components/ui/dialog"
-
+import ClipLoader from "react-spinners/ClipLoader";
+import CircleLoader from "react-spinners/CircleLoader";
 import useDebounce from '@/utils/UseDebounce';
 import { Button } from '@/components/ui/button';
 // const Models = Array.from({ length: 50 }, (_, index) => ({
@@ -43,16 +40,25 @@ export default function Models() {
     let perPage=1;
 
     const [models,setModels]=useState({items:[],count:0});    
-    const [searchTerm, setSearchTerm] = useState(null);    
+    const [searchTerm, setSearchTerm] = useState(null); 
+    const [loading, setLoading] = useState(false);   
     async function fetchModels(){
       let params = new URLSearchParams(router.query).toString(); 
       // if(params){
       //   params=params+'&';
       // }
-      console.log(`/api/models?${params}`);
-      const res=await fetch(`/api/models?${params}`);
-      const data=await res.json();
-      setModels(data);
+      setLoading(true);
+      try{
+        console.log(`/api/models?${params}`);
+        const res=await fetch(`/api/models?${params}`);
+        const data=await res.json();
+        setModels(data);
+      }catch(e){
+
+      }finally{
+        setLoading(false);
+      }
+      
     }
     const pathname=router.pathname;
     const searchParams=router.query;
@@ -151,8 +157,19 @@ export default function Models() {
               
             
             </div>
+          { loading &&  <div className='flex p-10'>
+              <ClipLoader
+                    
+                    loading={loading}
+                    
+                    size={40}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                  />
+                  
+            </div>}
             <div className="flex flex-wrap items-center w-full pt-6 md:flex-start ">
-              { models?.items?.map((data)=>(
+              {!loading &&  models?.items?.map((data)=>(
                   
                 <ModelCard key={data._id} ModelData={data}/>
               ))}

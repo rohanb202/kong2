@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { useRouter as UseRouter } from "next/router";
 import { useState as UseState,useEffect as UseEffect,useCallback as UseCallback } from 'react';
 import CategoryButton from "./CategoryButton";
-
+import ClipLoader from "react-spinners/ClipLoader";
 import UseDebounce from "@/utils/UseDebounce";
 // import { useState,useEffect } from "react";
 const Cateogories = Array.from({ length: 50 }, (_, index) => ({
@@ -17,11 +17,20 @@ export default function Filter() {
     const [currentFilter,setCurrentFilter]=UseState("tasks");
     const [tags,setTags]=UseState([]);
     const [filteredSearch, setFilteredSearch] = UseState(tags);
+    const [loading, setLoading] = UseState(false);
     async function fetchTags(){
-        const res=await fetch(`/api/categories?tag=${currentFilter}`);
-        const data=await res.json();
-        setTags(data);
-        setFilteredSearch(data);
+      setLoading(true);
+        try{
+          const res=await fetch(`/api/categories?tag=${currentFilter}`);
+          const data=await res.json();
+          setTags(data);
+          setFilteredSearch(data);
+        }catch(e){
+
+        }finally{
+          setLoading(false);
+        }
+        
     }
     UseEffect(()=>{
         
@@ -89,10 +98,21 @@ export default function Filter() {
             {select && <button onClick={()=>{setSelect(null)}} className="w-20 p-1 m-2 text-xs text-white bg-gray-800 rounded-md text-nowrap">Reset Filter</button>}
         </div>
         <div className="flex flex-wrap justify-start p-4">
-          {filteredSearch?.map((category)=>(
+          {!loading && filteredSearch?.map((category)=>(
             
             <button className={`p-2 m-1 text-xs ${(!select||select===category.title)?"text-white":"text-white/50"} bg-gray-800 rounded-md backdrop-blur-sm `} key={category._id} onClick={()=>{setSelect(category.title)}}>{category.title}</button>
           ))}
+          { loading &&  <div className='flex items-center justify-center w-full p-5'>
+              <ClipLoader
+                    
+                    loading={loading}
+                    
+                    size={40}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                  />
+                  
+            </div>}
           
         </div>
         

@@ -4,51 +4,42 @@ import Markdown from 'react-markdown'
 import gfm from 'remark-gfm';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { useState,useEffect } from 'react';
+import { useRecoilState } from "recoil";
+import { userState } from "@/atoms/userAtom";
+import { useRouter } from "next/router"; 
 
-
-const MarkComponent = ({value,language}) => {
+// const MarkComponent = ({value,language}) => {
   
-    return (
-      <SyntaxHighlighter language={language ?? null} >
-        {value ?? ''}
-      </SyntaxHighlighter>
-  )};
+//     return (
+//       <SyntaxHighlighter language={language ?? null} >
+//         {value ?? ''}
+//       </SyntaxHighlighter>
+//   )};
 
-  const TagInput = ({ tags, selectedTags, addTag, removeTag }) => {
-    return (
-      <div className="flex flex-wrap gap-2">
-        {selectedTags?.map((tag, index) => (
-          <div key={index} className="flex items-center p-1 text-white bg-black rounded-md">
-            <span className="mr-2">{tag}</span>
-            <button type="button" onClick={() => removeTag(tag)}>&times;</button>
-          </div>
-        ))}
-        <select onChange={(e) => addTag(e.target.value)}>
-          <option value="">Choose a tag</option>
-          {tags?.map((tag) => (
-            <option className="py-2 text-sm text-gray-700 dark:text-gray-200" key={tag._id} value={tag.title}>{tag.title}</option>
-          ))}
-        </select>
-        {/* <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">Select Tags <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-            </svg>
-        </button>
-        <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
-                {tags?.map((tag) => (
-                    <li onChange={(e) => addTag(e.target.value)} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" key={tag._id} value={tag.title}>{tag.title}</li>
-                ))}
-            </ul>
-        </div> */}
-
-      </div>
-    );
-  };
+//   const TagInput = ({ tags, selectedTags, addTag, removeTag }) => {
+//     return (
+//       <div className="flex flex-wrap gap-2">
+//         {selectedTags?.map((tag, index) => (
+//           <div key={index} className="flex items-center p-1 text-white bg-black rounded-md">
+//             <span className="mr-2">{tag}</span>
+//             <button type="button" onClick={() => removeTag(tag)}>&times;</button>
+//           </div>
+//         ))}
+//         <select onChange={(e) => addTag(e.target.value)}>
+//           <option value="">Choose a tag</option>
+//           {tags?.map((tag) => (
+//             <option className="py-2 text-sm text-gray-700 dark:text-gray-200" key={tag._id} value={tag.title}>{tag.title}</option>
+//           ))}
+//         </select>
+//       </div>
+//     );
+//   };
   
 export default function New() {
     const [model,setModel]=useState(`## Enter Description Here by Clicking Edit button`);
     const [edit,setEdit]=useState(false);
-    
+    const [user,setUser]=useRecoilState(userState);
+    const router=useRouter();
     const [selectedTags, setSelectedTags] = useState([]);
     const {
         register,
@@ -56,31 +47,47 @@ export default function New() {
         watch,
         formState: { errors },
       } = useForm()
+      const [disableBtn, setDisableBtn] = useState(false);
     async function onSubmit(data){
         //to post a task
-        const response = await fetch(`/api/models/new`, {
-        method: "POST",
-        body: JSON.stringify({
-          author: "JohnDoe",
-          title: data.title,
-          mark_down: data.mark_down,
-          tags: selectedTags,          
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        //   Authorization: `Bearer ${user.token}`,
-        },
-      });
-      console.log(await response);
+        try{
+            setDisableBtn(true);
+            const response = await fetch(`/api/models/new`, {
+            method: "POST",
+            body: JSON.stringify({
+            author: `${user?.name}`,
+            title: data.title,
+            mark_down: data.mark_down,
+            tags: selectedTags,          
+            }),
+            headers: {
+            "Content-Type": "application/json",
+            // Authorization: `Bearer ${user.token}`,
+            },
+            });
+        }catch(e){
+            console.log(e);
+        }finally{
+            setTimeout(() => {
+                setDisableBtn(false);
+              }, 2000);
+        }
+        
+      
+    //   console.log(await response);
   
     }
     
     useEffect(()=>{
-        // console.log(selectedTags);
-    },[selectedTags])
+        if(!user){
+            console.log("can't find user");
+            router.push('/');
+        }
+    },[user])
     
     const [isOpen, setIsOpen] = useState(false);
     const [tags, setTags] = useState([]);
+    
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -105,6 +112,9 @@ export default function New() {
     useEffect(() => {
         fetchTags();           
     }, []); 
+    useEffect(() => {
+        console.log()          
+    }, [disableBtn]);
       
   return (
     
@@ -120,7 +130,7 @@ export default function New() {
                     <div className="flex items-end justify-center mb-5 space-x-5">
                         <div>
                             <label  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Owner</label>
-                            <input type="text" id="text" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder="John Doe" disabled />
+                            <input type="text" id="text" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder={`${user?user.name:"John Doe"}`} disabled />
                         </div>
                         <h1 className="text-3xl">/</h1>
                         <div>
@@ -194,7 +204,7 @@ export default function New() {
                         </span>
                     </div>
                 
-                        <button type="submit" className="text-white my-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create Model</button>
+                        <button disabled={disableBtn} type="submit" className="text-white my-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create Model</button>
                 </form>
                 
             </div>
