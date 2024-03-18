@@ -9,6 +9,7 @@ import { useState,useEffect } from 'react';
 import { useRouter } from "next/router";
 import Navbar from '@/components/Navbar';
 import metadataParser from 'markdown-yaml-metadata-parser';
+import { NextSeo } from 'next-seo';
 // export async function getServerSideProps(context){
 
 export async function getServerSideProps(context){
@@ -67,7 +68,7 @@ const MarkComponent = ({value,language}) => {
 //   text: `Item ${index + 1}`,
 // }));
 export default function ModelView({model}) {
-  // const router = useRouter();
+  const router = useRouter();
   // const [model,setModel]=useState({});
   //   async function fetchModel(){
   //       const res=await fetch(`/api/models/${router.query.id}`);
@@ -90,9 +91,19 @@ export default function ModelView({model}) {
       // console.log(metadataParser((model?.mark_down?model?.mark_down:"")));
       
   //   },[model])
-  console.log(metadataParser((model?.mark_down?model?.mark_down:"")).metadata);
+  // console.log(metadataParser((model?.mark_down?model?.mark_down:"")).metadata);
   return (
     <div>
+      <NextSeo
+            title={`${model.title}`}
+            description={JSON.stringify(metadataParser((model?.mark_down?model?.mark_down:"")).metadata)}
+            openGraph={{
+              type: 'website',
+              locale: 'en_IE',
+              url: `kong2.vercel.app/${model.author}/${model._id}`
+              
+          }}
+      />
       <Navbar/>
         <div className=''>
             <div className="flex items-center gap-2 px-5 pt-4">
