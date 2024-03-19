@@ -18,6 +18,7 @@ export default function Filter() {
     const [tags,setTags]=UseState([]);
     const [filteredSearch, setFilteredSearch] = UseState([]);
     const [loading, setLoading] = UseState(false);
+    const [select,setSelect]=UseState();
     // async function fetchTags(){
     //   setLoading(true);
     //     try{
@@ -64,7 +65,7 @@ export default function Filter() {
     },[currentFilter])
 
     const pathname=router.pathname;
-    const [select,setSelect]=UseState();
+    
     // useEffect(()=>{
     //   console.log(filteredSearch)
     // },[filteredSearch])
@@ -124,6 +125,7 @@ export default function Filter() {
     },[select])
   function tagHandler(e){
     // console.log(e.target.textContent);
+    setSelect(e.target.textContent);
     router.push(pathname + '?' + createQueryString("tag", e.target.textContent))
   }
   return (
