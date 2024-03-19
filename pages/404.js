@@ -1,5 +1,5 @@
 import Navbar from "@/components/Navbar";
-import kong from "../assets/images/kong.png"
+import kong from "../public/assets/images/kong.png"
 import Image from 'next/image'
 export default function Custom404() {
     return (

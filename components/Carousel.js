@@ -3,7 +3,7 @@ import { gsap } from "gsap";
 import { useEffect,useLayoutEffect,useRef } from 'react';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import SlideCard from './SlideCard';
-import smile from "../assets/images/smile.png"
+import smile from "../public/assets/images/smile.png"
 gsap.registerPlugin(ScrollTrigger);
 export default function Carousel() {
     

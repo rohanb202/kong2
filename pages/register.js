@@ -2,7 +2,7 @@ import { useState } from "react";
 import { set, useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import kong from "../assets/images/kong.png"
+import kong from "../public/assets/images/kong.png"
 import Image from "next/image"
 function Register() {
   const {

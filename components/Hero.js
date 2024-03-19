@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React, { useEffect } from 'react'
 // import ip from '../assets/images/ip.png'
-import kong2 from '../assets/images/kong2.webp'
+import kong2 from '../public/assets/images/kong2.webp'
 // import appstore from '../assets/images/appstore.png'
 import {StarIcon} from '@heroicons/react/24/solid'
 

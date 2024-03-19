@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { userState } from "../atoms/userAtom";
 import Head from  "next/head";
-import kong from "../assets/images/kong.png"
+import kong from "../public/assets/images/kong.png"
 import Image from "next/image"
 export default function Login() {
   const {

@@ -1,8 +1,8 @@
 import React from 'react'
 import Image from 'next/image';
 import {MapIcon,EnvelopeIcon} from '@heroicons/react/24/solid'
-import smile from "../assets/images/smile.png"
-import kong from "../assets/images/kong.png"
+// import smile from "../assets/images/smile.png"
+import kong from "../public/assets/images/kong.png"
 
 export default function Footer() {
   return (
