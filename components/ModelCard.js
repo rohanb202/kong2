@@ -13,7 +13,7 @@ export default function ModelCard({ModelData}) {
                 <h3>Updated-5 hours ago</h3>
                 <div className='flex'>
                     <ArrowDownTrayIcon className='w-3'/>
-                    <h3 className=''>{ModelData.stars}</h3>
+                    <h3 className=''>{ModelData.downloads}</h3>
                 </div>
                 <div className='flex'>
                     <HeartIcon className='w-3'/>

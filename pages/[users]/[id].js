@@ -1,4 +1,6 @@
 import { ArrowDownTrayIcon, HeartIcon } from "@heroicons/react/24/outline";
+import {  HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
+
 import Markdown from "react-markdown";
 import gfm from "remark-gfm";
 import SyntaxHighlighter from "react-syntax-highlighter";
@@ -12,9 +14,13 @@ import { NextSeo } from "next-seo";
 import ClipLoader from "react-spinners/ClipLoader";
 // export async function getServerSideProps(context){
 import Link from "next/link";
+import { useRecoilState } from "recoil";
+import { userState } from "@/atoms/userAtom";
+import useDebounce from "@/utils/UseDebounce";
 export async function getServerSideProps(context){
   try{
     const res=await fetch(`${process.env.local?process.env.local:"https://kong2.vercel.app"}/api/models/${context.query.id}`);
+
     const data=await res.json();
     return {
       props:{
@@ -97,7 +103,82 @@ const MarkComponent = ({ value, language }) => {
 //   text: `Item ${index + 1}`,
 // }));
 export default function ModelView({model}) {
-  // const router = useRouter();
+  const router = useRouter();
+  const [likes,setLikes]=useState({});
+  const [likeBtn,setLikeBtn]=useState(null);
+  const [likeCnt,setLikeCnt]=useState(0);
+  const [user,setUser]=useRecoilState(userState);
+  async function getLikes(){
+    try{
+      console.log(`/api/likes?modelId=${model?._id}&userId=${user?._id}`);
+      const res=await fetch(`/api/likes?modelId=${model?._id}&userId=${user?._id}`);
+      const data=await res.json();      
+      setLikes(data);
+      setLikeBtn(data?.liked); 
+      setLikeCnt((data?.totalLikesCount)?data?.totalLikesCount:0);  
+    }catch(err){
+      
+    }
+
+  }
+  async function postLike() {
+    try {
+        const res = await fetch(`/api/likes`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({modelId:model?._id, userId:user?._id })
+        });
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Failed to post like:", error);
+        throw error;
+    }
+  }
+  async function deleteLike() {
+    try {
+        const res = await fetch(`/api/likes?modelId=${model?._id}&userId=${user?._id}`, {
+            method: 'DELETE'
+        });
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Failed to delete like:", error);
+        throw error;
+    }
+}
+  useEffect(()=>{
+    getLikes(); 
+    // setLikeBtn(likes?.liked);  
+    // setLikeCnt((likes?.totalLikesCount)?likes?.totalLikesCount:0);  
+    // console.log(likes);
+    // console.log("hello");
+  },[])
+  function likeBtnHandler(){
+    if(!user)return;
+    if(!likeBtn){
+      setLikeCnt(likeCnt+1);
+    }else{
+      setLikeCnt(likeCnt-1);
+    }
+    setLikeBtn(!likeBtn);
+  }
+  useDebounce(() => {
+      if(likeBtn===null || likeBtn===undefined)return;
+      if(likeBtn){
+        postLike();
+      }else{
+        deleteLike();
+      }
+       
+      // console.log(searchTerm);
+      // console.log(filteredDocuments);
+          
+    }, [likeBtn], 800
+  );
+  
   // const [model, setModel] = useState({});
   // const [loading, setLoading] = useState(false);
   // async function fetchModel() {
@@ -172,10 +253,13 @@ export default function ModelView({model}) {
             </div>
             <div className="flex items-center gap-1 p-1 text-sm border-2 rounded-md">
               <div className="flex items-center pr-1 space-x-1 border-r border-1">
-                <HeartIcon className="w-4" />
+                <button className={`${!user?"cursor-default":""}  `} onClick={likeBtnHandler}>
+                  {!likeBtn && <HeartIcon className="w-4" />}
+                  {likeBtn && <HeartIconSolid className="w-4" />}
+                </button>
                 <h3>Like</h3>
               </div>
-              <h3>{model?.likes}</h3>
+              <h3>{likeCnt}</h3>
             </div>
           </div>
           <div className="">
