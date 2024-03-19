@@ -56,14 +56,14 @@ export default function New() {
             const response = await fetch(`/api/models/new`, {
             method: "POST",
             body: JSON.stringify({
-            author: `${user?.name}`,
+            author: `${user?.userID}`,
             title: data.title,
             mark_down: data.mark_down,
             tags: selectedTags,          
             }),
             headers: {
             "Content-Type": "application/json",
-            // Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${user.token}`,
             },
             });
         }catch(e){
@@ -131,7 +131,7 @@ export default function New() {
                     <div className="flex items-end justify-center mb-5 space-x-5">
                         <div>
                             <label  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Owner</label>
-                            <input type="text" id="text" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder={`${user?user.name:"John Doe"}`} disabled />
+                            <input type="text" id="text" className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" placeholder={`${user?user.userID:"John Doe"}`} disabled />
                         </div>
                         <h1 className="text-3xl">/</h1>
                         <div>

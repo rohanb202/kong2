@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 // import ip from '../assets/images/ip.png'
+import kong2 from '../assets/images/kong2.webp'
 // import appstore from '../assets/images/appstore.png'
 import {StarIcon} from '@heroicons/react/24/solid'
 export default function Hero() {
@@ -25,7 +26,7 @@ export default function Hero() {
                
             </div>
             
-            {/* <Image alt="iphone mockup" data-aos="fade" className='object-contain h-2/3' src={ip}/> */}
+            <Image alt="kong kong" data-aos="fade" priority className='object-contain w-auto h-2/3 ' src={kong2}/>
         </div>
     </section>
   )

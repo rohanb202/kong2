@@ -76,8 +76,8 @@ export default function Navbar() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     <DropdownMenuLabel>
-                        <Link href={`/${user.name}`}>
-                            @{user.name}
+                        <Link href={`/${user.userID}`}>
+                            @{user.ID}
                         </Link>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
@@ -110,9 +110,9 @@ export default function Navbar() {
                         <AvatarImage  src="https://github.com/shadcn.png" />
                         <AvatarFallback>K</AvatarFallback>
                     </Avatar>
-                    <Link href={`/${user.name}`}>
+                    <Link href={`/${user.userID}`}>
                         <Button className="font-semibold text-black bg-white hover:bg-black/10">                            
-                        @{user.name}
+                        @{user.userID}
                         </Button>
                     </Link>                    
                 </div>

@@ -14,9 +14,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import ClipLoader from "react-spinners/ClipLoader";
-import CircleLoader from "react-spinners/CircleLoader";
+
 import useDebounce from '@/utils/UseDebounce';
 import { Button } from '@/components/ui/button';
+
 // const Models = Array.from({ length: 50 }, (_, index) => ({
 //     id: index + 1,
 //     text: `Item ${index + 1}`,
@@ -49,7 +50,7 @@ export default function Models() {
       // }
       setLoading(true);
       try{
-        console.log(`/api/models?${params}`);
+        // console.log(`/api/models?${params}`);
         const res=await fetch(`/api/models?${params}`);
         const data=await res.json();
         setModels(data);

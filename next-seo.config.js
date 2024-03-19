@@ -6,7 +6,7 @@ export default {
     locale: 'en_IE',  
     images: [
       {
-        url: 'https://github.com/rohanb202/kong2/blob/main/assets/images/gorilla.png?raw=true',
+        url: 'https://i.postimg.cc/NfbKLqfL/OIG1.jpg',
         width: 800,
         height: 600,
         alt: 'kong kong',
@@ -14,5 +14,6 @@ export default {
     ],
     url: 'kong2.vercel.app',
     siteName: 'kong2.vercel.app',
-  },  
+  }, 
+  
 };

@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { userState } from "../atoms/userAtom";
 import Head from  "next/head";
-import kong from "../assets/images/gorilla.png"
+import kong from "../assets/images/kong.png"
 import Image from "next/image"
 export default function Login() {
   const {
@@ -43,7 +43,7 @@ export default function Login() {
         <title>Kong | Login</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <div className="absolute bg-white inset-0 h-[60vh] w-[50vw] min-h-[400px] min-w-[300px] max-w-[450px] flex flex-col items-center justify-center m-auto rounded-lg shadow-lg">
+      <div className="absolute bg-white inset-0 h-[65vh] max-h-[40rem] w-[50vw] min-h-[400px] min-w-[300px] max-w-[450px] flex flex-col items-center justify-center m-auto rounded-lg shadow-lg">
         <Image className="relative w-20 -top-10" src={kong} alt={'kong-icon'} />
         <h1 className="relative py-5 text-3xl font-semibold -top-10">Log In</h1>
         <form

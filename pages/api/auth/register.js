@@ -8,14 +8,19 @@ export default async function headers(req, res) {
     const db=await client.db("kong_face");
     if (method === "POST") {
         try {
-          const { name, email, password } = body;
-          const user = await db.collection("users").findOne({ email });
+          const { name, email, password,userID } = body;
+          let user = await db.collection("users").findOne({ email });
           if (user) {
             throw new Error("User already exists");
+          }
+          user = await db.collection("users").findOne({ userID });
+          if (user) {
+            throw new Error("UserID already exists");
           }
           const createUser = await db.collection("users").insertOne({
             name,
             email,
+            userID,
             password: await bcrypt.hash(password, 12),
             isAdmin: false,
           });          
@@ -23,7 +28,7 @@ export default async function headers(req, res) {
             _id: createUser.insertedId,
             name,
             email,
-            isAdmin: false,
+            userID
           });
         } catch (err) {
           res.status(400).json({ error: err.message });

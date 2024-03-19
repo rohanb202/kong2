@@ -4,7 +4,8 @@ export default async function handler(req, res) {
     let sort=req.query.sort;
     let search=req.query.search;
     let tag=req.query.tag;
-    let doc=req.query.doc;    
+    let doc=req.query.doc;   
+    
     page=(!page||page<1)?1:page;
     sort=(!sort|| sort=="trending")?"likes":sort;    
     const sortOrder = 1;
@@ -36,6 +37,7 @@ export default async function handler(req, res) {
             res.status(400).json({ error: err.message });
         }
     }
+    
     else if(method==="GET"){
         // console.log(search);
         try{
