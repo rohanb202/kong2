@@ -14,7 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import ClipLoader from "react-spinners/ClipLoader";
-
+import { ScrollArea } from '@/components/ui/scroll-area';
 import useDebounce from '@/utils/UseDebounce';
 import { Button } from '@/components/ui/button';
 
@@ -145,14 +145,19 @@ export default function Models() {
                 <Input value={searchTerm} onChange={handleChange} className="w-80 bg-slate-100" type="text" placeholder="Filter by name" />
                 <Sort/>
                 <div className=' lg:hidden'>
+                
                   <Dialog className="">
                     <DialogTrigger asChild>          
                       <Button variant="outline">Filter</Button>
                     </DialogTrigger>
-                    <DialogContent className="rounded-lg ">
+                    
+                    <DialogContent className="overflow-y-auto rounded-lg h-[90vh] px-2">
                       <Filter/>
-                      </DialogContent>            
+                      </DialogContent>
+                                 
                   </Dialog>
+                 
+                  
               </div>
               </div>  
               
