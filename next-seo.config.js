@@ -6,7 +6,7 @@ export default {
     locale: 'en_IE',  
     images: [
       {
-        url: 'https://i.postimg.cc/NfbKLqfL/OIG1.jpg',
+        url: 'https://i.postimg.cc/PJ8JH4KQ/OIG1-1.jpg',
         width: 800,
         height: 600,
         alt: 'kong kong',
