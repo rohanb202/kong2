@@ -12,24 +12,54 @@ import { NextSeo } from "next-seo";
 import ClipLoader from "react-spinners/ClipLoader";
 // export async function getServerSideProps(context){
 import Link from "next/link";
-// export async function getServerSideProps(context){
-//   try{
-//     const res=await fetch(`${process.env.local?process.env.local:"https://kong2.vercel.app"}/api/models/${context.query.id}`);
-//     const data=await res.json();
+export async function getServerSideProps(context){
+  try{
+    const res=await fetch(`${process.env.local?process.env.local:"https://kong2.vercel.app"}/api/models/${context.query.id}`);
+    const data=await res.json();
+    return {
+      props:{
+        model:data,
+      }
+    }
+  }catch(e){
+    console.error("Error fetching data:", error);
+    return {
+      props:{
+        model:null,
+      }
+    }
+  }
+
+}
+// export async function getStaticPaths() {
+//   // Assuming you have a function to fetch user IDs
+//   const res = await fetch(`${process.env.local ? process.env.local : "https://kong2.vercel.app"}/api/models`);
+//   const data=await res.json();
+//   const paths = data?.items.map((modelData) => ({
+//     params: { id: modelData._id.toString() },
+//   }));
+//   return { paths, fallback: 'blocking' }; // Use fallback: 'blocking' for ISR
+// }
+
+// export async function getStaticProps({ params }) {
+//   try {
+//     const res = await fetch(`${process.env.local ? process.env.local : "https://kong2.vercel.app"}/api/models/${params.id}`);
+//     const data = await res.json();
 //     return {
-//       props:{
-//         model:data,
-//       }
-//     }
-//   }catch(e){
+//       props: {
+//         model: data,
+//       },
+//       revalidate: 60, // Revalidate every 60 seconds (adjust as needed)
+//     };
+//   } catch (error) {
 //     console.error("Error fetching data:", error);
 //     return {
-//       props:{
-//         model:null,
-//       }
-//     }
+//       props: {
+//         model: null,
+//       },
+//       revalidate: 60, // Revalidate every 60 seconds (adjust as needed)
+//     };
 //   }
-
 // }
 // function extractMetaData(text) {
 //   const metaData = {};
@@ -66,35 +96,35 @@ const MarkComponent = ({ value, language }) => {
 //   id: index + 1,
 //   text: `Item ${index + 1}`,
 // }));
-export default function ModelView() {
-  const router = useRouter();
-  const [model, setModel] = useState({});
-  const [loading, setLoading] = useState(false);
-  async function fetchModel() {
-    try{
-      setLoading(true);
-      const res = await fetch(`/api/models/${router.query.id}`);
-      const data = await res.json();
-      setModel(data);
-    }catch(err){
+export default function ModelView({model}) {
+  // const router = useRouter();
+  // const [model, setModel] = useState({});
+  // const [loading, setLoading] = useState(false);
+  // async function fetchModel() {
+  //   try{
+  //     setLoading(true);
+  //     const res = await fetch(`/api/models/${router.query.id}`);
+  //     const data = await res.json();
+  //     setModel(data);
+  //   }catch(err){
 
-    }finally{
-      setLoading(false);
+  //   }finally{
+  //     setLoading(false);
 
-    }
+  //   }
     
-  }
+  // }
   
-  useEffect(() => {
-    if (!router.query.id) return;
-    // console.log(router.query);
-    // console.log(`/api/models/${router.query.id}`);
-    fetchModel();
+  // useEffect(() => {
+  //   if (!router.query.id) return;
+  //   // console.log(router.query);
+  //   // console.log(`/api/models/${router.query.id}`);
+  //   fetchModel();
 
-    // metadataParser((model?.mark_down?model?.mark_down:"")).content
-    // console.log(extractMetaData(model?.mark_down));
-    // console.log(model);
-  }, [router.query]);
+  //   // metadataParser((model?.mark_down?model?.mark_down:"")).content
+  //   // console.log(extractMetaData(model?.mark_down));
+  //   // console.log(model);
+  // }, [router.query]);
   //   useEffect(()=>{
   // console.log(metadataParser((model?.mark_down?model?.mark_down:"")));
 
@@ -118,14 +148,14 @@ export default function ModelView() {
           url: `kong2.vercel.app/${model.author}/${model._id}`,
         }}
       />
-      {loading &&
+      {/* {loading &&
       <div className="flex items-center justify-center w-full h-screen">
        <ClipLoader loading={loading} size={40}
                     aria-label="Loading Spinner"
                     data-testid="loader"
                   />
-      </div>}
-      {!loading && <div className="md:overflow-x-hidden">
+      </div>} */}
+      { <div className="md:overflow-x-hidden">
         <Navbar />
         <div className="">
           <div className="flex items-center gap-2 px-5 pt-4">
