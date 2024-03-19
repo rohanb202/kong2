@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     page=(!page||page<1)?1:page;
     sort=(!sort|| sort=="trending")?"likes":sort;    
     const sortOrder = 1;
-    let perPage=1;
+    let perPage=20;
     
     let query={};
     const { body, method } = req;

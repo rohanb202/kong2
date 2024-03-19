@@ -11,8 +11,7 @@ import { protect } from "@/middleware/authMiddleware";
             tags,            
             createdAt:new Date().toISOString(),
             UpdatedAt:new Date().toISOString(),
-            likes:0,
-            stars:0,
+            likes:0,            
             downloads:0,
             mark_down,
             

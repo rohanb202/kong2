@@ -6,10 +6,10 @@ import CategoryButton from "./CategoryButton";
 import ClipLoader from "react-spinners/ClipLoader";
 import UseDebounce from "@/utils/UseDebounce";
 // import { useState,useEffect } from "react";
-const Cateogories = Array.from({ length: 50 }, (_, index) => ({
-  id: index + 1,
-  text: `Item ${index + 1}`,
-}));
+// const Cateogories = Array.from({ length: 50 }, (_, index) => ({
+//   id: index + 1,
+//   text: `Item ${index + 1}`,
+// }));
 
 export default function Filter() {
     const router=UseRouter();
@@ -96,7 +96,7 @@ export default function Filter() {
         
     },[select])
   function tagHandler(e){
-    console.log(e.target.textContent);
+    // console.log(e.target.textContent);
     router.push(pathname + '?' + createQueryString("tag", e.target.textContent))
   }
   return (

@@ -48,15 +48,17 @@ export default function PaginationElement({page,totalDoc,perPage}) {
       pageNumbers.push(i);
     }
     
+    
     return pageNumbers;
   };
+  // console.log(generatePageNumbers()); 
   // console.log(totalPages);
     return (
       <Pagination>
-        <PaginationContent className="cursor-pointer">
-          <PaginationItem onClick={()=>{setSelect(prevPage)}}>
+         <PaginationContent className="cursor-pointer">
+         {page>1 &&<PaginationItem onClick={()=>{setSelect(prevPage)}}>
             <PaginationPrevious  />
-          </PaginationItem>
+          </PaginationItem>}
           
           {(page>5)?<PaginationItem>
             <PaginationLink onClick={()=>{setSelect(1)}}>{1}</PaginationLink>
@@ -64,7 +66,7 @@ export default function PaginationElement({page,totalDoc,perPage}) {
           {(page>5)?<PaginationItem>
             <PaginationEllipsis />
           </PaginationItem>:null}
-          {
+          {generatePageNumbers().length>1 && 
             generatePageNumbers()?.map((pageNumber)=>(
               
               <PaginationItem  key={pageNumber}>
@@ -81,9 +83,9 @@ export default function PaginationElement({page,totalDoc,perPage}) {
           {(page+3>=totalPages)?null:<PaginationItem>
             <PaginationLink onClick={()=>{setSelect(totalPages)}}>{totalPages}</PaginationLink>
           </PaginationItem>}
-          <PaginationItem>
+          {totalPages>page && <PaginationItem>
             <PaginationNext onClick={()=>{setSelect(nextPage)}} />
-          </PaginationItem>
+          </PaginationItem>}
         </PaginationContent>
       </Pagination>
     )

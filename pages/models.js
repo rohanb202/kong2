@@ -38,7 +38,7 @@ export default function Models() {
     const router = useRouter();
     let page=parseInt(router.query.page,10);
     page=(!page||page<1)?1:page;
-    let perPage=1;
+    let perPage=20;
 
     const [models,setModels]=useState({items:[],count:0});    
     const [searchTerm, setSearchTerm] = useState(null); 
@@ -142,7 +142,7 @@ export default function Models() {
                 </div>
                 
                 
-                <Input value={searchTerm} onChange={handleChange} className="w-80 bg-slate-100" type="text" placeholder="Filter by name" />
+                <Input value={searchTerm?searchTerm:""} onChange={handleChange} className="w-80 bg-slate-100" type="text" placeholder="Filter by name" />
                 <Sort/>
                 <div className=' lg:hidden'>
                 
@@ -151,7 +151,7 @@ export default function Models() {
                       <Button variant="outline">Filter</Button>
                     </DialogTrigger>
                     
-                    <DialogContent className="overflow-y-auto rounded-lg h-[90vh] px-2">
+                    <DialogContent className="overflow-y-auto rounded-lg h-[80vh] px-2">
                       <Filter/>
                       </DialogContent>
                                  

@@ -96,7 +96,7 @@ export default function ModelView({model}) {
     <div className='md:overflow-x-hidden'>
       <NextSeo
             title={`${model.title}`}
-            description={JSON.stringify(metadataParser((model?.mark_down?model?.mark_down:"")).metadata)}
+            description={metadataParser((model?.mark_down?model?.mark_down:"")).content?.substring(0,1000)+JSON.stringify(metadataParser((model?.mark_down?model?.mark_down:"")).metadata)}
             openGraph={{
               type: 'website',
               locale: 'en_IE',
@@ -129,8 +129,8 @@ export default function ModelView({model}) {
             </div>
             <div className=''>
                 <div className='flex flex-wrap items-center gap-2 p-2 px-4'>
-                    {model?.tags?.map((category)=>(
-                      <Link key={model._id} href={`/models?tag=${category}`}>
+                    {model?.tags?.map((category,i)=>(
+                      <Link key={model._id+i} href={`/models?tag=${category}`}>
                         <button className={`p-2 rounded-md bg-slate-900 text-white text-xs md:text-sm `}>{category}</button>
                       </Link>
                     ))}
