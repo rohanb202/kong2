@@ -16,15 +16,34 @@ export default function Filter() {
     const searchParams=UseRouter.query; 
     const [currentFilter,setCurrentFilter]=UseState("tasks");
     const [tags,setTags]=UseState([]);
-    const [filteredSearch, setFilteredSearch] = UseState(tags);
+    const [filteredSearch, setFilteredSearch] = UseState([]);
     const [loading, setLoading] = UseState(false);
-    async function fetchTags(){
+    // async function fetchTags(){
+    //   setLoading(true);
+    //     try{
+    //       const res=await fetch(`/api/categories?tag=${currentFilter}`);
+    //       const data=await res.json();
+    //       setTags(data);
+    //       setFilteredSearch(data);
+    //     }catch(e){
+
+    //     }finally{
+    //       setLoading(false);
+    //     }
+        
+    // }
+    function filterByTag(array, tag) {
+      return array.filter(obj => obj.tag === tag);
+    }
+    async function fetchAllTags(){
       setLoading(true);
         try{
-          const res=await fetch(`/api/categories?tag=${currentFilter}`);
+          const res=await fetch(`/api/categories?tag=all`);
           const data=await res.json();
           setTags(data);
-          setFilteredSearch(data);
+          // setFilteredSearch(data);          
+          setFilteredSearch(filterByTag(data,currentFilter));
+          // console.log(filteredSearch,tags);
         }catch(e){
 
         }finally{
@@ -32,15 +51,23 @@ export default function Filter() {
         }
         
     }
+    useEffect(()=>{
+      fetchAllTags();      
+    },[]);
+    
     UseEffect(()=>{
+        // console.log(filterByTag(tags,currentFilter),currentFilter);
+        setFilteredSearch(filterByTag(tags,currentFilter));
         
-        fetchTags();
         
         // console.log(currentFilter);
     },[currentFilter])
 
     const pathname=router.pathname;
     const [select,setSelect]=UseState();
+    // useEffect(()=>{
+    //   console.log(filteredSearch)
+    // },[filteredSearch])
     const createQueryString = UseCallback(
       (name, value) => {
         const params = new URLSearchParams(searchParams)
@@ -58,19 +85,19 @@ export default function Filter() {
     UseDebounce(() => {
       
       if(!searchTerm && tags.length > 0){
-        setFilteredSearch(tags);
+        setFilteredSearch(filterByTag(tags,currentFilter));
         return;
       }
       if(!tags.length && !searchTerm){
         return;
       }
       
-      const filtered = tags?.filter(doc =>
+      const filtered = filterByTag(tags,currentFilter)?.filter(doc =>
           doc.title.toLowerCase().includes(searchTerm.toLowerCase()) 
       );
       setFilteredSearch(filtered);
-      console.log('filtered',filtered);
-      console.log('tags',tags);
+      // console.log('filtered',filtered);
+      // console.log('tags',tags);
       }, [searchTerm], 800
     );
     const handleChange = (event) => {      
