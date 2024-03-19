@@ -132,7 +132,7 @@ export default function Models() {
             <Filter/>
         </div>
         
-        <div className="h-screen border-l border-gray-400 border-1"></div>
+        <div className="min-h-screen border-l border-gray-400 border-1"></div>
         <div className="lg:w-[70%] items-center w-full p-4 flex-col  flex px-10 pt-6 ">
             <div className="flex flex-col items-center justify-between w-full space-x-10 space-y-5 md:space-y-0 md:flex-row ">
               <div className="flex flex-col items-start justify-between w-full space-y-5 md:items-center md:space-y-0 md:flex-row">

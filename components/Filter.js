@@ -1,7 +1,7 @@
 
 import { Input } from "@/components/ui/input"
 import { useRouter as UseRouter } from "next/router";
-import { useState as UseState,useEffect as UseEffect,useCallback as UseCallback } from 'react';
+import { useState as UseState,useEffect as UseEffect,useCallback as UseCallback, useEffect } from 'react';
 import CategoryButton from "./CategoryButton";
 import ClipLoader from "react-spinners/ClipLoader";
 import UseDebounce from "@/utils/UseDebounce";
@@ -36,15 +36,18 @@ export default function Filter() {
         
         fetchTags();
         
-        console.log(currentFilter);
+        // console.log(currentFilter);
     },[currentFilter])
 
     const pathname=router.pathname;
-    const [select,setSelect]=UseState(null);
+    const [select,setSelect]=UseState();
     const createQueryString = UseCallback(
       (name, value) => {
         const params = new URLSearchParams(searchParams)
-        params.set(name, value)
+        if(value){
+          params.set(name, value)
+        }
+        
         
         return params.toString()
       },
@@ -73,17 +76,29 @@ export default function Filter() {
     const handleChange = (event) => {      
       setSearchTerm(event.target.value);
     }
+    useEffect(()=>{
+      // console.log(select);
+      // console.log(router.query.tag);
+      if(!router.query.tag)return;
+      if(!select)setSelect(router.query.tag);
+    },[router.query])
     UseEffect(()=>{  
+      // console.log(select);
         if(select===null){
+          
           router.push(pathname + '?' + createQueryString("tag", ''));
           // router.push(pathname + '?' + removeQueryParam(select));
           return;
         }
-        router.push(pathname + '?' + createQueryString("tag", select))
         
-        // console.log(select);
+        
+        
+        
     },[select])
-    
+  function tagHandler(e){
+    console.log(e.target.textContent);
+    router.push(pathname + '?' + createQueryString("tag", e.target.textContent))
+  }
   return (
     <div className="flex flex-col flex-wrap ">
         <div className="flex flex-wrap justify-between gap-1 p-4 text-xs ">
@@ -100,7 +115,7 @@ export default function Filter() {
         <div className="flex flex-wrap justify-start p-4">
           {!loading && filteredSearch?.map((category)=>(
             
-            <button className={`p-2 m-1 text-xs ${(!select||select===category.title)?"text-white":"text-white/50"} bg-gray-800 rounded-md backdrop-blur-sm `} key={category._id} onClick={()=>{setSelect(category.title)}}>{category.title}</button>
+            <button className={`p-2 m-1 text-xs ${(!select||select===category.title)?"text-white":"text-white/50"} bg-gray-800 rounded-md backdrop-blur-sm `} key={category._id} onClick={tagHandler}>{category.title}</button>
           ))}
           { loading &&  <div className='flex items-center justify-center w-full p-5'>
               <ClipLoader

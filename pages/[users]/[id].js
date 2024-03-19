@@ -11,7 +11,7 @@ import Navbar from '@/components/Navbar';
 import metadataParser from 'markdown-yaml-metadata-parser';
 import { NextSeo } from 'next-seo';
 // export async function getServerSideProps(context){
-
+import Link from 'next/link';
 export async function getServerSideProps(context){
   try{
     const res=await fetch(`${process.env.local?process.env.local:"https://kong2.vercel.app"}/api/models/${context.query.id}`);
@@ -93,7 +93,7 @@ export default function ModelView({model}) {
   //   },[model])
   // console.log(metadataParser((model?.mark_down?model?.mark_down:"")).metadata);
   return (
-    <div>
+    <div className='md:overflow-x-hidden'>
       <NextSeo
             title={`${model.title}`}
             description={JSON.stringify(metadataParser((model?.mark_down?model?.mark_down:"")).metadata)}
@@ -108,7 +108,15 @@ export default function ModelView({model}) {
         <div className=''>
             <div className="flex items-center gap-2 px-5 pt-4">
                 <div className='text-xl md:text-2xl'>
-                    {model?.author}/<span className='font-semibold'>{model?.title} </span> 
+                  <Link href={`/${model?.author}`}>
+                    <span className='hover:text-blue-700'>
+                      {model?.author}
+                    </span>
+                  </Link> <span>/</span>
+                  <Link href={`/${model?.author}/${model._id}`}>
+                  <span className='font-semibold hover:text-blue-700'>{model?.title}
+                   </span> 
+                   </Link>
                 </div>
                 <div className='flex items-center gap-1 p-1 text-sm border-2 rounded-md'>
                     <div className='flex items-center pr-1 space-x-1 border-r border-1'>
@@ -122,7 +130,9 @@ export default function ModelView({model}) {
             <div className=''>
                 <div className='flex flex-wrap items-center gap-2 p-2 px-4'>
                     {model?.tags?.map((category)=>(
-                      <button key={model._id} className={`p-2 rounded-md bg-slate-900 text-white text-xs md:text-sm `}>{category}</button>
+                      <Link key={model._id} href={`/models?tag=${category}`}>
+                        <button className={`p-2 rounded-md bg-slate-900 text-white text-xs md:text-sm `}>{category}</button>
+                      </Link>
                     ))}
                     
             </div>
@@ -140,7 +150,7 @@ export default function ModelView({model}) {
                 {/* <div className='flex justify-end w-full'> */}
                     {/* <button onClick={()=>{setEdit(!edit)}} className='p-1 border-b border-l rounded-bl-md border-cyan-600'>{edit?"Save":"Edit"} model card</button> */}
                 {/* </div> */}
-                <span className='prose-sm prose md:prose-lg'>
+                <span className='prose-sm prose prose-slate md:prose-lg max-w-none'>
                     {/* {!edit && <Markdown className='p-5 ' remarkPlugins={[gfm]}>{input}</Markdown>} 
                     {edit && <textarea className='w-full h-screen bg-red-100' value={input} onChange={(e)=>setInput(e.target.value)}/>} */}
                     { <Markdown className="mx-auto" components={MarkComponent} remarkPlugins={[gfm]} >{metadataParser((model?.mark_down?model?.mark_down:"")).content}</Markdown>}

@@ -77,7 +77,7 @@ export default function Navbar() {
                 <DropdownMenuContent>
                     <DropdownMenuLabel>
                         <Link href={`/${user.userID}`}>
-                            @{user.ID}
+                            @{user.userID}
                         </Link>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
