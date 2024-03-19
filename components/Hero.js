@@ -4,12 +4,9 @@ import React, { useEffect } from 'react'
 import kong2 from '../assets/images/kong2.webp'
 // import appstore from '../assets/images/appstore.png'
 import {StarIcon} from '@heroicons/react/24/solid'
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+
 export default function Hero() {
-  useEffect(()=>{
-    AOS.init();
-  },[])
+  
   return (
     <section className='h-screen mx-5 my-6 text-white backdrop-blur-sm bg-gradient-to-l from-slate-700 to-slate-900 md:mx-10 rounded-3xl'>
         <div className='flex flex-col items-center justify-between h-full md:justify-between md:flex-row'>
@@ -23,6 +20,7 @@ export default function Hero() {
                       <StarIcon className='w-5 text-yellow-400 '/>
                       <StarIcon className='w-5 text-yellow-400 '/>
                       <StarIcon className='w-5 text-yellow-400 '/>
+                      <StarIcon className='w-5 text-yellow-400 '/> 
                       <StarIcon className='w-5 text-yellow-400 '/>                  
                     </div>
                     {/* <h1 className='text-sm text-black'>100+ appstore review</h1> */}
