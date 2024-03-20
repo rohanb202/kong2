@@ -41,7 +41,7 @@ export default function NavigationLoader(props) {
   if (!isLoading) return null;
   
   return (
-    <div className="flex items-center justify-center w-full h-screen">
+    <div className="flex items-center justify-center w-full h-screen overflow-hidden">
         <ClipLoader
                     
                     loading={isLoading}

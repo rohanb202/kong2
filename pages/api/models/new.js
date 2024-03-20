@@ -13,6 +13,7 @@ import { protect } from "@/middleware/authMiddleware";
             updatedAt:new Date().toISOString(),                        
             downloads:0,
             mark_down,
+            viewCount:0,
             
           };
           const client=await connectToDatabase();

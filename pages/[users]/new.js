@@ -157,7 +157,7 @@ export default function New() {
                                     {selectedTags.map((tag, index) => (
                                     <div key={index} className="flex items-center p-1 text-white rounded-md bg-slate-800">
                                         <span className="mr-2">{tag}</span>
-                                        <button type="button" onClick={(e) => {e.preventDefault(); removeTag(tag)}}>&times;</button>
+                                        <button alt="removeTag" type="button" onClick={(e) => {e.preventDefault(); removeTag(tag)}}>&times;</button>
                                     </div>
                                     ))}
                             
@@ -195,7 +195,8 @@ export default function New() {
                                     <ScrollArea className="h-60">
                                 {tags?.map((tag) => (
                                 <DropdownMenuItem key={tag._id}>
-                                    <button
+                                    <button 
+                                    alt="tag"
                                     type="button"
                                     onClick={(e) => {e.preventDefault(); addTag(tag.title)}}
                                     className="block w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -234,7 +235,7 @@ export default function New() {
                         
                             )} */}
 
-                        <button disabled={disableBtn} type="submit" className="hidden lg:block text-white my-3 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Create Model</button>
+                        <button alt="submitForm" disabled={disableBtn} type="submit" className="hidden lg:block text-white my-3 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Create Model</button>
                             
                             </div>
                         </div>
@@ -243,7 +244,7 @@ export default function New() {
                                 <div className="flex items-center justify-between pb-5">
                                     <h1 for="text" className="block text-base font-medium text-gray-900 dark:text-white">Markdown</h1>
                                     
-                                    <button onClick={(e)=>{e.preventDefault();setEdit(!edit)}} className='w-20 p-1 text-white bg-black rounded-md'>{edit?"Save":"Edit"}</button>
+                                    <button alt="editMarkdown" onClick={(e)=>{e.preventDefault();setEdit(!edit)}} className='w-20 p-1 text-white bg-black rounded-md'>{edit?"Save":"Edit"}</button>
                                 
                                 </div>
                                 <span className="prose ">
@@ -252,7 +253,7 @@ export default function New() {
                                 </span>
                         </div>
                         
-                        <button disabled={disableBtn} type="submit" className=" lg:hidden text-white my-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create Model</button>
+                        <button alt="submitForm" disabled={disableBtn} type="submit" className=" lg:hidden text-white my-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create Model</button>
                     </form>
                 
             </div>

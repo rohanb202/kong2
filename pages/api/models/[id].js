@@ -7,7 +7,8 @@ export default async function handler(req, res) {
         body,
       } = req;
     const downloadCnt=req.body.downloadCnt;
-    console.log(downloadCnt,id);
+    const viewCount=req.body.viewCount;
+    // console.log(downloadCnt,id);
     if(method==="PUT" && downloadCnt){
         try {
             const client = await connectToDatabase();
@@ -35,6 +36,32 @@ export default async function handler(req, res) {
             res.status(500).json({ error: "Failed to update downloads count" });
         }
     }
+    if (req.method === 'PUT' && viewCount) {
+        try {
+          
+    
+          // Validate modelId, ensure it's a valid MongoDB ObjectId, etc.
+    
+          const client = await connectToDatabase();
+          const db = client.db('kong_face');
+          const collection = db.collection('models');
+    
+          // Update the view count for the specified model
+          const result = await collection.updateOne(
+            { _id: { $eq: new ObjectId(id) } },
+            { $inc: { viewCount: 1 } } // Increment viewCount by 1
+          );
+    
+          if (result.modifiedCount === 1) {
+            res.status(200).json({ message: 'View count updated successfully' });
+          } else {
+            res.status(404).json({ error: 'Model not found' });
+          }
+        } catch (error) {
+          console.error('Error updating view count:', error);
+          res.status(500).json({ error: 'Failed to update view count' });
+        }
+      }
     if(method==="GET"){
         try{
             const client=await connectToDatabase();

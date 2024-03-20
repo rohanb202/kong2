@@ -159,6 +159,7 @@ export default function ModelView({model}) {
   }
   async function updateDownloadCount() {
     try {
+      // console.log("what");
         const response = await fetch(`/api/models/${model?._id}`, {
             method: 'PUT',
             headers: {
@@ -179,9 +180,31 @@ export default function ModelView({model}) {
         console.error('Error updating download count:', error);
         throw error;
     }
+}async function updateViewCount() {
+  try {
+    const response = await fetch(`/api/models/${model?._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ viewCount:1 })
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update view count');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error updating view count:', error);
+    throw error;
+  }
 }
+
   useEffect(()=>{
     getLikes();    
+    updateViewCount();
   },[])
   function likeBtnHandler(){
     if(!user)return;
@@ -214,7 +237,7 @@ export default function ModelView({model}) {
   );
   useDebounce(()=>{
     if(!clickedDownload)return;
-    // console.log("what");
+    
     updateDownloadCount();
   },[clickedDownload],800)
   

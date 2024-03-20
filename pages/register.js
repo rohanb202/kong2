@@ -90,7 +90,8 @@ function Register() {
           </label>
 
           <div className="flex items-center justify-center ">
-            <button
+            <button 
+              alt="Signup"
               type="submit"
               className="text-white w-full text-center bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800"
             >
@@ -101,6 +102,7 @@ function Register() {
         <h1>
           Already have an account?{" "}
           <button
+            alt="login"
             className="py-2 text-blue-400"
             onClick={() => router.push("/login")}
           >

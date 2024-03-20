@@ -148,7 +148,7 @@ export default function Models() {
                 
                   <Dialog className="">
                     <DialogTrigger asChild>          
-                      <Button variant="outline">Filter</Button>
+                      <Button alt="filter" variant="outline">Filter</Button>
                     </DialogTrigger>
                     
                     <DialogContent className="overflow-y-auto rounded-lg h-[80vh] px-2">

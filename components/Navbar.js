@@ -87,7 +87,7 @@ export default function Navbar() {
                         </Link> 
                     </DropdownMenuItem>                    
                     <DropdownMenuItem>
-                    <button onClick={handleLogut}>
+                    <button alt="logout" onClick={handleLogut}>
                             Logout
                     </button> 
                     </DropdownMenuItem>
@@ -98,7 +98,7 @@ export default function Navbar() {
         </div>
         <Drawer >
             <DrawerTrigger asChild>
-                <Button className="md:hidden" variant="outline">
+                <Button alt="menu" className="md:hidden" variant="outline">
                     <Bars3Icon className="w-5"/>
                  </Button>
             </DrawerTrigger>
@@ -111,7 +111,7 @@ export default function Navbar() {
                         <AvatarFallback>K</AvatarFallback>
                     </Avatar>
                     <Link href={`/${user.userID}`}>
-                        <Button className="font-semibold text-black bg-white hover:bg-black/10">                            
+                        <Button alt="userID" className="font-semibold text-black bg-white hover:bg-black/10">                            
                         @{user.userID}
                         </Button>
                     </Link>                    
@@ -120,28 +120,28 @@ export default function Navbar() {
             }  
             {user && <DrawerClose asChild>
                     <Link href={`/models/new`}>
-                        <Button className="w-[90vw] ">                            
+                        <Button alt="add new model" className="w-[90vw] ">                            
                                 + New Model
                         </Button>
                     </Link>                
                 </DrawerClose>}              
                 <DrawerClose asChild>
                     <Link href={'/models'}>
-                        <Button className="w-[90vw] ">                            
+                        <Button alt="Models" className="w-[90vw] ">                            
                                 Models
                         </Button>
                     </Link>                
                 </DrawerClose>
                 {user && <DrawerClose asChild>
                     
-                        <Button onClick={handleLogut} className="w-[90vw] ">                            
+                        <Button alt="logout" onClick={handleLogut} className="w-[90vw] ">                            
                                 Log out
                         </Button>
                                    
                 </DrawerClose>}  
                 {!user && <DrawerClose asChild>
                     <Link href={'/login'}>
-                        <Button className="w-[90vw] ">                            
+                        <Button alt="login" className="w-[90vw] ">                            
                                 Login
                         </Button>
                     </Link>                
@@ -149,7 +149,7 @@ export default function Navbar() {
                 
                { !user && <DrawerClose asChild>
                     <Link href={'/register'}>
-                        <Button className="w-[90vw] ">                            
+                        <Button alt="register" className="w-[90vw] ">                            
                                 Register
                         </Button>
                     </Link>                

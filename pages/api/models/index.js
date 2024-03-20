@@ -7,7 +7,8 @@ export default async function handler(req, res) {
     let doc=req.query.doc;   
     
     page=(!page||page<1)?1:page;
-    sort=(!sort|| sort=="trending")?"likes":sort;    
+    sort=(!sort|| sort=="trending")?"viewCount":sort;  
+    console.log(sort);  
     const sortOrder = -1;
     let perPage=20;
     
@@ -102,6 +103,7 @@ export default async function handler(req, res) {
                         updatedAt: 1,
                         downloads: 1,
                         mark_down: 1,
+                        viewCount: 1,
                         // Count total likes for each model
                         likes: { $size: "$likes" }
                     }
