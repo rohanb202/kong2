@@ -99,24 +99,24 @@ Kong is a platform that serves as a language model hub (LLM). With the tagline "
 ## Page Metrics
 
 ### Home Page
-![Home Page](https://i.postimg.cc/VvrdMfM2/home.png)
+![Home Page](https://i.postimg.cc/bvvsr6FG/home.png)
 
 ### Models Page
-![Models Page](https://i.postimg.cc/4dF5vQ2y/models-page.png)
+![Models Page](https://i.postimg.cc/ThMqV8WY/models-page.png)
 
 ### Random Model Description Page 1
-![Model Description Part 1](https://i.postimg.cc/3Rpqw6x7/random-model1.png)
+![Model Description Part 1](https://i.postimg.cc/3N10RdHh/rm1.png)
 
 ### Random Model Description Page 2
-![Model Description Part 2](https://i.postimg.cc/gj3rNYc5/random-model2.png)
+![Model Description Part 2](https://i.postimg.cc/ZYQ9592T/rm2.png)
 
 ### User Page
-![Model Description Part 2](https://i.postimg.cc/656sXg3R/user.png)
+![Model Description Part 2](https://i.postimg.cc/QxtBnDxh/user.png)
 
 ### Login Page
-![Login Page](https://i.postimg.cc/SRVby5gR/login.png)
+![Login Page](https://i.postimg.cc/SxnbNR0p/login.png)
 
 ### Register Page
-![Register Page](https://i.postimg.cc/ZY6rfmQ4/register.png)
+![Register Page](https://i.postimg.cc/9FWqS369/register.png)
 
 ---
