@@ -7,7 +7,7 @@ import { useState,useEffect } from 'react';
 import { useRecoilState } from "recoil";
 import { userState } from "@/atoms/userAtom";
 import { useRouter } from "next/router"; 
-
+import rehypeRaw from "rehype-raw";
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {
     DropdownMenu,
@@ -17,37 +17,14 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
-// const MarkComponent = ({value,language}) => {
-  
-//     return (
-//       <SyntaxHighlighter language={language ?? null} >
-//         {value ?? ''}
-//       </SyntaxHighlighter>
-//   )};
+  import metadataParser from "markdown-yaml-metadata-parser";
 
-//   const TagInput = ({ tags, selectedTags, addTag, removeTag }) => {
-//     return (
-//       <div className="flex flex-wrap gap-2">
-//         {selectedTags?.map((tag, index) => (
-//           <div key={index} className="flex items-center p-1 text-white bg-black rounded-md">
-//             <span className="mr-2">{tag}</span>
-//             <button type="button" onClick={() => removeTag(tag)}>&times;</button>
-//           </div>
-//         ))}
-//         <select onChange={(e) => addTag(e.target.value)}>
-//           <option value="">Choose a tag</option>
-//           {tags?.map((tag) => (
-//             <option className="py-2 text-sm text-gray-700 dark:text-gray-200" key={tag._id} value={tag.title}>{tag.title}</option>
-//           ))}
-//         </select>
-//       </div>
-//     );
-//   };
 
 export default function New() {
     const [model,setModel]=useState(`## Enter Description Here by Clicking Edit button`);
     const [edit,setEdit]=useState(false);
     const [user,setUser]=useRecoilState(userState);
+    const [error,setError]=useState();
     const router=useRouter();
     const [selectedTags, setSelectedTags] = useState([]);
     const {
@@ -74,8 +51,16 @@ export default function New() {
             Authorization: `Bearer ${user.token}`,
             },
             });
+            const f=await response.json();
+            
+            if(f.insertedId){
+                // console.log(f);
+                router.push(`/${user.userID}/${f?.insertedId}`);
+            }
+            
         }catch(e){
-            console.log(e);
+            setError(e);
+            // console.log(e);
         }finally{
             setTimeout(() => {
                 setDisableBtn(false);
@@ -248,7 +233,10 @@ export default function New() {
                                 
                                 </div>
                                 <span className="prose ">
-                                    {!edit && <Markdown className='h-full p-5 rounded-md bg-blue-50' remarkPlugins={[gfm]}>{model}</Markdown>} 
+                                    {!edit && <Markdown rehypePlugins={[rehypeRaw]} className='h-full p-5 rounded-md bg-blue-50' remarkPlugins={[gfm]}>{
+                    metadataParser(model ? model : "")
+                      .content
+                  }</Markdown>} 
                                     {edit && <textarea {...register("mark_down")} className='w-full h-full bg-red-100 rounded-md' value={model} onChange={(e)=>setModel(e.target.value)}/>}
                                 </span>
                         </div>

@@ -1,6 +1,6 @@
 import { ArrowDownTrayIcon, HeartIcon } from "@heroicons/react/24/outline";
 import {  HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
-
+import rehypeRaw from "rehype-raw";
 import Markdown from "react-markdown";
 import gfm from "remark-gfm";
 import SyntaxHighlighter from "react-syntax-highlighter";
@@ -368,6 +368,7 @@ export default function ModelView({model}) {
                   className="mx-auto"
                   components={MarkComponent}
                   remarkPlugins={[gfm]}
+                  rehypePlugins={[rehypeRaw]}
                 >
                   {
                     metadataParser(model?.mark_down ? model?.mark_down : "")
