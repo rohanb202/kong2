@@ -3,6 +3,11 @@ import { useState,useEffect } from 'react'
 import {HeartIcon,ArrowDownTrayIcon } from '@heroicons/react/24/solid'
 import Link from 'next/link';
 import ClipLoader from "react-spinners/ClipLoader";
+import TimeAgo from 'javascript-time-ago'
+import ReactTimeAgo from 'react-time-ago'
+// English.
+import en from 'javascript-time-ago/locale/en'
+TimeAgo.locale(en)
 export default function InnerSec() {
     const [models,setModels]=useState([]); 
     const [loading,setLoading]=useState(false); 
@@ -69,7 +74,8 @@ export default function InnerSec() {
                             <span className='text-sm font-bold lg:text-xl'>{ModelData.author}/{ModelData.title}</span>
                             <div  className='flex items-center justify-start space-x-1 text-xs lg:space-x-3'>
                                 <h3>{ModelData?.tags[0]}</h3>
-                                <h3>Updated-5 hours ago</h3>
+                                
+                                <h3>Updated <ReactTimeAgo date={Date.parse(ModelData.updatedAt)}/></h3>
                                 <div className='flex'>
                                     <ArrowDownTrayIcon className='w-3'/>
                                     <h3 className=''>{ModelData.downloads}</h3>

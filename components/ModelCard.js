@@ -1,6 +1,12 @@
 
 import {ArrowDownTrayIcon,HeartIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
+import ReactTimeAgo from 'react-time-ago'
+import TimeAgo from 'javascript-time-ago'
+
+// English.
+import en from 'javascript-time-ago/locale/en'
+TimeAgo.locale(en)
 export default function ModelCard({ModelData}) {
   return (
     <Link href={`/${ModelData.author}/${ModelData._id}`}>
@@ -10,10 +16,10 @@ export default function ModelCard({ModelData}) {
             </div>
             <div  className='flex items-center justify-start space-x-1 text-xs md:space-x-3'>
                 <h3>{ModelData?.tags[0]}</h3>
-                <h3>Updated-5 hours ago</h3>
+                <h3>Updated <ReactTimeAgo date={Date.parse(ModelData.updatedAt)}/></h3>
                 <div className='flex'>
                     <ArrowDownTrayIcon className='w-3'/>
-                    <h3 className=''>{ModelData.downloads}</h3>
+                    <h3 className=''>{ModelData?.downloads}</h3>
                 </div>
                 <div className='flex'>
                     <HeartIcon className='w-3'/>

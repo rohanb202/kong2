@@ -38,7 +38,7 @@ import {
           <SelectLabel>Sort By:</SelectLabel>
             <SelectItem value="trending">Trending</SelectItem>       
             
-            <SelectItem value="dowloads">Most Downloads</SelectItem>
+            <SelectItem value="downloads">Most Downloads</SelectItem>
             <SelectItem value="likes">Most Likes</SelectItem>
           </SelectGroup>
         </SelectContent>

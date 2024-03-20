@@ -107,15 +107,23 @@ export default function ModelView({model}) {
   const [likes,setLikes]=useState({});
   const [likeBtn,setLikeBtn]=useState(null);
   const [likeCnt,setLikeCnt]=useState(0);
+  const [downloadCnt,setDownloadCnt]=useState((model?.downloads)?model?.downloads:0);
+  const [clickedLikes,setClickedLikes]=useState(0);
+  const [clickedDownload,setClickedDownload]=useState(0);
+
+
+
   const [user,setUser]=useRecoilState(userState);
   async function getLikes(){
     try{
-      console.log(`/api/likes?modelId=${model?._id}&userId=${user?._id}`);
+      // console.log(`/api/likes?modelId=${model?._id}&userId=${user?._id}`);
       const res=await fetch(`/api/likes?modelId=${model?._id}&userId=${user?._id}`);
       const data=await res.json();      
       setLikes(data);
       setLikeBtn(data?.liked); 
-      setLikeCnt((data?.totalLikesCount)?data?.totalLikesCount:0);  
+      setLikeCnt((data?.totalLikesCount)?data?.totalLikesCount:0); 
+        
+
     }catch(err){
       
     }
@@ -148,36 +156,67 @@ export default function ModelView({model}) {
         console.error("Failed to delete like:", error);
         throw error;
     }
+  }
+  async function updateDownloadCount() {
+    try {
+        const response = await fetch(`/api/models/${model?._id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ downloadCnt })
+        });
+
+        if (!response.ok) {
+          console.error('Update request failed with status:', response.status);
+          // throw new Error('Failed to update download count');
+      }
+
+        const data = await response.json();
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.error('Error updating download count:', error);
+        throw error;
+    }
 }
   useEffect(()=>{
-    getLikes(); 
-    // setLikeBtn(likes?.liked);  
-    // setLikeCnt((likes?.totalLikesCount)?likes?.totalLikesCount:0);  
-    // console.log(likes);
-    // console.log("hello");
+    getLikes();    
   },[])
   function likeBtnHandler(){
     if(!user)return;
+    console.log(likeCnt);
     if(!likeBtn){
       setLikeCnt(likeCnt+1);
     }else{
       setLikeCnt(likeCnt-1);
     }
     setLikeBtn(!likeBtn);
+    setClickedLikes(clickedLikes+1);
+  }
+  function DownloadHandler(){
+    setDownloadCnt(downloadCnt+1);
+    setClickedDownload(clickedDownload+1); 
+    
   }
   useDebounce(() => {
-      if(likeBtn===null || likeBtn===undefined)return;
+      if(likeBtn===null || likeBtn===undefined || !clickedLikes)return;
       if(likeBtn){
         postLike();
       }else{
         deleteLike();
       }
-       
-      // console.log(searchTerm);
-      // console.log(filteredDocuments);
+      
+      // console.log(downloadCnt);
+      
           
-    }, [likeBtn], 800
+    }, [clickedLikes], 800
   );
+  useDebounce(()=>{
+    if(!clickedDownload)return;
+    // console.log("what");
+    updateDownloadCount();
+  },[clickedDownload],800)
   
   // const [model, setModel] = useState({});
   // const [loading, setLoading] = useState(false);
@@ -253,13 +292,24 @@ export default function ModelView({model}) {
             </div>
             <div className="flex items-center gap-1 p-1 text-sm border-2 rounded-md">
               <div className="flex items-center pr-1 space-x-1 border-r border-1">
-                <button className={`${!user?"cursor-default":""}  `} onClick={likeBtnHandler}>
+                <button className={`${!user?"cursor-default":""} flex items-center gap-1 `} onClick={likeBtnHandler}>
                   {!likeBtn && <HeartIcon className="w-4" />}
                   {likeBtn && <HeartIconSolid className="w-4" />}
+                  <h3>Like</h3>
                 </button>
-                <h3>Like</h3>
+                
               </div>
               <h3>{likeCnt}</h3>
+            </div>
+            <div className="flex items-center gap-1 p-1 text-sm border-2 rounded-md">
+              <div className="flex items-center pr-1 space-x-1 border-r border-1">
+                <button className={`flex items-center gap-1`} onClick={DownloadHandler}>
+                  <ArrowDownTrayIcon className="w-4"/>
+                  <h3>Downloads</h3>
+                </button>
+                
+              </div>
+              <h3>{downloadCnt}</h3>
             </div>
           </div>
           <div className="">
