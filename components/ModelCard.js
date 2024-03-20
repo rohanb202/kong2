@@ -8,6 +8,7 @@ import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 TimeAgo.locale(en)
 export default function ModelCard({ModelData}) {
+    console.log(ModelData);
   return (
     <Link href={`/${ModelData.author}/${ModelData._id}`}>
         <div className=' p-2 group hover:cursor-pointer mr-2 mt-2 rounded-md backdrop-blur-sm bg-gradient-to-l w-[20rem] from-slate-700 to-slate-900 text-white  md:w-[25rem] flex flex-grow flex-col'>

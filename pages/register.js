@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import kong from "../public/assets/images/kong.png"
 import Image from "next/image"
+import Navbar from "@/components/Navbar";
 function Register() {
   const {
     register,
@@ -35,13 +36,14 @@ function Register() {
     }
   };
   return (
-    <div className="h-screen min-h-screen bg-gradient-to-r from-blue-400/50 to-emerald-400/50">
+    <div className="fixed w-full min-h-screen overflow-y-auto h-dvh bg-gradient-to-r from-blue-400/60 to-emerald-400/60">
       <Head>
         <title>Kong | Register</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      
-      <div className="z-0 absolute inset-0    max-h-[40rem]  w-[50vw]  bg-white  min-w-[300px] max-w-[28rem] flex flex-col items-center justify-center m-auto rounded-lg shadow-lg">
+      <Navbar/>
+      <div className="z-0 relative inset-0 my-10   max-h-[40rem]  w-[50vw]  bg-white  min-w-[300px] max-w-[28rem] flex flex-col items-center justify-center m-auto rounded-lg shadow-lg">
+        
         <Image className="relative !z-10 w-20 -top-10" src={kong} alt={'kong-icon'} />
         <h1 className="relative pt-2 text-xl font-semibold md:text-3xl -top-8">Join Kong</h1>
         <h2 className="relative pb-2 text-base text-center md:text-xl text-black/50 -top-8">Join the community of machine learners!</h2>
@@ -103,7 +105,7 @@ function Register() {
           Already have an account?{" "}
           <button
             alt="login"
-            className="py-2 text-blue-400"
+            className="py-2 text-blue-600"
             onClick={() => router.push("/login")}
           >
             Log In

@@ -7,6 +7,7 @@ import { userState } from "../atoms/userAtom";
 import Head from  "next/head";
 import kong from "../public/assets/images/kong.png"
 import Image from "next/image"
+import Navbar from '@/components/Navbar';
 export default function Login() {
   const {
     register,
@@ -38,13 +39,16 @@ export default function Login() {
     console.log(dataUser);
   };
   return (
-    <div className="w-screen h-screen bg-gradient-to-r from-blue-400/50 to-emerald-400/50">
+    <>
+    
+    <div className="w-full h-screen bg-gradient-to-r from-blue-400/60 to-emerald-400/60">
+    <Navbar/>
       <Head>
         <title>Kong | Login</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <div className="absolute bg-white inset-0 h-[65vh] max-h-[40rem] w-[50vw] min-h-[400px] min-w-[300px] max-w-[450px] flex flex-col items-center justify-center m-auto rounded-lg shadow-lg">
-        <Image className="relative w-20 -top-10" src={kong} alt={'kong-icon'} />
+        <Image  className="relative w-20 -top-10" src={kong} alt={'kong-icon'} />
         <h1 className="relative py-5 text-3xl font-semibold -top-10">Log In</h1>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -83,7 +87,7 @@ export default function Login() {
         <h1>
           Don&apos;t have an account yet?{" "}
           <button
-            className="py-2 text-blue-400"
+            className="py-2 text-blue-600"
             onClick={() => router.push("/register")}
           >
             Sign Up
@@ -91,6 +95,8 @@ export default function Login() {
         </h1>
         {msg && <h1 className="py-2 text-red-500">{msg}</h1>}
       </div>
+      
     </div>
+    </>
   )
 }

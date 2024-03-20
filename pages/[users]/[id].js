@@ -103,6 +103,7 @@ const MarkComponent = ({ value, language }) => {
 //   text: `Item ${index + 1}`,
 // }));
 export default function ModelView({model}) {
+  
   const router = useRouter();
   const [likes,setLikes]=useState({});
   const [likeBtn,setLikeBtn]=useState(null);
@@ -191,7 +192,7 @@ export default function ModelView({model}) {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to update view count');
+      // throw new Error('Failed to update view count');
     }
 
     const data = await response.json();
@@ -203,6 +204,9 @@ export default function ModelView({model}) {
 }
 
   useEffect(()=>{
+    if(model.error){
+      router.push(`/404`);
+    }
     getLikes();    
     updateViewCount();
   },[])
@@ -298,7 +302,7 @@ export default function ModelView({model}) {
                     data-testid="loader"
                   />
       </div>} */}
-      { <div className="md:overflow-x-hidden">
+      { !model.error && <div className="md:overflow-x-hidden">
         <Navbar />
         <div className="">
           <div className="flex items-center gap-2 px-5 pt-4">
@@ -315,7 +319,7 @@ export default function ModelView({model}) {
             </div>
             <div className="flex items-center gap-1 p-1 text-sm border-2 rounded-md">
               <div className="flex items-center pr-1 space-x-1 border-r border-1">
-                <button className={`${!user?"cursor-default":""} flex items-center gap-1 `} onClick={likeBtnHandler}>
+                <button alt="like" className={`${!user?"cursor-default":""} flex items-center gap-1 `} onClick={likeBtnHandler}>
                   {!likeBtn && <HeartIcon className="w-4" />}
                   {likeBtn && <HeartIconSolid className="w-4" />}
                   <h3>Like</h3>
@@ -326,7 +330,7 @@ export default function ModelView({model}) {
             </div>
             <div className="flex items-center gap-1 p-1 text-sm border-2 rounded-md">
               <div className="flex items-center pr-1 space-x-1 border-r border-1">
-                <button className={`flex items-center gap-1`} onClick={DownloadHandler}>
+                <button alt="downloads" className={`flex items-center gap-1`} onClick={DownloadHandler}>
                   <ArrowDownTrayIcon className="w-4"/>
                   <h3>Downloads</h3>
                 </button>
@@ -339,7 +343,7 @@ export default function ModelView({model}) {
             <div className="flex flex-wrap items-center gap-2 p-2 px-4">
               {model?.tags?.map((category, i) => (
                 <Link key={model._id + i} href={`/models?tag=${category}`}>
-                  <button
+                  <button alt="tags" 
                     className={`p-2 rounded-md bg-slate-900 text-white text-xs md:text-sm `}
                   >
                     {category}

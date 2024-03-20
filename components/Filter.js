@@ -139,12 +139,12 @@ export default function Filter() {
         </div>
         <div className="flex items-center">
             <Input value={searchTerm} onChange={handleChange} className=" bg-slate-100" type="text" placeholder="Filter" />
-            {select && <button onClick={()=>{setSelect(null)}} className="w-20 p-1 m-2 text-xs text-white bg-gray-800 rounded-md text-nowrap">Reset Filter</button>}
+            {select && <button alt="reset tag" onClick={()=>{setSelect(null)}} className="w-20 p-1 m-2 text-xs text-white bg-gray-800 rounded-md text-nowrap">Reset Filter</button>}
         </div>
         <div className="flex flex-wrap justify-start p-4">
           {!loading && filteredSearch?.map((category)=>(
             
-            <button className={`p-2 m-1 text-xs ${(!select||select===category.title)?"text-white":"text-white/50"} bg-gray-800 rounded-md backdrop-blur-sm `} key={category._id} onClick={tagHandler}>{category.title}</button>
+            <button alt="select tag" className={`p-2 m-1 text-xs ${(!select||select===category.title)?"text-white":"text-white/50"} bg-gray-800 rounded-md backdrop-blur-sm `} key={category._id} onClick={tagHandler}>{category.title}</button>
           ))}
           { loading &&  <div className='flex items-center justify-center w-full p-5'>
               <ClipLoader

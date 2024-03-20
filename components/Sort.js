@@ -30,7 +30,7 @@ import {
     },[select])
     return(
     <Select onValueChange={(value)=>setSelect(value)}>
-        <SelectTrigger className="w-40">
+        <SelectTrigger aria-label="sort?" alt="sortTrigger" className="w-40">
             <SelectValue placeholder="Sort:Trending" />
         </SelectTrigger>
         <SelectContent>

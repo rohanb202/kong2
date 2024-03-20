@@ -44,16 +44,24 @@ export default function Index() {
     if(models.user){
       setShow(true);
     }
-    console.log(!models?.error,models?.error);
+    // console.log(!models?.error,models?.error);
   },[models])
 
   return (
     <div>
       <Navbar/>
+      {!show && <div className='flex items-center justify-center w-full h-screen'><ClipLoader
+                      
+                      loading={loading}
+                      
+                      size={40}
+                      aria-label="Loading Spinner"
+                      data-testid="loader"
+                    /></div> }
       {show && <div>
         <div className='flex flex-col items-center justify-center p-5 space-y-2'>
           <Avatar className="w-40 h-40 ">
-            <AvatarImage  src="https://github.com/shadcn.png" />
+            <AvatarImage alt="profileImg" src="https://github.com/shadcn.png" />
             <AvatarFallback>K</AvatarFallback>                
           </Avatar>
           <h1 className='px-4 text-3xl font-semibold '>{models?.user?.name}</h1>

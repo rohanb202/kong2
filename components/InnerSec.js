@@ -73,16 +73,16 @@ export default function InnerSec() {
                         <div className='px-5 py-5 m-2 bg-white md:py-10 rounded-xl'>
                             <span className='text-sm font-bold lg:text-xl'>{ModelData.author}/{ModelData.title}</span>
                             <div  className='flex items-center justify-start space-x-1 text-xs lg:space-x-3'>
-                                <h3>{ModelData?.tags[0]}</h3>
+                                <h1>{ModelData?.tags[0]}</h1>
                                 
-                                <h3>Updated <ReactTimeAgo date={Date.parse(ModelData.updatedAt)}/></h3>
+                                <h1>Updated <ReactTimeAgo date={Date.parse(ModelData.updatedAt)}/></h1>
                                 <div className='flex'>
                                     <ArrowDownTrayIcon className='w-3'/>
-                                    <h3 className=''>{ModelData.downloads}</h3>
+                                    <h1 className=''>{ModelData.downloads}</h1>
                                 </div>
                                 <div className='flex'>
                                     <HeartIcon className='w-3'/>
-                                    <h3>{ModelData.likes}</h3>
+                                    <h1>{ModelData.likes}</h1>
                                 </div>
                             </div>
                         </div>

@@ -35,7 +35,7 @@ export default function Navbar() {
     }
   return (
     <>
-    <div className="flex items-center justify-between p-4 space-x-2 border-b-2 ">
+    <div className="flex items-center justify-between p-4 space-x-2 overflow-hidden bg-white border-b-2">
         <div className="flex items-center content-center justify-center space-x-10">
             <div className="text-xl font-bold">
                 <Link href="/">
@@ -70,7 +70,7 @@ export default function Navbar() {
            <DropdownMenu>
                 <DropdownMenuTrigger>
                     <Avatar className="w-8 h-8 ">
-                        <AvatarImage  src="https://github.com/shadcn.png" />
+                        <AvatarImage alt="profileImg" src="https://github.com/shadcn.png" />
                         <AvatarFallback>K</AvatarFallback>                
                     </Avatar>
                 </DropdownMenuTrigger>
@@ -107,7 +107,7 @@ export default function Navbar() {
             {user && 
                 <div className="flex flex-col items-center justify-start w-full">                    
                     <Avatar >
-                        <AvatarImage  src="https://github.com/shadcn.png" />
+                        <AvatarImage alt="profileImg"  src="https://github.com/shadcn.png" />
                         <AvatarFallback>K</AvatarFallback>
                     </Avatar>
                     <Link href={`/${user.userID}`}>

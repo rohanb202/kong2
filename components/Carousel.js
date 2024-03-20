@@ -44,7 +44,7 @@ export default function Carousel() {
         </div>
         <div ref={slider}  className='my-10 '>
             <div>
-                <h3 data-aos="zoom-out-right" data-aos-duration="500" className='mx-5 text-3xl font-bold md:text-5xl'>Our Open Source</h3>
+                <h1 data-aos="zoom-out-right" data-aos-duration="500" className='mx-5 text-3xl font-bold md:text-5xl'>Our Open Source</h1>
             </div>
             <div className='flex justify-center w-screen my-10 space-x-10 text-white '>
                 

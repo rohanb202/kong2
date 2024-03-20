@@ -75,8 +75,10 @@ export default function SearchBox() {
    
   return (    
     <Popover className="" open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger alt="search" asChild>
         <Button
+          alt="searchTrigger"
+          aria-label="search?"
           variant="outline"
           role="combobox"
           aria-expanded={open}
@@ -87,7 +89,7 @@ export default function SearchBox() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 md:w-80">
-        <Command>
+        <Command alt="search?">
          
           <Input className="border-0 ring-0" value={searchTerm} onChange={handleChange}   placeholder="..."/>
           
