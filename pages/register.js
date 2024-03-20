@@ -5,7 +5,9 @@ import Head from "next/head";
 import kong from "../public/assets/images/kong.png"
 import Image from "next/image"
 import Navbar from "@/components/Navbar";
+import {useTheme} from "next-themes";
 function Register() {
+  const {theme}=useTheme();
   const {
     register,
     handleSubmit,
@@ -36,13 +38,13 @@ function Register() {
     }
   };
   return (
-    <div className="fixed w-full min-h-screen overflow-y-auto h-dvh bg-gradient-to-r from-blue-400/60 to-emerald-400/60">
+    <div className={`fixed w-full min-h-screen overflow-y-auto h-dvh ${theme=='dark'?" bg-[rgb(18,18,18)] ":" bg-gradient-to-r from-blue-400/60 to-emerald-400/60 "}`}>
       <Head>
         <title>Kong | Register</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Navbar/>
-      <div className="z-0 relative inset-0 my-10   max-h-[40rem]  w-[50vw]  bg-white  min-w-[300px] max-w-[28rem] flex flex-col items-center justify-center m-auto rounded-lg shadow-lg">
+      <div className="z-0 relative inset-0 my-10   max-h-[40rem]  w-[50vw] dark:bg-[rgb(18,18,18)] dark:border-[1px]  bg-white  min-w-[300px] max-w-[28rem] flex flex-col items-center justify-center m-auto rounded-lg shadow-lg">
         
         <Image className="relative !z-10 w-20 -top-10" src={kong} alt={'kong-icon'} />
         <h1 className="relative pt-2 text-xl font-semibold md:text-3xl -top-8">Join Kong</h1>
@@ -52,41 +54,41 @@ function Register() {
           className="relative grid grid-cols-1 gap-6 -top-5"
         >
           <label className="block">
-            <span className="text-gray-700">Name</span>
+            <span className="text-gray-700 dark:text-white">Name</span>
             <input
               autoComplete="off"
               type="text"
-              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-[rgb(18,18,18)] dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
               placeholder="Your Name"
               {...register("name", { required: true })}
             />
           </label>
           <label className="block">
-            <span className="text-gray-700">Email</span>
+            <span className="text-gray-700 dark:text-white">Email</span>
             <input
               autoComplete="off"
               type="email"
-              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-[rgb(18,18,18)] dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
               placeholder="Email"
               {...register("email", { required: true })}
             />
           </label>
           <label className="block">
-            <span className="text-gray-700">User ID</span>
+            <span className="text-gray-700 dark:text-white">User ID</span>
             <input
               autoComplete="off"
               type="text"
-              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-[rgb(18,18,18)] dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
               placeholder="Unique ID"
               {...register("userID", { required: true })}
             />
           </label>
           <label className="block">
-            <span className="text-gray-700">Password</span>
+            <span className="text-gray-700 dark:text-white">Password</span>
             <input
               type="password"
               placeholder="Password"
-              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-[rgb(18,18,18)] dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
               {...register("password", { required: true })}
             />
           </label>
@@ -95,7 +97,7 @@ function Register() {
             <button 
               alt="Signup"
               type="submit"
-              className="text-white w-full text-center bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800"
+              className="text-white w-full text-center dark:bg-black bg-slate-700 hover:bg-slate-800 dark:border-[1px] focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5  "
             >
               Sign Up
             </button>
@@ -105,7 +107,7 @@ function Register() {
           Already have an account?{" "}
           <button
             alt="login"
-            className="py-2 text-blue-600"
+            className="pb-2 text-blue-600"
             onClick={() => router.push("/login")}
           >
             Log In

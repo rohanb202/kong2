@@ -2,9 +2,9 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import ClipLoader from "react-spinners/ClipLoader";
 const LOADER_THRESHOLD = 250;
-
+import {useTheme} from 'next-themes'
 export default function NavigationLoader(props) {
-
+  const {theme}=useTheme();
   const {text = "Loading..."} = props;
   const [isLoading, setLoading] = React.useState(false);
   const router = useRouter();
@@ -41,11 +41,11 @@ export default function NavigationLoader(props) {
   if (!isLoading) return null;
   
   return (
-    <div className="flex items-center justify-center w-full h-screen overflow-hidden">
+    <div className="flex items-center justify-center w-full h-screen overflow-hidden ">
         <ClipLoader
                     
                     loading={isLoading}
-                    
+                    color={`${theme=='dark'?"#ffffff":"#000000"}`}
                     size={40}
                     aria-label="Loading Spinner"
                     data-testid="loader"

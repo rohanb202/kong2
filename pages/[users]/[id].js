@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import Navbar from "@/components/Navbar";
 import metadataParser from "markdown-yaml-metadata-parser";
 import { NextSeo } from "next-seo";
-import ClipLoader from "react-spinners/ClipLoader";
+
 // export async function getServerSideProps(context){
 import Link from "next/link";
 import { useRecoilState } from "recoil";
@@ -346,28 +346,28 @@ export default function ModelView({model}) {
               {model?.tags?.map((category, i) => (
                 <Link key={model._id + i} href={`/models?tag=${category}`}>
                   <button alt="tags" 
-                    className={`p-2 rounded-md bg-slate-900 text-white text-xs md:text-sm `}
+                    className={`p-2 my-1 rounded-md dark:border-[1px] dark:bg-[rgb(18,18,18)] bg-slate-900 text-white text-xs md:text-sm `}
                   >
                     {category}
                   </button>
                 </Link>
               ))}
             </div>
-            <div className="w-screen border-2 border-b border-slate-700"></div>
+            <div className="w-screen border-[1px] border-b border-slate-700 dark:border-white"></div>
           </div>
         </div>
         <div className="flex flex-col justify-center ">
           {/* <div className="h-full border-2 border-b border-gray-500"></div> */}
-          <div className="md:w-[80%] w-full md:mx-auto p-1  md:p-20 bg-white md:border-b-2 md:border-l-2 md:border-r-2 border-slate-700">
+          <div className="md:w-[80%] w-full md:mx-auto p-1  md:p-20 bg-white dark:bg-[rgb(18,18,18)] md:border-b-[1px] md:border-l-2 md:border-r-2 border-slate-700 dark:border-white">
             {/* <div className='flex justify-end w-full'> */}
             {/* <button onClick={()=>{setEdit(!edit)}} className='p-1 border-b border-l rounded-bl-md border-cyan-600'>{edit?"Save":"Edit"} model card</button> */}
             {/* </div> */}
-            <span className="prose-sm prose prose-slate md:prose-lg max-w-none">
+            <span className="prose-sm prose dark:bg-[rgb(18,18,18)] prose-slate md:prose-lg max-w-none dark:prose-invert">
               {/* {!edit && <Markdown className='p-5 ' remarkPlugins={[gfm]}>{input}</Markdown>} 
                       {edit && <textarea className='w-full h-screen bg-red-100' value={input} onChange={(e)=>setInput(e.target.value)}/>} */}
               {
                 <Markdown
-                  className="mx-auto"
+                  className="mx-auto dark:bg-[rgb(18,18,18)]"
                   components={MarkComponent}
                   remarkPlugins={[gfm]}
                   rehypePlugins={[rehypeRaw]}

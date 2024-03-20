@@ -10,8 +10,9 @@ import UseDebounce from "@/utils/UseDebounce";
 //   id: index + 1,
 //   text: `Item ${index + 1}`,
 // }));
-
+import {useTheme} from "next-themes";
 export default function Filter() {
+  const {theme}=useTheme();
     const router=UseRouter();
     const searchParams=UseRouter.query; 
     const [currentFilter,setCurrentFilter]=UseState("tasks");
@@ -131,26 +132,26 @@ export default function Filter() {
   return (
     <div className="flex flex-col flex-wrap ">
         <div className="flex flex-wrap justify-between gap-1 p-4 text-xs ">
-            <button alt="tasks" className={`p-2 rounded-md bg-slate-900 ${(!currentFilter||"tasks"===currentFilter)?"text-white":"text-white/50"}`} onClick={()=>{setCurrentFilter("tasks")}}>Task</button>
-            <button alt="libraries" className={`p-2 rounded-md bg-slate-900 ${(!currentFilter||"libraries"===currentFilter)?"text-white":"text-white/50"}`} onClick={()=>{setCurrentFilter("libraries")}}>Libraries</button>
-            <button  alt="datasets"className={`p-2 rounded-md bg-slate-900 ${(!currentFilter||"datasets"===currentFilter)?"text-white":"text-white/50"}`}onClick={()=>{setCurrentFilter("datasets")}}>Datasets</button>
-            <button  alt="languages"className={`p-2 rounded-md bg-slate-900 ${(!currentFilter||"languages"===currentFilter)?"text-white":"text-white/50"}`}onClick={()=>{setCurrentFilter("languages")}}>Languages</button>            
-            <button  alt="other" className={`p-2 rounded-md bg-slate-900 ${(!currentFilter||"other"===currentFilter)?"text-white":"text-white/50"}`}onClick={()=>{setCurrentFilter("other")}}>Other</button>
+            <button alt="tasks" className={`p-2 dark:bg-[rgb(18,18,18)] dark:border-[1px]  rounded-md bg-slate-900 ${(!currentFilter||"tasks"===currentFilter)?"text-white":"text-white/50"}`} onClick={()=>{setCurrentFilter("tasks")}}>Task</button>
+            <button alt="libraries" className={`p-2 dark:bg-[rgb(18,18,18)] dark:border-[1px] rounded-md bg-slate-900 ${(!currentFilter||"libraries"===currentFilter)?"text-white":"text-white/50"}`} onClick={()=>{setCurrentFilter("libraries")}}>Libraries</button>
+            <button  alt="datasets"className={`p-2 dark:bg-[rgb(18,18,18)] dark:border-[1px] rounded-md bg-slate-900 ${(!currentFilter||"datasets"===currentFilter)?"text-white":"text-white/50"}`}onClick={()=>{setCurrentFilter("datasets")}}>Datasets</button>
+            <button  alt="languages"className={`p-2 dark:bg-[rgb(18,18,18)] dark:border-[1px] rounded-md bg-slate-900 ${(!currentFilter||"languages"===currentFilter)?"text-white":"text-white/50"}`}onClick={()=>{setCurrentFilter("languages")}}>Languages</button>            
+            <button  alt="other" className={`p-2 dark:bg-[rgb(18,18,18)] dark:border-[1px] rounded-md bg-slate-900 ${(!currentFilter||"other"===currentFilter)?"text-white":"text-white/50"}`}onClick={()=>{setCurrentFilter("other")}}>Other</button>
         </div>
         <div className="flex items-center">
-            <Input value={searchTerm} onChange={handleChange} className=" bg-slate-100" type="text" placeholder="Filter" />
-            {select && <button alt="reset tag" onClick={()=>{setSelect(null)}} className="w-20 p-1 m-2 text-xs text-white bg-gray-800 rounded-md text-nowrap">Reset Filter</button>}
+            <Input value={searchTerm} onChange={handleChange} className=" bg-slate-100 dark:bg-[rgb(18,18,18)]" type="text" placeholder="Filter" />
+            {select && <button alt="reset tag" onClick={()=>{setSelect(null)}} className="w-20 p-1 m-2 text-xs text-white dark:bg-[rgb(18,18,18)] dark:border-[1px] bg-gray-800 rounded-md text-nowrap">Reset Filter</button>}
         </div>
         <div className="flex flex-wrap justify-start p-4">
           {!loading && filteredSearch?.map((category)=>(
             
-            <button alt="select tag" className={`p-2 m-1 text-xs ${(!select||select===category.title)?"text-white":"text-white/50"} bg-gray-800 rounded-md backdrop-blur-sm `} key={category._id} onClick={tagHandler}>{category.title}</button>
+            <button alt="select tag" className={`p-2 dark:bg-black dark:border-[1px] m-1 text-xs ${(!select||select===category.title)?"text-white":"text-white/50"} bg-gray-800 rounded-md backdrop-blur-sm `} key={category._id} onClick={tagHandler}>{category.title}</button>
           ))}
           { loading &&  <div className='flex items-center justify-center w-full p-5'>
               <ClipLoader
                     
                     loading={loading}
-                    
+                    color={`${theme=='dark'?"#ffffff":"#000000"}`}
                     size={40}
                     aria-label="Loading Spinner"
                     data-testid="loader"

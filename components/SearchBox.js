@@ -24,11 +24,12 @@ import { Input } from "./ui/input"
 import useDebounce from "@/utils/UseDebounce"
 import ClipLoader from "react-spinners/ClipLoader";
 import { ScrollArea } from "@/components/ui/scroll-area"
-
+import {useTheme} from "next-themes";
 
 
 
 export default function SearchBox() {
+  const {theme}=useTheme();
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState("")
   const [filteredDocuments, setFilteredDocuments] = useState({items:[]});
@@ -91,13 +92,13 @@ export default function SearchBox() {
       <PopoverContent className="p-0 md:w-80">
         <Command alt="search?">
          
-          <Input className="border-0 ring-0" value={searchTerm} onChange={handleChange}   placeholder="..."/>
+          <Input className="border-[1px]  ring-0" value={searchTerm} onChange={handleChange}   placeholder="..."/>
           
           {searchTerm && !loading && <CommandEmpty>No models found.</CommandEmpty>}
           {searchTerm && loading && <CommandEmpty><ClipLoader
                     
                     loading={loading}
-                    
+                    color={`${theme=='dark'?"#ffffff":"#000000"}`}
                     size={40}
                     aria-label="Loading Spinner"
                     data-testid="loader"

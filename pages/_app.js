@@ -5,13 +5,21 @@ import {
   RecoilRoot  
 } from "recoil";
 import NavigationLoader from "@/utils/NavLoader";
+import { ThemeProvider } from "@/utils/theme-provider";
 export default function App({ Component, pageProps }) {
   return (
     <>
     <DefaultSeo {...SEO}/>
     <RecoilRoot>
+    <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
       <NavigationLoader/>
         <Component {...pageProps} />
+        </ThemeProvider>
     </RecoilRoot>
   </>
   );

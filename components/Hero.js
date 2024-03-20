@@ -4,11 +4,12 @@ import React, { useEffect } from 'react'
 import kong2 from '../public/assets/images/kong2.webp'
 // import appstore from '../assets/images/appstore.png'
 import {StarIcon} from '@heroicons/react/24/solid'
-
+import { useTheme } from 'next-themes'
 export default function Hero() {
-  
+  let {theme}=useTheme();
+  // console.log(theme);
   return (
-    <section className='h-screen mx-5 my-6 text-white backdrop-blur-sm bg-gradient-to-l from-slate-700 to-slate-900 md:mx-10 rounded-3xl'>
+    <section className={`h-screen mx-5 my-6 text-white  backdrop-blur-sm ${theme=='dark'?" border-[1px] bg-gradient-to-l from-slate-100 to-slate-800 ":" bg-gradient-to-l from-slate-700 to-slate-900 "}  md:mx-10 rounded-3xl`}>
         <div className='flex flex-col items-center justify-between h-full md:justify-between md:flex-row'>
             <div  className='flex flex-col items-center p-10 mt-2 md:space-y-6 md:items-start'>
                 <h2 className='text-2xl md:text-3xl '>Kong app</h2>

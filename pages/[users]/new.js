@@ -23,15 +23,35 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
   import metadataParser from "markdown-yaml-metadata-parser";
-
-
+import { Input } from "@/components/ui/input";
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+    
+  } from "@/components/ui/command"
+  import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+  } from "@/components/ui/popover"
+// 
+import { Button } from "@/components/ui/button";
+import useDebounce from "@/utils/UseDebounce";
 export default function New() {
     const [model,setModel]=useState(`## Enter Description Here by Clicking Edit button`);
     const [edit,setEdit]=useState(false);
     const [user,setUser]=useRecoilState(userState);
     const [error,setError]=useState();
     const router=useRouter();
+    const [comboOpen, setComboOpen] = useState([])
+    const [combovalue, setComboValue] = useState("")
+    const [filteredTags,setFilteredTags] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
+    const [searchTerm,setSearchTerm]=useState();
     const {
         register,
         handleSubmit,
@@ -107,14 +127,29 @@ export default function New() {
         const res=await fetch(`/api/categories?tag=all`);
         const data=await res.json();
         setTags(data);
+        setFilteredTags(data); 
     }
+    const handleChange = (event) => {  
+        // setLoading(true);    
+        setSearchTerm(event.target.value);
+    }
+    useDebounce(()=>{
+        if(!searchTerm){
+            setFilteredTags(tags);
+            return;
+        }
+        setFilteredTags(tags.filter((t) =>  t.title.toLowerCase().includes(searchTerm.toLowerCase())));
 
+
+    },[searchTerm],800)
     useEffect(() => {
-        fetchTags();           
+        fetchTags();
+               
     }, []); 
     useEffect(() => {
         // console.log()     
     }, [disableBtn]);
+    
       
   return (
     
@@ -146,87 +181,66 @@ export default function New() {
                             <div className="flex flex-wrap gap-2 py-5 mt-2">
                                 
                                     {selectedTags.map((tag, index) => (
-                                    <div key={index} className="flex items-center p-1 text-white rounded-md bg-slate-800">
+                                    <div key={index} className="flex items-center p-1 text-white rounded-md dark:bg-[rgb(18,18,18)] dark:text-white dark:border-[1px] bg-slate-800">
                                         <span className="mr-2">{tag}</span>
                                         <button alt="removeTag" type="button" onClick={(e) => {e.preventDefault(); removeTag(tag)}}>&times;</button>
                                     </div>
                                     ))}
                             
-                            </div>
-                            {/* <button
-                                onClick={(e)=>{e.preventDefault(); toggleDropdown()}}
-                                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                type="button"
-                            >
-                            Select Tags
-                            <svg
-                            className={`w-2.5 h-2.5 ms-3 ${isOpen ? 'transform rotate-180' : ''}`}
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 10 6"
-                            >
-                            <path
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="m1 1 4 4 4-4"
-                            />
-                            </svg>
-                        </button> */}
-
-                        
-                            <DropdownMenu>
-                                <DropdownMenuTrigger  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Select Tags
-                                </DropdownMenuTrigger>
+                            </div>                            
+                        <Popover className="" open={comboOpen} onOpenChange={setComboOpen}>
+                            <PopoverTrigger alt="searchTag" asChild>
+                                <Button
+                                    alt="searchTrigger"
+                                    aria-label="search?"
+                                    variant="outline"
+                                    role="combobox"
+                                    aria-expanded={open}
+                                    className="text-white dark:border-[1px] bg-blue-600 hover:bg-bg-blue-400 hover:text-white/80 hover:shadow-inner"
+                                >
+                                    Add Tags
                                 
-                                <DropdownMenuContent >
-                                    <ScrollArea className="h-60">
-                                {tags?.map((tag) => (
-                                <DropdownMenuItem key={tag._id}>
-                                    <button 
-                                    alt="tag"
-                                    type="button"
-                                    onClick={(e) => {e.preventDefault(); addTag(tag.title)}}
-                                    className="block w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                    >
-                                    {tag.title}
-                                    </button> 
+                                </Button>
+                                
+                            </PopoverTrigger>
+                            <PopoverContent className="mx-5 md:w-80">
+                                <Command alt="search?">
+                                
+                                <Input className="w-[90%] m-2 border-0 ring-0" value={searchTerm} onChange={handleChange}   placeholder="..."/>
+                                
+                                { <CommandEmpty>No models found.</CommandEmpty>}
+                                
+                                <ScrollArea className="h-40">
+                                <CommandGroup>
+                                    {filteredTags.map((data) => (
+                                        
+                                        <CommandList key={data._id}>
+                                            
+                                            <CommandItem
+                                                key={data._id}
+                                                value={`${data.title}`}
+                                                onSelect={(currentValue) => {
+                                                setComboValue(currentValue === combovalue ? "" : currentValue)
+                                                setComboOpen(false)
+                                                addTag(data.title)
+                                                }}
+                                            >
+                                                
+                                                
+                                                {data.title}
+                                                
+                                            </CommandItem>
+                                            
+                                    </CommandList>
                                     
-                                </DropdownMenuItem>
-                                ))}
+                                    ))}
+                                    
+                                </CommandGroup>
                                 </ScrollArea>
-                                </DropdownMenuContent>
-                                
-                                
-                            </DropdownMenu> 
-                            
-                            {/* {isOpen && (
-                            <div className="absolute z-10 mt-2 overflow-y-auto bg-white divide-y divide-gray-100 rounded-lg shadow h-60 w-60 dark:bg-gray-700">
-                                
-                            <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
-                            
-                                {tags?.map((tag) => (
-                                <li key={tag._id}>
-                                    <button
-                                    type="button"
-                                    onClick={(e) => {e.preventDefault(); addTag(tag.title)}}
-                                    className="block w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                    >
-                                    {tag.title}
-                                    </button>
-                                </li>
-                                ))}
-                                
-                            </ul>
-                            
-                            </div>
-                        
-                            )} */}
-
-                        <button alt="submitForm" disabled={disableBtn} type="submit" className="hidden lg:block text-white my-3 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Create Model</button>
+                                </Command>
+                            </PopoverContent>
+                            </Popover>
+                        <button alt="submitForm" disabled={disableBtn} type="submit" className=" dark:border-[1px] hidden lg:block text-white my-3 bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Create Model</button>
                             
                             </div>
                         </div>
@@ -235,19 +249,19 @@ export default function New() {
                                 <div className="flex items-center justify-between pb-5">
                                     <h1 for="text" className="block text-base font-medium text-gray-900 dark:text-white">Markdown</h1>
                                     
-                                    <button alt="editMarkdown" onClick={(e)=>{e.preventDefault();setEdit(!edit)}} className='w-20 p-1 text-white bg-black rounded-md'>{edit?"Save":"Edit"}</button>
+                                    <button alt="editMarkdown" onClick={(e)=>{e.preventDefault();setEdit(!edit)}} className='dark:border-[1px] w-20 p-1 text-white bg-black rounded-md'>{edit?"Save":"Edit"}</button>
                                 
                                 </div>
-                                <span className="prose ">
-                                    {!edit && <Markdown rehypePlugins={[rehypeRaw]} className='h-full p-5 rounded-md bg-blue-50' remarkPlugins={[gfm]}>{
-                    metadataParser(model ? model : "")
-                      .content
-                  }</Markdown>} 
-                                    {edit && <textarea {...register("mark_down")} className='w-full h-full bg-red-100 rounded-md' value={model} onChange={(e)=>setModel(e.target.value)}/>}
+                                <span className="prose dark:prose-invert ">
+                                    {!edit && <Markdown rehypePlugins={[rehypeRaw]} className='h-full p-5 rounded-md dark:border-[1px] bg-blue-50 dark:bg-[rgb(18,18,18)] dark:text-white' remarkPlugins={[gfm]}>{
+                                                            metadataParser(model ? model : "")
+                                                                                 .content
+                                    }</Markdown>} 
+                                    {edit && <textarea {...register("mark_down")} className='w-full h-full bg-red-100 rounded-md dark:bg-[rgb(18,18,18)] dark:text-white dark:border-[1px]  ' value={model} onChange={(e)=>setModel(e.target.value)}/>}
                                 </span>
                         </div>
                         
-                        <button alt="submitForm" disabled={disableBtn} type="submit" className=" lg:hidden text-white my-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create Model</button>
+                        <button alt="submitForm" disabled={disableBtn} type="submit" className=" lg:hidden dark:border-[1px] text-white my-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Create Model</button>
                     </form>
                 
             </div>

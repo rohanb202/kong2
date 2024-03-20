@@ -26,8 +26,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { userState } from "../atoms/userAtom";
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
+import {useTheme} from"next-themes";
+
 export default function Navbar() {
     const [user, setUser] = useRecoilState(userState);
+    const {theme,setTheme}=useTheme();
     const router=useRouter();
     function handleLogut(){
         setUser(null);
@@ -35,7 +40,7 @@ export default function Navbar() {
     }
   return (
     <>
-    <div className="flex items-center justify-between p-4 space-x-2 overflow-hidden bg-white border-b-2">
+    <div className="flex items-center justify-between p-4 space-x-2 overflow-hidden bg-white border-b-2 dark:bg-[rgb(18,18,18)]">
         <div className="flex items-center content-center justify-center space-x-10">
             <div className="text-xl font-bold">
                 <Link href="/">
@@ -50,12 +55,18 @@ export default function Navbar() {
         <div className="block w-full max-w-sm md:hidden">                
                 <SearchBox/>
         </div>
-        <div className="items-center hidden space-x-10 md:flex">            
+        <div className="items-center hidden space-x-10 md:flex">  
+            <div className="flex items-center space-x-2">
+                <Label htmlFor="airplane-mode">Theme</Label>
+                <Switch onClick={()=>{setTheme(theme=='dark'?'light':'dark')}} id="theme-switch" />
+                
+            </div>          
             <div>
                 <Link href="/models">
                 Models
                 </Link>
             </div>
+            
             {!user && <div>
                 <Link href="/login">
                     Login
@@ -85,7 +96,8 @@ export default function Navbar() {
                     <Link href={`/models/new`}>
                             + New Model
                         </Link> 
-                    </DropdownMenuItem>                    
+                    </DropdownMenuItem> 
+                                      
                     <DropdownMenuItem>
                     <button alt="logout" onClick={handleLogut}>
                             Logout
@@ -111,20 +123,26 @@ export default function Navbar() {
                         <AvatarFallback>K</AvatarFallback>
                     </Avatar>
                     <Link href={`/${user.userID}`}>
-                        <Button alt="userID" className="font-semibold text-black bg-white hover:bg-black/10">                            
+                        <Button alt="userID" className="mt-2 font-semibold text-black bg-white hover:bg-black/10">                            
                         @{user.userID}
                         </Button>
                     </Link>                    
                 </div>
             
             }  
+            <div className="flex items-center space-x-2">
+                        <Label htmlFor="airplane-mode">Theme</Label>
+                        <Switch onClick={()=>{setTheme(theme=='dark'?'light':'dark')}} id="theme-switch" />
+                        
+                    </div>  
             {user && <DrawerClose asChild>
                     <Link href={`/models/new`}>
                         <Button alt="add new model" className="w-[90vw] ">                            
                                 + New Model
                         </Button>
                     </Link>                
-                </DrawerClose>}              
+                </DrawerClose>}    
+                          
                 <DrawerClose asChild>
                     <Link href={'/models'}>
                         <Button alt="Models" className="w-[90vw] ">                            

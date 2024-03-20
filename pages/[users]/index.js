@@ -5,8 +5,10 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import ModelCard from '@/components/ModelCard';
 import ClipLoader from "react-spinners/ClipLoader";
+import {useTheme} from "next-themes";
 export default function Index() {
   const router=useRouter();
+  const {theme}=useTheme();
   const [models,setModels] = useState({items:[]});
   const [loading,setLoading] = useState(false); 
    const [show,setShow]=useState(false);
@@ -20,7 +22,7 @@ export default function Index() {
       
       setModels(data);
       // console.log(data);
-      console.log(models);
+      // console.log(models);
     }catch(e){
       
     }finally{
@@ -53,7 +55,7 @@ export default function Index() {
       {!show && <div className='flex items-center justify-center w-full h-screen'><ClipLoader
                       
                       loading={loading}
-                      
+                      color={`${theme=='dark'?"#ffffff":"#000000"}`}
                       size={40}
                       aria-label="Loading Spinner"
                       data-testid="loader"

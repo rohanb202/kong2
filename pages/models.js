@@ -18,7 +18,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { ScrollArea } from '@/components/ui/scroll-area';
 import useDebounce from '@/utils/UseDebounce';
 import { Button } from '@/components/ui/button';
-
+import {useTheme} from "next-themes";
 // const Models = Array.from({ length: 50 }, (_, index) => ({
 //     id: index + 1,
 //     text: `Item ${index + 1}`,
@@ -37,6 +37,7 @@ import { Button } from '@/components/ui/button';
 // }
 export default function Models() {
     const router = useRouter();
+    const {theme}=useTheme();
     let page=parseInt(router.query.page,10);
     page=(!page||page<1)?1:page;
     let perPage=20;
@@ -143,7 +144,7 @@ export default function Models() {
                 </div>
                 
                 
-                <Input value={searchTerm?searchTerm:""} onChange={handleChange} className="w-80 bg-slate-100" type="text" placeholder="Filter by name" />
+                <Input value={searchTerm?searchTerm:""} onChange={handleChange} className="w-80 dark:bg-black bg-slate-100" type="text" placeholder="Filter by name" />
                 <Sort/>
                 <div className=' lg:hidden'>
                 
@@ -166,7 +167,7 @@ export default function Models() {
             </div>
           { loading &&  <div className='flex p-10'>
               <ClipLoader
-                    
+                    color={`${theme=='dark'?"#ffffff":"#000000"}`}
                     loading={loading}
                     
                     size={40}
