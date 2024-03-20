@@ -2,6 +2,7 @@ import React from 'react'
 import { useRouter  } from "next/router";
 import { useState,useEffect,useCallback} from 'react';
 import Filter from '@/components/Filter';
+
 import { Input } from '@/components/ui/input';
 import ModelCard from '@/components/ModelCard';
 import Navbar from '@/components/Navbar';

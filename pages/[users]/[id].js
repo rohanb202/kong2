@@ -1,10 +1,12 @@
 import { ArrowDownTrayIcon, HeartIcon } from "@heroicons/react/24/outline";
 import {  HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 import rehypeRaw from "rehype-raw";
-import Markdown from "react-markdown";
+
+// import Markdown from "react-markdown";
+import dynamic from 'next/dynamic'
+let Markdown=dynamic(()=>import("react-markdown"),{  ssr: true, })
 import gfm from "remark-gfm";
 import SyntaxHighlighter from "react-syntax-highlighter";
-// import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import CategoryButton from "@/components/CategoryButton";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -175,7 +177,7 @@ export default function ModelView({model}) {
       }
 
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         return data;
     } catch (error) {
         console.error('Error updating download count:', error);
@@ -212,7 +214,7 @@ export default function ModelView({model}) {
   },[])
   function likeBtnHandler(){
     if(!user)return;
-    console.log(likeCnt);
+    // console.log(likeCnt);
     if(!likeBtn){
       setLikeCnt(likeCnt+1);
     }else{

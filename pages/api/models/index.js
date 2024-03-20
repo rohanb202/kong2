@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     
     page=(!page||page<1)?1:page;
     sort=(!sort|| sort=="trending")?"viewCount":sort;  
-    console.log(sort);  
+    // console.log(sort);  
     const sortOrder = -1;
     let perPage=20;
     

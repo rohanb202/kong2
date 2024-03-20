@@ -1,13 +1,18 @@
 import Navbar from "@/components/Navbar";
 import { useForm } from "react-hook-form"
-import Markdown from 'react-markdown'
-import gfm from 'remark-gfm';
+
+
 // import SyntaxHighlighter from 'react-syntax-highlighter';
 import { useState,useEffect } from 'react';
 import { useRecoilState } from "recoil";
 import { userState } from "@/atoms/userAtom";
 import { useRouter } from "next/router"; 
 import rehypeRaw from "rehype-raw";
+
+// import Markdown from 'react-markdown'
+import dynamic from 'next/dynamic'
+let Markdown=dynamic(()=>import("react-markdown"),{  ssr: false, })
+import gfm from 'remark-gfm';
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {
     DropdownMenu,
@@ -61,6 +66,7 @@ export default function New() {
         }catch(e){
             setError(e);
             // console.log(e);
+            
         }finally{
             setTimeout(() => {
                 setDisableBtn(false);
@@ -74,7 +80,7 @@ export default function New() {
     
     useEffect(()=>{
         if(!user){
-            console.log("can't find user");
+            // console.log("can't find user");
             router.push('/');
         }
     },[user])
@@ -107,7 +113,7 @@ export default function New() {
         fetchTags();           
     }, []); 
     useEffect(() => {
-        console.log()          
+        // console.log()     
     }, [disableBtn]);
       
   return (
