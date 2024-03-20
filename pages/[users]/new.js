@@ -195,7 +195,7 @@ export default function New() {
                                     aria-label="search?"
                                     variant="outline"
                                     role="combobox"
-                                    aria-expanded={open}
+                                    aria-expanded={comboOpen}
                                     className="text-white dark:border-[1px] bg-blue-600 hover:bg-bg-blue-400 hover:text-white/80 hover:shadow-inner"
                                 >
                                     Add Tags
