@@ -9,8 +9,8 @@ import { ObjectId } from "mongodb";
 const protect = (handler) => {
   return async (req, res) => {
     let token;
-    const  client  = await connectToDatabase();
-    const db=await client.db("kong_face");
+    const client = await connectToDatabase();
+    const db = await client.db("kong_face");
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")

@@ -2,12 +2,12 @@ import { useState } from "react";
 import { set, useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import kong from "../public/assets/images/kong.png"
-import Image from "next/image"
+import kong from "../public/assets/images/kong.png";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
-import {useTheme} from "next-themes";
+import { useTheme } from "next-themes";
 function Register() {
-  const {theme}=useTheme();
+  const { theme } = useTheme();
   const {
     register,
     handleSubmit,
@@ -38,17 +38,30 @@ function Register() {
     }
   };
   return (
-    <div className={`fixed w-full min-h-screen overflow-y-auto h-dvh ${theme=='dark'?" bg-[rgb(18,18,18)] ":" bg-gradient-to-r from-blue-400/60 to-emerald-400/60 "}`}>
+    <div
+      className={`fixed w-full min-h-screen overflow-y-auto h-dvh ${
+        theme == "dark"
+          ? " bg-[rgb(18,18,18)] "
+          : " bg-gradient-to-r from-blue-400/60 to-emerald-400/60 "
+      }`}
+    >
       <Head>
         <title>Kong | Register</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Navbar/>
+      <Navbar />
       <div className="z-0 relative inset-0 my-10   max-h-[40rem]  w-[50vw] dark:bg-[rgb(18,18,18)] dark:border-[1px]  bg-white  min-w-[300px] max-w-[28rem] flex flex-col items-center justify-center m-auto rounded-lg shadow-lg">
-        
-        <Image className="relative !z-10 w-20 -top-10" src={kong} alt={'kong-icon'} />
-        <h1 className="relative pt-2 text-xl font-semibold md:text-3xl -top-8">Join Kong</h1>
-        <h2 className="relative pb-2 text-base text-center md:text-xl text-black/50 -top-8 dark:text-white/50">Join the community of machine learners!</h2>
+        <Image
+          className="relative !z-10 w-20 -top-10"
+          src={kong}
+          alt={"kong-icon"}
+        />
+        <h1 className="relative pt-2 text-xl font-semibold md:text-3xl -top-8">
+          Join Kong
+        </h1>
+        <h2 className="relative pb-2 text-base text-center md:text-xl text-black/50 -top-8 dark:text-white/50">
+          Join the community of machine learners!
+        </h2>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="relative grid grid-cols-1 gap-6 -top-5"
@@ -94,7 +107,7 @@ function Register() {
           </label>
 
           <div className="flex items-center justify-center ">
-            <button 
+            <button
               alt="Signup"
               type="submit"
               className="text-white w-full text-center dark:bg-black bg-slate-700 hover:bg-slate-800 dark:border-[1px] focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5  "

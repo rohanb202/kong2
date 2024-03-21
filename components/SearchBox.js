@@ -1,76 +1,66 @@
-
-
 import { useRouter } from "next/router";
-import { useState ,useEffect ,useCallback} from 'react';
-import { Button } from "@/components/ui/button"
+import { useState, useEffect, useCallback } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
- 
   CommandItem,
   CommandList,
-  
-} from "@/components/ui/command"
+} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
-import { Input } from "./ui/input"
-import useDebounce from "@/utils/UseDebounce"
+} from "@/components/ui/popover";
+import { Input } from "./ui/input";
+import useDebounce from "@/utils/UseDebounce";
 import ClipLoader from "react-spinners/ClipLoader";
-import { ScrollArea } from "@/components/ui/scroll-area"
-import {useTheme} from "next-themes";
-
-
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useTheme } from "next-themes";
 
 export default function SearchBox() {
-  const {theme}=useTheme();
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState("")
-  const [filteredDocuments, setFilteredDocuments] = useState({items:[]});
-  const [loading,setLoading]=useState(false);
-  const router=useRouter();
-  const pathname = router.pathname
-  const [searchTerm, setSearchTerm] = useState('');   
-  const handleChange = (event) => {  
-    setLoading(true);    
+  const { theme } = useTheme();
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
+  const [filteredDocuments, setFilteredDocuments] = useState({ items: [] });
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const pathname = router.pathname;
+  const [searchTerm, setSearchTerm] = useState("");
+  const handleChange = (event) => {
+    setLoading(true);
     setSearchTerm(event.target.value);
-  }
-    async function GlobalSearch(){
-      try{
-        
-        const res=await fetch(`/api/models?search=${searchTerm}&doc=all`);
-        const data=await res.json();
-        setFilteredDocuments(data);
-
-      }catch(e){
-
-      }finally{
-        setLoading(false);
-      }
-        
+  };
+  async function GlobalSearch() {
+    try {
+      const res = await fetch(`/api/models?search=${searchTerm}&doc=all`);
+      const data = await res.json();
+      setFilteredDocuments(data);
+    } catch (e) {
+    } finally {
+      setLoading(false);
     }
-    
-    useDebounce(() => {
-        if(!searchTerm){
-            setFilteredDocuments({items: []});
-            return;
-        }
+  }
 
-        GlobalSearch(); 
-     
-             
-      }, [searchTerm], 800
-    );
-  useEffect(()=>{
-   
-    if(!value) return;
+  useDebounce(
+    () => {
+      if (!searchTerm) {
+        setFilteredDocuments({ items: [] });
+        return;
+      }
+
+      GlobalSearch();
+    },
+    [searchTerm],
+    800
+  );
+  useEffect(() => {
+    if (!value) return;
     router.push(`/${value}`);
-  },[value])
-   
-  return (    
+  }, [value]);
+
+  return (
     <Popover className="" open={open} onOpenChange={setOpen}>
       <PopoverTrigger alt="search" asChild>
         <Button
@@ -81,52 +71,52 @@ export default function SearchBox() {
           aria-expanded={open}
           className="justify-start md:w-80 w-[80%] "
         >
-            Search Models...
-         
+          Search Models...
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 md:w-80">
         <Command alt="search?">
-         
-          <Input className="border-[1px]  ring-0" value={searchTerm} onChange={handleChange}   placeholder="..."/>
-          
-          {searchTerm && !loading && <CommandEmpty>No models found.</CommandEmpty>}
-          {searchTerm && loading && <CommandEmpty><ClipLoader
-                    
-                    loading={loading}
-                    color={`${theme=='dark'?"#ffffff":"#000000"}`}
-                    size={40}
-                    aria-label="Loading Spinner"
-                    data-testid="loader"
-                  /> </CommandEmpty> }
-        <ScrollArea className="h-60">
-          <CommandGroup>
-            {filteredDocuments?.items?.map((data) => (
-                
+          <Input
+            className="border-[1px]  ring-0"
+            value={searchTerm}
+            onChange={handleChange}
+            placeholder="..."
+          />
+
+          {searchTerm && !loading && (
+            <CommandEmpty>No models found.</CommandEmpty>
+          )}
+          {searchTerm && loading && (
+            <CommandEmpty>
+              <ClipLoader
+                loading={loading}
+                color={`${theme == "dark" ? "#ffffff" : "#000000"}`}
+                size={40}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />{" "}
+            </CommandEmpty>
+          )}
+          <ScrollArea className="h-60">
+            <CommandGroup>
+              {filteredDocuments?.items?.map((data) => (
                 <CommandList key={data._id}>
-                    
-                    <CommandItem
-                        key={data._id}
-                        value={`${data.author}/${data._id}`}
-                        onSelect={(currentValue) => {
-                        setValue(currentValue === value ? "" : currentValue)
-                        setOpen(false)
-                        }}
-                    >
-                       
-                        
-                        {data.author}/{data.title}
-                        
-                    </CommandItem>
-                    
-              </CommandList>
-              
-            ))}
-            
-          </CommandGroup>
+                  <CommandItem
+                    key={data._id}
+                    value={`${data.author}/${data._id}`}
+                    onSelect={(currentValue) => {
+                      setValue(currentValue === value ? "" : currentValue);
+                      setOpen(false);
+                    }}
+                  >
+                    {data.author}/{data.title}
+                  </CommandItem>
+                </CommandList>
+              ))}
+            </CommandGroup>
           </ScrollArea>
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
