@@ -107,16 +107,17 @@ const MarkComponent = ({ value, language }) => {
 export default function ModelView({model}) {
   
   const router = useRouter();
+  
   const [likes,setLikes]=useState({});
   const [likeBtn,setLikeBtn]=useState(null);
   const [likeCnt,setLikeCnt]=useState(0);
   const [downloadCnt,setDownloadCnt]=useState((model?.downloads)?model?.downloads:0);
   const [clickedLikes,setClickedLikes]=useState(0);
   const [clickedDownload,setClickedDownload]=useState(0);
-
-
-
   const [user,setUser]=useRecoilState(userState);
+
+
+  
   async function getLikes(){
     try{
       // console.log(`/api/likes?modelId=${model?._id}&userId=${user?._id}`);
@@ -247,7 +248,43 @@ export default function ModelView({model}) {
     updateDownloadCount();
   },[clickedDownload],800)
   
-  // const [model, setModel] = useState({});
+  const [modelEdit, setModelEdit] = useState(model?.mark_down);
+  const [edit, setEdit] = useState(null);
+  async function updateModelMarkdown() {
+    
+  
+    try {
+      const response = await fetch('/api/models/new', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user?.token}` 
+        },
+        body: JSON.stringify({
+          modelId: model._id,
+          mark_down:modelEdit,
+        })
+      });
+      
+      if (!response.ok) {
+        // throw new Error('Failed to update model markdown');
+      }
+  
+      const data = await response.json();
+      // console.log(data);
+      // return data; // Assuming the API returns some data upon successful update
+    } catch (error) {
+      console.error('Error updating model markdown:', error);
+      // throw error;
+    }
+  }
+  useDebounce(()=>{
+    if(edit || !user){
+      return;
+    }
+    // console.log(user.token,model._id,modelEdit);
+    updateModelMarkdown();
+  },[edit],800)
   // const [loading, setLoading] = useState(false);
   // async function fetchModel() {
   //   try{
@@ -307,7 +344,7 @@ export default function ModelView({model}) {
       { !model.error && <div className="md:overflow-x-hidden">
         <Navbar />
         <div className="">
-          <div className="flex items-center gap-2 px-5 pt-4">
+          <div className="flex flex-col items-center gap-2 px-5 pt-4 md:flex-row">
             <div className="text-xl md:text-2xl">
               <Link href={`/${model?.author}`}>
                 <span className="hover:text-blue-700">{model?.author}</span>
@@ -319,30 +356,32 @@ export default function ModelView({model}) {
                 </span>
               </Link>
             </div>
-            <div className="flex items-center gap-1 p-1 text-sm border-2 rounded-md">
-              <div className="flex items-center pr-1 space-x-1 border-r border-1">
-                <button alt="like" className={`${!user?"cursor-default":""} flex items-center gap-1 `} onClick={likeBtnHandler}>
-                  {!likeBtn && <HeartIcon className="w-4" />}
-                  {likeBtn && <HeartIconSolid className="w-4" />}
-                  <h3>Like</h3>
-                </button>
-                
+            <div className="flex items-center justify-center gap-2">
+              <div className="flex items-center gap-1 p-1 text-sm border-2 rounded-md">
+                <div className="flex items-center pr-1 space-x-1 border-r border-1">
+                  <button alt="like" className={`${!user?"cursor-default":""} flex items-center gap-1 `} onClick={likeBtnHandler}>
+                    {!likeBtn && <HeartIcon className="w-4" />}
+                    {likeBtn && <HeartIconSolid className="w-4" />}
+                    <h3>Like</h3>
+                  </button>
+                  
+                </div>
+                <h3>{likeCnt}</h3>
               </div>
-              <h3>{likeCnt}</h3>
-            </div>
-            <div className="flex items-center gap-1 p-1 text-sm border-2 rounded-md">
-              <div className="flex items-center pr-1 space-x-1 border-r border-1">
-                <button alt="downloads" className={`flex items-center gap-1`} onClick={DownloadHandler}>
-                  <ArrowDownTrayIcon className="w-4"/>
-                  <h3>Downloads</h3>
-                </button>
-                
+              <div className="flex items-center gap-1 p-1 text-sm border-2 rounded-md">
+                <div className="flex items-center pr-1 space-x-1 border-r border-1">
+                  <button alt="downloads" className={`flex items-center gap-1`} onClick={DownloadHandler}>
+                    <ArrowDownTrayIcon className="w-4"/>
+                    <h3>Downloads</h3>
+                  </button>
+                  
+                </div>
+                <h3>{downloadCnt}</h3>
               </div>
-              <h3>{downloadCnt}</h3>
             </div>
           </div>
           <div className="">
-            <div className="flex flex-wrap items-center gap-2 p-2 px-4">
+            <div className="flex flex-wrap items-center justify-center gap-2 p-2 px-4 md:justify-start">
               {model?.tags?.map((category, i) => (
                 <Link key={model._id + i} href={`/models?tag=${category}`}>
                   <button alt="tags" 
@@ -357,26 +396,35 @@ export default function ModelView({model}) {
           </div>
         </div>
         <div className="flex flex-col justify-center ">
+        
           {/* <div className="h-full border-2 border-b border-gray-500"></div> */}
-          <div className="md:w-[80%] w-full md:mx-auto p-1  md:p-20 bg-white dark:bg-[rgb(18,18,18)] md:border-b-[1px] md:border-l-2 md:border-r-2 border-slate-700 dark:border-white">
-            {/* <div className='flex justify-end w-full'> */}
-            {/* <button onClick={()=>{setEdit(!edit)}} className='p-1 border-b border-l rounded-bl-md border-cyan-600'>{edit?"Save":"Edit"} model card</button> */}
-            {/* </div> */}
-            <span className="prose-sm prose dark:bg-[rgb(18,18,18)] prose-slate md:prose-lg max-w-none dark:prose-invert">
-              {/* {!edit && <Markdown className='p-5 ' remarkPlugins={[gfm]}>{input}</Markdown>} 
-                      {edit && <textarea className='w-full h-screen bg-red-100' value={input} onChange={(e)=>setInput(e.target.value)}/>} */}
-              {
-                <Markdown
-                  className="mx-auto dark:bg-[rgb(18,18,18)]"
-                  components={MarkComponent}
-                  remarkPlugins={[gfm]}
-                  rehypePlugins={[rehypeRaw]}
-                >
-                  {
-                    metadataParser(model?.mark_down ? model?.mark_down : "")
+          <div className="md:w-[80%] w-full md:mx-auto px-1 md:p-20 relative   bg-white dark:bg-[rgb(18,18,18)] md:border-b-[1px] md:border-l-2 md:border-r-2 border-slate-700 dark:border-white">
+            
+          <span className="prose-sm prose dark:bg-[rgb(18,18,18)] dark:prose-code:text-red-400  prose-slate md:prose-lg max-w-none dark:prose-invert">
+            <div className='flex justify-end '> 
+              {user?.userID===model?.author && <button onClick={()=>{setEdit(!edit)}} className='p-1 text-white bg-black border-t border-l border-r border-black rounded-md dark:border-white'>{edit?"Save":"Edit"} Card</button>}
+            </div> 
+               {!edit && <Markdown className='p-5 md:border-[2px] dark:border-white border-black ' rehypePlugins={[rehypeRaw]}  remarkPlugins={[gfm]}    components={MarkComponent}
+                     >
+                      {
+                    metadataParser(modelEdit?  modelEdit : "")
                       .content
                   }
-                </Markdown>
+                      </Markdown>} 
+                      {edit &&  <textarea className='w-full h-screen min-h-screen bg-red-100 dark:text-white dark:bg-[rgb(18,18,18)]' value={modelEdit} onChange={(e)=>setModelEdit(e.target.value)}/>}
+                
+              {
+                // <Markdown
+                //   className="mx-auto dark:bg-[rgb(18,18,18)]"
+                  // components={MarkComponent}
+                  // remarkPlugins={[gfm]}
+                  // rehypePlugins={[rehypeRaw]}
+                // >
+                  // {
+                  //   metadataParser(model?.mark_down ? model?.mark_down : "")
+                  //     .content
+                  // }
+                // </Markdown>
               }
             </span>
           </div>
