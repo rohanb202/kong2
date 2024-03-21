@@ -56,7 +56,7 @@ export default function Navbar() {
         <div className="items-center hidden space-x-10 md:flex">  
             <div className="flex items-center space-x-2">
                 <Label htmlFor="airplane-mode">Theme</Label>
-                <Switch onClick={()=>{setTheme(theme=='dark'?'light':'dark')}} id="theme-switch" />
+                <Switch aria-label="switch-theme" alt="switch-theme" onClick={()=>{setTheme(theme=='dark'?'light':'dark')}} id="theme-switch" />
                 
             </div>          
             <div>
@@ -130,7 +130,7 @@ export default function Navbar() {
             }  
             <div className="flex items-center space-x-2">
                         <Label htmlFor="airplane-mode">Theme</Label>
-                        <Switch onClick={()=>{setTheme(theme=='dark'?'light':'dark')}} id="theme-switch" />
+                        <Switch aria-label="switch-theme" alt="switch-theme" onClick={()=>{setTheme(theme=='dark'?'light':'dark')}} id="theme-switch" />
                         
                     </div>  
             {user && <DrawerClose asChild>
