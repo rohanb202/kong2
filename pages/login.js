@@ -23,6 +23,7 @@ export default function Login() {
   const router = useRouter();
   const [user, setUser] = useRecoilState(userState);
   const [msg, setMsg] = useState(null);
+  
   const onSubmit = async (data) => {
     const response = await fetch("/api/auth/login", {
       method: "POST",

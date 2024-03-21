@@ -14,11 +14,12 @@ import Navbar from "@/components/Navbar";
 import metadataParser from "markdown-yaml-metadata-parser";
 import { NextSeo } from "next-seo";
 
-// export async function getServerSideProps(context){
+
 import Link from "next/link";
 import { useRecoilState } from "recoil";
 import { userState } from "@/atoms/userAtom";
 import useDebounce from "@/utils/UseDebounce";
+
 export async function getServerSideProps(context){
   try{
     const res=await fetch(`${process.env.local?process.env.local:"https://kong2.vercel.app"}/api/models/${context.query.id}`);
@@ -39,60 +40,7 @@ export async function getServerSideProps(context){
   }
 
 }
-// export async function getStaticPaths() {
-//   // Assuming you have a function to fetch user IDs
-//   const res = await fetch(`${process.env.local ? process.env.local : "https://kong2.vercel.app"}/api/models`);
-//   const data=await res.json();
-//   const paths = data?.items.map((modelData) => ({
-//     params: { id: modelData._id.toString() },
-//   }));
-//   return { paths, fallback: 'blocking' }; // Use fallback: 'blocking' for ISR
-// }
 
-// export async function getStaticProps({ params }) {
-//   try {
-//     const res = await fetch(`${process.env.local ? process.env.local : "https://kong2.vercel.app"}/api/models/${params.id}`);
-//     const data = await res.json();
-//     return {
-//       props: {
-//         model: data,
-//       },
-//       revalidate: 60, // Revalidate every 60 seconds (adjust as needed)
-//     };
-//   } catch (error) {
-//     console.error("Error fetching data:", error);
-//     return {
-//       props: {
-//         model: null,
-//       },
-//       revalidate: 60, // Revalidate every 60 seconds (adjust as needed)
-//     };
-//   }
-// }
-// function extractMetaData(text) {
-//   const metaData = {};
-//   if(!text){
-//     return {content:null, metadata:null};
-//   }
-//   const metaRegExp = /^---[\r\n](((?!---).|[\r\n])*)[\r\n]---$/m;
-//   // get metadata
-//   const rawMetaData = metaRegExp.exec(text);
-
-//   let keyValues;
-
-//   if (rawMetaData) {
-//     // rawMeta[1] are the stuff between "---"
-//     keyValues = rawMetaData[1].split("\n");
-
-//     // which returns a list of key values: ["key1: value", "key2: value"]
-//     keyValues.forEach((keyValue) => {
-//       // split each keyValue to keys and values
-//       const [key, value] = keyValue.split(":");
-//       metaData[key] = value?.trim();
-//     });
-//   }
-//   return {content:rawMetaData, metaData};
-// }
 const MarkComponent = ({ value, language }) => {
   return (
     <SyntaxHighlighter language={language ?? null}>
@@ -100,10 +48,7 @@ const MarkComponent = ({ value, language }) => {
     </SyntaxHighlighter>
   );
 };
-// const Cateogories = Array.from({ length: 5 }, (_, index) => ({
-//   id: index + 1,
-//   text: `Item ${index + 1}`,
-// }));
+
 export default function ModelView({model}) {
   
   const router = useRouter();
@@ -115,12 +60,28 @@ export default function ModelView({model}) {
   const [clickedLikes,setClickedLikes]=useState(0);
   const [clickedDownload,setClickedDownload]=useState(0);
   const [user,setUser]=useRecoilState(userState);
+  const [modelEdit, setModelEdit] = useState(model?.mark_down);
+  const [edit, setEdit] = useState(null);
 
-
-  
+  function likeBtnHandler(){
+    if(!user)return;
+    
+    if(!likeBtn){
+      setLikeCnt(likeCnt+1);
+    }else{
+      setLikeCnt(likeCnt-1);
+    }
+    setLikeBtn(!likeBtn);
+    setClickedLikes(clickedLikes+1);
+  }
+  function DownloadHandler(){
+    setDownloadCnt(downloadCnt+1);
+    setClickedDownload(clickedDownload+1); 
+    
+  }
   async function getLikes(){
     try{
-      // console.log(`/api/likes?modelId=${model?._id}&userId=${user?._id}`);
+      
       const res=await fetch(`/api/likes?modelId=${model?._id}&userId=${user?._id}`);
       const data=await res.json();      
       setLikes(data);
@@ -163,7 +124,7 @@ export default function ModelView({model}) {
   }
   async function updateDownloadCount() {
     try {
-      // console.log("what");
+      
         const response = await fetch(`/api/models/${model?._id}`, {
             method: 'PUT',
             headers: {
@@ -204,6 +165,32 @@ export default function ModelView({model}) {
     console.error('Error updating view count:', error);
     throw error;
   }
+}async function updateModelMarkdown() {
+    
+  
+  try {
+    const response = await fetch('/api/models/new', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${user?.token}` 
+      },
+      body: JSON.stringify({
+        modelId: model._id,
+        mark_down:modelEdit,
+      })
+    });
+    
+    if (!response.ok) {
+      // throw new Error('Failed to update model markdown');
+    }
+
+    const data = await response.json();
+    
+  } catch (error) {
+    console.error('Error updating model markdown:', error);
+    
+  }
 }
 
   useEffect(()=>{
@@ -213,22 +200,7 @@ export default function ModelView({model}) {
     getLikes();    
     updateViewCount();
   },[])
-  function likeBtnHandler(){
-    if(!user)return;
-    // console.log(likeCnt);
-    if(!likeBtn){
-      setLikeCnt(likeCnt+1);
-    }else{
-      setLikeCnt(likeCnt-1);
-    }
-    setLikeBtn(!likeBtn);
-    setClickedLikes(clickedLikes+1);
-  }
-  function DownloadHandler(){
-    setDownloadCnt(downloadCnt+1);
-    setClickedDownload(clickedDownload+1); 
-    
-  }
+  
   useDebounce(() => {
       if(likeBtn===null || likeBtn===undefined || !clickedLikes)return;
       if(likeBtn){
@@ -236,10 +208,7 @@ export default function ModelView({model}) {
       }else{
         deleteLike();
       }
-      
-      // console.log(downloadCnt);
-      
-          
+ 
     }, [clickedLikes], 800
   );
   useDebounce(()=>{
@@ -248,76 +217,20 @@ export default function ModelView({model}) {
     updateDownloadCount();
   },[clickedDownload],800)
   
-  const [modelEdit, setModelEdit] = useState(model?.mark_down);
-  const [edit, setEdit] = useState(null);
-  async function updateModelMarkdown() {
-    
   
-    try {
-      const response = await fetch('/api/models/new', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user?.token}` 
-        },
-        body: JSON.stringify({
-          modelId: model._id,
-          mark_down:modelEdit,
-        })
-      });
-      
-      if (!response.ok) {
-        // throw new Error('Failed to update model markdown');
-      }
   
-      const data = await response.json();
-      // console.log(data);
-      // return data; // Assuming the API returns some data upon successful update
-    } catch (error) {
-      console.error('Error updating model markdown:', error);
-      // throw error;
-    }
-  }
   useDebounce(()=>{
-    if(edit || !user){
+    if(edit || user?.userID!==model?.author){
       return;
     }
-    // console.log(user.token,model._id,modelEdit);
+    
     updateModelMarkdown();
   },[edit],800)
-  // const [loading, setLoading] = useState(false);
-  // async function fetchModel() {
-  //   try{
-  //     setLoading(true);
-  //     const res = await fetch(`/api/models/${router.query.id}`);
-  //     const data = await res.json();
-  //     setModel(data);
-  //   }catch(err){
-
-  //   }finally{
-  //     setLoading(false);
-
-  //   }
-    
-  // }
   
-  // useEffect(() => {
-  //   if (!router.query.id) return;
-  //   // console.log(router.query);
-  //   // console.log(`/api/models/${router.query.id}`);
-  //   fetchModel();
 
-  //   // metadataParser((model?.mark_down?model?.mark_down:"")).content
-  //   // console.log(extractMetaData(model?.mark_down));
-  //   // console.log(model);
-  // }, [router.query]);
-  //   useEffect(()=>{
-  // console.log(metadataParser((model?.mark_down?model?.mark_down:"")));
-
-  //   },[model])
-  // console.log(metadataParser((model?.mark_down?model?.mark_down:"")).metadata);
   return (
     <>
+      
       <NextSeo
         title={`${model.title}`}
         description={
@@ -334,13 +247,7 @@ export default function ModelView({model}) {
           url: `kong2.vercel.app/${model.author}/${model._id}`,
         }}
       />
-      {/* {loading &&
-      <div className="flex items-center justify-center w-full h-screen">
-       <ClipLoader loading={loading} size={40}
-                    aria-label="Loading Spinner"
-                    data-testid="loader"
-                  />
-      </div>} */}
+      
       { !model.error && <div className="md:overflow-x-hidden">
         <Navbar />
         <div className="">
@@ -413,19 +320,7 @@ export default function ModelView({model}) {
                       </Markdown>} 
                       {edit &&  <textarea className='w-full h-screen min-h-screen bg-red-100 dark:text-white dark:bg-[rgb(18,18,18)]' value={modelEdit} onChange={(e)=>setModelEdit(e.target.value)}/>}
                 
-              {
-                // <Markdown
-                //   className="mx-auto dark:bg-[rgb(18,18,18)]"
-                  // components={MarkComponent}
-                  // remarkPlugins={[gfm]}
-                  // rehypePlugins={[rehypeRaw]}
-                // >
-                  // {
-                  //   metadataParser(model?.mark_down ? model?.mark_down : "")
-                  //     .content
-                  // }
-                // </Markdown>
-              }
+              
             </span>
           </div>
         </div>

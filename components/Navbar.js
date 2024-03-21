@@ -1,17 +1,13 @@
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+
 import Link from 'next/link'
 import SearchBox from "./SearchBox"
 import {Bars3Icon} from "@heroicons/react/24/outline";
 import {
   Drawer,
   DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
+  DrawerContent, 
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import {
@@ -33,11 +29,12 @@ import {useTheme} from"next-themes";
 export default function Navbar() {
     const [user, setUser] = useRecoilState(userState);
     const {theme,setTheme}=useTheme();
-    console.log(theme);
+   
     const router=useRouter();
     function handleLogut(){
         setUser(null);
         router.push('/');
+        
     }
   return (
     <>

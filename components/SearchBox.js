@@ -2,15 +2,12 @@
 
 import { useRouter } from "next/router";
 import { useState ,useEffect ,useCallback} from 'react';
-import { Check, ChevronsUpDown } from "lucide-react"
-import {Link} from "next/link";
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
+ 
   CommandItem,
   CommandList,
   
@@ -63,13 +60,12 @@ export default function SearchBox() {
         }
 
         GlobalSearch(); 
-        // console.log(searchTerm);
-        // console.log(filteredDocuments);
+     
              
       }, [searchTerm], 800
     );
   useEffect(()=>{
-    // console.log(pathname);
+   
     if(!value) return;
     router.push(`/${value}`);
   },[value])
@@ -117,12 +113,7 @@ export default function SearchBox() {
                         setOpen(false)
                         }}
                     >
-                        {/* <Check
-                        className={cn(
-                            "mr-2 h-4 w-4",
-                            value === `${data.author}/${data.title}` ? "opacity-100" : "opacity-0"
-                        )}
-                        /> */}
+                       
                         
                         {data.author}/{data.title}
                         

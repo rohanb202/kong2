@@ -1,30 +1,25 @@
 import { connectToDatabase } from "@/utils/connectDB";
 
 export default async function handler(req, res) {
-    // Ensure that the request contains necessary data
-    // if (!req.body || !req.body.userId || !req.body.modelId) {
-    //     return res.status(400).json({ error: "User ID and Model ID are required" });
-    // }
-
+    
     // Extract userId and modelId from the request body
     let { userId, modelId } = req.query;
-    // console.log(userId, modelId);
-    // Connect to the database
+ 
+ 
     const client = await connectToDatabase();
     const db = client.db("kong_face");
-    
-    // Define the collection
+
     const likesCollection = db.collection("likes");
     if (req.method === "GET") {
         try {
-            // If userId is provided, check if the user has liked the specified model
+            
             if (userId) {
                 const existingLike = await likesCollection.findOne({ userId, modelId });
                 const liked = !!existingLike;
                 const totalLikesCount = await likesCollection.countDocuments({ modelId });
                 return res.json({ liked, totalLikesCount });
             } else {
-                // If userId is not provided, only return the total count of likes for the specified model
+                
                 const totalLikesCount = await likesCollection.countDocuments({ modelId });
                 return res.json({ totalLikesCount });
             }
@@ -32,10 +27,9 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: "Failed to retrieve likes" });
         }
     }
-    // Check the request method
+   
     else if (req.method === "POST") {
-        // Insert a new like
-        // console.log(req);
+        
         if (!req.body || !req.body.userId || !req.body.modelId) {
             return res.status(400).json({ error: "User ID and Model ID are required" });
         }

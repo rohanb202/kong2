@@ -14,6 +14,7 @@ import {
     const pathname=router.pathname;
     const searchParams=router.query;
     const [select,setSelect]=useState();
+
     const createQueryString = useCallback(
       (name, value) => {
         const params = new URLSearchParams(searchParams)
@@ -23,11 +24,13 @@ import {
       },
       [searchParams]
     )
+
     useEffect(()=>{  
         if(!select)return;  
         router.push(pathname + '?' + createQueryString('sort', select))
         // console.log(select);
     },[select])
+    
     return(
     <Select onValueChange={(value)=>setSelect(value)}>
         <SelectTrigger aria-label="sort?" alt="sortTrigger" className="w-40">

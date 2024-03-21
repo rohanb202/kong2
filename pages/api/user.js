@@ -5,24 +5,7 @@ export default async function handler(req, res) {
     
     // console.log(model,name);
     const { body, method } = req;
-    // if(method === 'GET' && model==1){
-    //     try{
-    //         // console.log(user);
-    //         const client=await connectToDatabase();
-    //         const db=client.db("kong_face");
-            
-    //         let user = await db.collection("users").findOne({ userID });
-    //         // console.log(user);
-    //         if(!user){
-    //             throw new Error("Couldn't find user");
-    //         }
-    //         const items=await db.collection("models").find({author:userID}).toArray();
-    //         res.status(200).json({items,user});
-
-    //     }catch(err){
-    //         res.status(400).json({items:[], error: err.message });
-    //     }
-    // }
+   
     if (method === 'GET' && model === '1') {
         try {
             const client = await connectToDatabase();

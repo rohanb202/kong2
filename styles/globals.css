@@ -17,3 +17,6 @@
 body{
     font-family: pop, sans-serif;
 }
+.btnFilter{
+    @apply p-2 dark:bg-[rgb(18,18,18)] dark:border-[1px]  rounded-md bg-slate-900
+}

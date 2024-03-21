@@ -16,13 +16,11 @@ export default function PaginationElement({page,totalDoc,perPage}) {
   const pathname = router.pathname
   const searchParams = router.query;
   const [select,setSelect]=useState();
-  useEffect(()=>{    
-    if(!select)return;
-    router.push(pathname + '?' + createQueryString('page', select))
-    // console.log(select);
-  },[select])
-    // Get a new searchParams string by merging the current
-  // searchParams with a provided key/value pair
+
+  let prevPage=page-1>0?page-1:1;  
+  let totalPages=Math.ceil(totalDoc/perPage);
+  totalPages=!totalPages?1:totalPages;
+  let nextPage=totalPages<=page+1?totalPages:page+1;
   const createQueryString = useCallback(
     (name, value) => {
       const params = new URLSearchParams(searchParams)
@@ -32,18 +30,11 @@ export default function PaginationElement({page,totalDoc,perPage}) {
     },
     [searchParams]
   )
-
-
-
-  let prevPage=page-1>0?page-1:1;  
-  let totalPages=Math.ceil(totalDoc/perPage);
-  totalPages=!totalPages?1:totalPages;
-  let nextPage=totalPages<=page+1?totalPages:page+1;
-  // console.log(page);
+ 
   const generatePageNumbers = () => {
     const pageNumbers = [];
     let currentPage=(page-3<=0)?1:page-3;
-    let maxiPage=(currentPage==1?page+3:currentPage+3);
+   
     for (let i = currentPage; i <=Math.min(page+3, totalPages); i++) {
       pageNumbers.push(i);
     }
@@ -51,8 +42,16 @@ export default function PaginationElement({page,totalDoc,perPage}) {
     
     return pageNumbers;
   };
-  // console.log(generatePageNumbers()); 
-  // console.log(totalPages);
+
+  useEffect(()=>{    
+    if(!select)return;
+    router.push(pathname + '?' + createQueryString('page', select))
+    // console.log(select);
+  },[select])
+    // Get a new searchParams string by merging the current
+  // searchParams with a provided key/value pair
+  
+  
     return (
       <Pagination>
          <PaginationContent className="cursor-pointer">

@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     
     let sortOrder=-1;
     const sort=query.sort?query.sort:"likes";
-    // console.log(sort);
+    
     if(method==="GET"){
         try{
             const client=await connectToDatabase();
@@ -48,9 +48,7 @@ export default async function handler(req, res) {
                     $limit: 10
                 }
             ]).toArray();
-            // const model=await db.collection("models").find({}).sort({[sort]:sortOrder}).limit(10).toArray();
             
-            // res.status(200).json(model);
             res.status(200).json(items);
 
         }catch(err){

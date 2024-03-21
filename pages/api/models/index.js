@@ -42,28 +42,10 @@ export default async function handler(req, res) {
     else if(method==="GET"){
         // console.log(search);
         try{
-            // const client=await connectToDatabase();
-            // const db=client.db("kong_face");
-            // if(search){
-            //     query.$or=[
-            //         { author: { $regex: `.*${search}.*`, $options: 'i' } }, // Case-insensitive regex search for partial match on author
-            //         { title: { $regex: `.*${search}.*`, $options: 'i' } }   // Case-insensitive regex search for partial match on title
-            //     ]
-            // }
-            // if(tag){
-            //     query.tags={ $regex: new RegExp(tag, 'i') };
-            // }
-              
-            //   // Execute the query
-            // // const items = await db.collection("models").find(query).toArray();
-            // const items=await db.collection("models").find(query).sort({[sort]:sortOrder}).skip(perPage*(page-1)).limit(perPage).toArray();
-            // const count=await db.collection("models").countDocuments(query);
-            // res.status(200).json({items,count});
+            
             const client = await connectToDatabase();
             const db = client.db("kong_face");
-            // const PAGE_SIZE = 20; // Number of models per page
-            // const pageNumber = page || 1; // Current page number (1-indexed), default to 1 if not provided
-            // const skipCount = (pageNumber - 1) * PAGE_SIZE;
+            
 
             const query = {};
 

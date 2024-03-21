@@ -1,34 +1,24 @@
 import Navbar from "@/components/Navbar";
 import { useForm } from "react-hook-form"
 
-
-// import SyntaxHighlighter from 'react-syntax-highlighter';
 import { useState,useEffect } from 'react';
 import { useRecoilState } from "recoil";
 import { userState } from "@/atoms/userAtom";
 import { useRouter } from "next/router"; 
 import rehypeRaw from "rehype-raw";
 
-// import Markdown from 'react-markdown'
 import dynamic from 'next/dynamic'
 let Markdown=dynamic(()=>import("react-markdown"),{  ssr: false, })
 import gfm from 'remark-gfm';
 import { ScrollArea } from "@/components/ui/scroll-area"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
+import Head from "next/head";
   import metadataParser from "markdown-yaml-metadata-parser";
 import { Input } from "@/components/ui/input";
 import {
     Command,
     CommandEmpty,
     CommandGroup,
-    CommandInput,
+  
     CommandItem,
     CommandList,
     
@@ -52,13 +42,17 @@ export default function New() {
     const [filteredTags,setFilteredTags] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
     const [searchTerm,setSearchTerm]=useState();
+    const [isOpen, setIsOpen] = useState(false);
+    const [tags, setTags] = useState([]);
+    const [disableBtn, setDisableBtn] = useState(false);
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
       } = useForm()
-      const [disableBtn, setDisableBtn] = useState(false);
+
+      
     async function onSubmit(data){
         //to post a task
         try{
@@ -94,24 +88,9 @@ export default function New() {
         }
         
       
-    //   console.log(await response);
+    
   
     }
-    
-    useEffect(()=>{
-        if(!user){
-            // console.log("can't find user");
-            router.push('/');
-        }
-    },[user])
-    
-    const [isOpen, setIsOpen] = useState(false);
-    const [tags, setTags] = useState([]);
-    
-
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
-    };
 
     const addTag = (tag) => {
         if (!selectedTags.includes(tag)) {
@@ -149,12 +128,21 @@ export default function New() {
     useEffect(() => {
         // console.log()     
     }, [disableBtn]);
-    
+    useEffect(()=>{
+        if(!user){
+            // console.log("can't find user");
+            router.push('/');
+        }
+    },[user])
       
   return (
     
     <>
         <Navbar/>
+        <Head>
+        <title>Kong | Add Model</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
         <div className="">
             
             <div>
@@ -244,7 +232,9 @@ export default function New() {
                             
                             </div>
                         </div>
-                        <div className="hidden lg:block min-h-screen h-full  border-slate-400 border-[1px]"></div>
+                        <div className="hidden lg:block min-h-screen h-full   border-slate-400 border-[1px]"></div>
+                        
+                         
                         <div className="w-full min-h-screen p-10 h-96 lg:w-2/3">
                                 <div className="flex items-center justify-between pb-5">
                                     <h1 for="text" className="block text-base font-medium text-gray-900 dark:text-white">Markdown</h1>
@@ -253,11 +243,11 @@ export default function New() {
                                 
                                 </div>
                                 <span className="prose dark:prose-invert ">
-                                    {!edit && <Markdown rehypePlugins={[rehypeRaw]} className='h-full p-5 rounded-md dark:border-[1px] bg-blue-50 dark:bg-[rgb(18,18,18)] dark:text-white' remarkPlugins={[gfm]}>{
+                                    {!edit && <Markdown rehypePlugins={[rehypeRaw]} className=' min-h-screen  p-5 rounded-md dark:border-t dark:border-l dark:border-r bg-blue-50 dark:bg-[rgb(18,18,18)] dark:text-white' remarkPlugins={[gfm]}>{
                                                             metadataParser(model ? model : "")
                                                                                  .content
                                     }</Markdown>} 
-                                    {edit && <textarea {...register("mark_down")} className='w-full h-full bg-red-100 rounded-md dark:bg-[rgb(18,18,18)] dark:text-white dark:border-[1px]  ' value={model} onChange={(e)=>setModel(e.target.value)}/>}
+                                    {edit && <textarea {...register("mark_down")} className='w-full h-full  bg-red-100 rounded-md dark:bg-[rgb(18,18,18)] dark:text-white dark:border-[2px]  ' value={model} onChange={(e)=>setModel(e.target.value)}/>}
                                 </span>
                         </div>
                         

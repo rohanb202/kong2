@@ -6,6 +6,7 @@ import { useState } from 'react';
 import ModelCard from '@/components/ModelCard';
 import ClipLoader from "react-spinners/ClipLoader";
 import {useTheme} from "next-themes";
+import Head from "next/head";
 export default function Index() {
   const router=useRouter();
   const {theme}=useTheme();
@@ -21,8 +22,7 @@ export default function Index() {
       const data=await res.json();
       
       setModels(data);
-      // console.log(data);
-      // console.log(models);
+      
     }catch(e){
       
     }finally{
@@ -51,6 +51,10 @@ export default function Index() {
 
   return (
     <div>
+      <Head>
+        <title>Kong | {router.query.users}</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Navbar/>
       {!show && <div className='flex items-center justify-center w-full h-screen'><ClipLoader
                       

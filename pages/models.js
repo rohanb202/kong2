@@ -10,49 +10,34 @@ import Sort from '@/components/Sort';
 import PaginationElement from '@/components/PaginationElement';
 import {
   Dialog,
-  DialogClose,
+
   DialogContent, 
   DialogTrigger,
 } from "@/components/ui/dialog"
 import ClipLoader from "react-spinners/ClipLoader";
-import { ScrollArea } from '@/components/ui/scroll-area';
+
 import useDebounce from '@/utils/UseDebounce';
 import { Button } from '@/components/ui/button';
 import {useTheme} from "next-themes";
-// const Models = Array.from({ length: 50 }, (_, index) => ({
-//     id: index + 1,
-//     text: `Item ${index + 1}`,
-//   }));
-// export async function getServerSideProps(context){
-//     let page=parseInt(context.query.page,10);
-//     page=(!page||page<1)?1:page;
-//     const res=await fetch(`http://localhost:3000/api/models?page=${page}`);
-//     const data=await res.json();
-   
-//     return {
-//       props:{
-//         model:data,
-//       }
-//     }
-// }
+import  Head  from 'next/head';
+
 export default function Models() {
     const router = useRouter();
     const {theme}=useTheme();
+    const [models,setModels]=useState({items:[],count:0});    
+    const [searchTerm, setSearchTerm] = useState(null); 
+    const [loading, setLoading] = useState(false);
+    const pathname=router.pathname;
+    const searchParams=router.query;
     let page=parseInt(router.query.page,10);
     page=(!page||page<1)?1:page;
     let perPage=20;
 
-    const [models,setModels]=useState({items:[],count:0});    
-    const [searchTerm, setSearchTerm] = useState(null); 
-    const [loading, setLoading] = useState(false);   
+       
     async function fetchModels(){
-      let params = new URLSearchParams(router.query).toString(); 
-      // if(params){
-      //   params=params+'&';
-      // }
+      let params = new URLSearchParams(router.query).toString();      
       setLoading(true);
-      try{
-        // console.log(`/api/models?${params}`);
+      try{       
         const res=await fetch(`/api/models?${params}`);
         const data=await res.json();
         setModels(data);
@@ -63,16 +48,13 @@ export default function Models() {
       }
       
     }
-    const pathname=router.pathname;
-    const searchParams=router.query;
+    const handleChange = (event) => {      
+      setSearchTerm(event.target.value);
+    }
     const createQueryString = useCallback(
       (name, value) => {
         const params = new URLSearchParams(searchParams)
-        // for (const [name1, value] of params.entries()) {
-        //   if (value === '') {
-        //     params.delete(name1);
-        //   }
-        // }
+        
         params.set(name, value)
         params.set('page',1);
         return params.toString()
@@ -80,53 +62,30 @@ export default function Models() {
       [searchTerm]
     )
     
-    // async function GlobalSearch(){
-    //   const res=await fetch(`/api/models?search=${searchTerm}`);
-    //   const data=await res.json();
-    //   setFilteredDocuments(data);
-      
-    // }
-    // const removeQueryParam = React.useCallback(
-    //   (name) => {
-    //       const params = new URLSearchParams(searchParams);
-    //       if(params.has(name)){
-    //         params.delete(name);
-    //       }
-          
-    //       return params.toString();
-    //   },
-    //   []
-    // );
     useEffect(()=>{ 
-        
-        // console.log(params); 
-        // console.log(router.query);
+      
         fetchModels();        
     },[router.query])
-    // useEffect(()=>{ 
-    //   if(searchTerm===null){
-    //     console.log(removeQueryParam('seacrh'));
-    //   }
-    //   console.log(searchTerm);
-      
-    // },[searchTerm])
+    
     useDebounce(() => {
       if(searchTerm===null){
-        // router.push(pathname + '?' + removeQueryParam('seacrh'));
+        
         
         return;
       }
-      // GlobalSearch();
+     
       router.push(pathname + '?' + createQueryString('search', searchTerm));
       
       }, [searchTerm], 800
     );
-    const handleChange = (event) => {      
-      setSearchTerm(event.target.value);
-    }
+    
     
   return (
     <>
+    <Head>
+        <title>Kong | Models</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    </Head>
     <Navbar/>
     <div className="flex ">
         
@@ -140,7 +99,7 @@ export default function Models() {
               <div className="flex flex-col items-start justify-between w-full space-y-5 md:items-center md:space-y-0 md:flex-row">
                 <div className='flex items-center justify-center gap-2'>
                   <h2 className='font-semibold'>Models</h2>
-                  <h2 className='font-bold text-black/60'>{models?.count}</h2>
+                  <h2 className='font-bold dark:text-white/60 text-black/60'>{models?.count}</h2>
                 </div>
                 
                 

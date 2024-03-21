@@ -1,13 +1,13 @@
 import Image from 'next/image'
-import React, { useEffect } from 'react'
-// import ip from '../assets/images/ip.png'
+
+
 import kong2 from '../public/assets/images/kong2.webp'
-// import appstore from '../assets/images/appstore.png'
+
 import {StarIcon} from '@heroicons/react/24/solid'
 import { useTheme } from 'next-themes'
 export default function Hero() {
   let {theme}=useTheme();
-  // console.log(theme);
+
   return (
     <section className={`h-screen mx-5 my-6 text-white  backdrop-blur-sm ${theme=='dark'?" border-[1px] bg-gradient-to-l from-slate-100 to-slate-800 ":" bg-gradient-to-l from-slate-700 to-slate-900 "}  md:mx-10 rounded-3xl`}>
         <div className='flex flex-col items-center justify-between h-full md:justify-between md:flex-row'>
