@@ -97,6 +97,9 @@ In addition to Google Lighthouse, I utilized Performance Insights in the browser
 ### Model Interactions
 - Users can engage with models by downloading, liking, and loving them, contributing to model rankings and visibility.
 
+### Debounced Search
+- Every search performed on the platform is debounced, ensuring that the search functionality responds efficiently and optimally, providing users with a smooth search experience.
+
 ### Scroll-Based Animations
 - Utilized GSAP and AOS for scroll-based animations on the explore page (home page), captivating users with engaging visuals and enhancing user experience.
   

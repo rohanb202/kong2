@@ -48,7 +48,7 @@ function Register() {
         
         <Image className="relative !z-10 w-20 -top-10" src={kong} alt={'kong-icon'} />
         <h1 className="relative pt-2 text-xl font-semibold md:text-3xl -top-8">Join Kong</h1>
-        <h2 className="relative pb-2 text-base text-center md:text-xl text-black/50 -top-8">Join the community of machine learners!</h2>
+        <h2 className="relative pb-2 text-base text-center md:text-xl text-black/50 -top-8 dark:text-white/50">Join the community of machine learners!</h2>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="relative grid grid-cols-1 gap-6 -top-5"
