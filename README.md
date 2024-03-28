@@ -27,7 +27,11 @@ Kong is a platform that serves as a language model hub (LLM). With the tagline "
 
 
 ---
-
+## Dummy Creds
+ #### Email:dummyKong@gmail.com 
+ #### Password: 123456 
+#### Note: Please don't spam fake models with these creds
+---
 ## Tech Stack
 
 - **Next.js**: Utilized for efficient and scalable web development.
